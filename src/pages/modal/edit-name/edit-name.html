@@ -1,0 +1,40 @@
+<!--
+  Generated template for the EditNamePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Edit Name</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="updateProfileName()">
+        <ion-icon name="checkmark" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<ion-item>
+    <ion-label> 
+      <ion-icon name="person" color="gray"></ion-icon>
+    </ion-label>
+    <ion-input type="text" [value]="user.firstName"></ion-input>
+  </ion-item>
+    <ion-item>
+    <ion-label> 
+      <ion-icon name="person" color="gray"></ion-icon>
+    </ion-label>
+    <ion-input type="text" [value]="user.lastName"></ion-input>
+  </ion-item>
+</ion-content>

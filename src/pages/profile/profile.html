@@ -1,0 +1,86 @@
+<!--
+  Generated template for the ProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content parallax>
+<ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content
+  pullingIcon="arrow-dropdown"
+  pullingText="Glisse pour recharger"
+  refreshingSpinner="circles"
+  refreshingText="Rechargement...">
+    
+  </ion-refresher-content>
+</ion-refresher>
+<div class="bg" [style.backgroundImage]="'url('+bgImage+')'">
+</div>
+<div class="main-content">
+	<div id="pp" (click)="presentActionSheet()">
+        <!-- <img src="{{pathForImage(lastImage)}}"  class="round"> -->
+        <img src="{{bgImage}}"  class="round">
+<div class="edit-icon" >
+  
+<ion-icon class="icon" ios="md-create" md="md-create"></ion-icon>
+</div>
+
+  </div>
+
+
+  <!-- Edit Name -->
+  <ion-row no-padding no-margin>
+    <ion-col no-padding no-margin col-2></ion-col>
+      <ion-col no-padding no-margin text-center col-8>
+      <button class="edit-name" (click)="goEditProfileName()">Ismail Bagayoko</button>
+    </ion-col>
+    <ion-col col-1 (click)="goEditProfileName()"><ion-icon ios="md-create" md="md-create"></ion-icon></ion-col>
+  </ion-row>
+    <ion-row no-padding no-margin>
+    <ion-col no-padding no-margin col-2></ion-col>
+      <ion-col no-padding no-margin text-center col-8>
+      <button class="edit-annee" (click)="goEditProfileAnnee()">2e Année</button>
+    </ion-col>
+    <ion-col col-1 (click)="goEditProfileAnnee()"><ion-icon ios="md-create" md="md-create"></ion-icon></ion-col>
+  </ion-row>
+  <!-- Segments -->
+  <div class="segmentBtn">
+    <ion-segment  [(ngModel)]="profile_segment">
+      <ion-segment-button value="timeline">
+        <ion-icon name="apps"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="document">
+        <ion-icon name="ios-document"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="evenement">
+        <ion-icon name="infinite"></ion-icon>
+      </ion-segment-button>
+      
+    </ion-segment>
+  </div>
+  <!-- Segment content -->
+  <div [ngSwitch]="profile_segment">
+    <ion-list *ngSwitchCase="'timeline'">
+      acceuil
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'document'">
+      document
+
+    </ion-list>
+        <ion-list *ngSwitchCase="'evenement'">
+      
+            evenement
+    </ion-list>
+  </div>
+</div>
+  </ion-content>

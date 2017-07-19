@@ -1,0 +1,49 @@
+<!--
+  Generated template for the WelcomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--ion-header>
+
+  <ion-navbar>
+    <ion-title>welcome</ion-title>
+  </ion-navbar>
+
+</ion-header-->
+
+
+<ion-content padding id="welcome" class="login" no-bounce>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4></ion-col>
+      <ion-col col-4 style="margin-left: auto;margin-right: auto;display: block;">
+        <ion-img src="http://miaafho.ml/img/icon.png" width="80" height="80" id="icon"></ion-img>
+      </ion-col>
+      <ion-col col-4></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list class="list-form" style="margin-top:30px;margin-bottom: 30px;">
+  	
+
+  	<!--ion-item class="itemPassword">
+	    <ion-input id="password" type="password" placeholder="Mot de passe" clearInput></ion-input>
+  	</ion-item-->
+    <ion-item class="itemInput">
+    <ion-label color="primary" floating>Username</ion-label>
+    <ion-input></ion-input>
+    </ion-item>
+    <ion-item class="itemInput">
+    <ion-label color="primary" floating>Mot de passe</ion-label>
+    <ion-input type="password"></ion-input>
+    </ion-item>
+ 
+
+  </ion-list>
+
+  <button id="loginBtn" ion-button  block  (click)="login()">Se Connecter</button>
+
+  <div id="forgotPwd" text-center (click)="forgotPwd()">Mot de passe oublié</div>
+  <button ion-button id="forgotPwdBtn"  block  (click)="signUp()">Inscription</button>
+</ion-content>

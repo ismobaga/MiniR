@@ -1,0 +1,82 @@
+page-profile {
+
+		.bg{
+			// background-image: url('../assets/images/profile.jpg');
+			height: 300px;
+			background-size: cover;
+			filter: blur(5px);
+			background-position: center center;
+		}
+		.segmentBtn{
+			border: none;
+			background-color: #ffffff;
+		}
+		.main-content{
+			width: 100%;
+			height: 700px;
+			background-color: #ffffff;
+		}
+		#pp{
+			border-radius: 50%;
+			border: 2px solid white;
+			height: 100px;
+			width: 100px;
+			z-index: 10;
+			margin-top: -160px;
+			position: relative;
+			left: 50%;
+			/*margin-right: -50%;*/
+			transform: translate(-50%, -50%);
+			/*box-shadow: -6px 15px 81px 3px white;*/
+
+		}
+		.round{
+			border-radius: 50%;
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			
+		}
+		.icon{
+			border-radius: 50%;
+			height: 100%;
+			width: 100%;
+			color: gray;
+		}
+		.edit-icon{
+			position: relative;
+			width: 20px;
+			height: 20px;
+			left: 50%;
+			top: 50%;
+			overflow: visible;
+			background-color: white;
+			border-radius: 50%;
+			border: 2px solid white;
+			z-index: 11;
+
+			transform: translate(100%, 100%);
+		}
+
+
+
+		  /* Profile edit button */
+  .edit-name, .edit-annee {
+    background: none; 
+    border: none; 
+    font-size: 24px; 
+    border-radius: 3px;
+    padding: 0px;
+    margin: 0px;
+    margin-right: 0px;
+    font-weight: bold;
+    width: 100%;
+    color: #ffffef;
+    /*margin-right: 30px;*/
+  }
+
+  .edit-annee {
+    color: #efefef;
+    font-size: 18px; 
+  }
+}
