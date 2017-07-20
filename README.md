@@ -12,7 +12,7 @@ You should instal ionic and cordova:
 
 ```bash
 $ sudo npm install -g ionic cordova
-$ ionic start myTabs tabs
+$ ionic install
 ```
 
 Then, to run it, cd into `MiniR` and run:
