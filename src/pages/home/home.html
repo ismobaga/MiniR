@@ -1,48 +1,57 @@
 <ion-header >
   <ion-navbar>
     <ion-title>Home</ion-title>
+      <ion-buttons end right>
+      <button color="black" ion-button icon-only (click)="goMessages()">
+        <ion-icon name="paper-plane"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-<ion-card>
-<ion-card-content>
+  <ion-card>
+    <ion-card-content>
 
-<ion-row>
-<ion-col col-3>
-<ion-thumbnail item-left>
-      <img src="http://miaafho.ml/img/profile.jpg">
-    </ion-thumbnail>
-</ion-col>
+      <ion-row>
+        <ion-col col-2>
+          <ion-thumbnail item-left>
+            <img src="http://miaafho.ml/img/profile.jpg">
+          </ion-thumbnail>
+        </ion-col>
 
-<ion-col col-9 center text-center>
-<ion-note>
-  Vous avez quelque chos a partager?
-</ion-note>
-</ion-col>
-</ion-row>
-<ion-row>
-<ion-col col-5>
-<button ion-button icon-left clear small>
-<ion-icon name="camera"></ion-icon>
+        <ion-col col-9 center text-center>
+          <ion-note>
+            Vous avez quelque chos a partager?
+          </ion-note>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-4>
+          <button ion-button icon-left clear small>
+            <ion-icon name="camera"></ion-icon>
+            <button ion-button icon-left clear>Photo</button>
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button ion-button icon-left clear small> 
+            <ion-icon name="document"></ion-icon>
+            Document 
+          </button>
+        </ion-col>
+               <ion-col col-4>
+          <button ion-button icon-left clear small> 
+            <ion-icon name="document"></ion-icon>
+            Evenement 
+          </button>
 
-<button ion-button icon-left clear>Photo</button>
-</button>
-</ion-col>
-<ion-col col-4>
+        </ion-col>
 
-<button ion-button icon-left clear> 
-<ion-icon name="document"></ion-icon>
-Document 
-</button>
+      </ion-row>
 
-</ion-col>
-
-</ion-row>
-
-</ion-card-content>
-</ion-card>
-<hr no-margin no-padding>
+    </ion-card-content>
+  </ion-card>
+  <hr no-margin no-padding>
   <div (swipe)="swipePage($event)">
 
     <!-- Cards -->
@@ -51,47 +60,116 @@ Document
       <ion-row>
         <ion-col col-10>
           <ion-item>
-        <ion-avatar item-left>
-          <img src="http://miaafho.ml/img/profile.jpg">
-        </ion-avatar>
-        <h2 style="font-weight: bold">Ismail Bagayoko</h2>
-        <p>eib3773</p>
-        
-      </ion-item>
+            <ion-avatar item-left>
+              <img src="http://miaafho.ml/img/profile.jpg">
+            </ion-avatar>
+            <h2 style="font-weight: bold">Ismail Bagayoko</h2>
+            <p>il ya 10min</p>
+
+          </ion-item>
         </ion-col >
         <ion-col col-2>
           <button no-margin no-padding clear color="black" ion-button icon-only style="float: right; top: 15px" (click)="presentPostPopover()">
             <ion-icon name="more"></ion-icon>
-        </button>
+          </button>
         </ion-col>
       </ion-row>
       
 
-      <img src="http://miaafho.ml/img/profile.jpg" (tap)="tapPhotoLike($event)">
+      <img src="http://miaafho.ml/img/profile.jpg" (click)="viewFile('http://miaafho.ml/img/profile.jpg', 'image')">
 
       <p no-margin no-padding>
         <button clear ion-button icon-only (click)="likeButton()" class="like-btn">
-          <ion-icon no-padding [name]="like_btn.icon_name" color="{{ like_btn.color }}" class="icon-space"></ion-icon>
+          <ion-icon no-padding [name]="like_btn.icon_name" color="{{ like_btn.color }}" class="icon-space"></ion-icon> Merci
         </button>
-        <button clear ion-button icon-only>
-          <ion-icon no-padding isActive="false" color="black" name="ios-text-outline" class="icon-space" style="font-weight: bold"></ion-icon>
-        </button>
-        <button clear ion-button icon-only>
-          <ion-icon no-padding isActive="false" color="black" name="paper-plane" class="icon-space"></ion-icon>
-        </button>
+
         <button no-margin no-padding clear color="black" ion-button icon-only style="float: right">
-          <ion-icon name="ios-bookmark-outline"></ion-icon>
+          <ion-icon name="eye"></ion-icon>Vues
         </button>
       </p>
       <hr>
 
       <ion-card-content>
-        <p class="like-content"><ion-icon name="heart"></ion-icon> 250 likes</p>
-        <p><b>techcrunch</b> Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
+        <p class="like-content"><ion-badge>INFO2012</ion-badge> <ion-badge>HIVER2017</ion-badge> <ion-badge>IMAGE</ion-badge> <ion-badge>INTRA</ion-badge></p>
+        
+      </ion-card-content>
+
+    </ion-card>
+        <ion-card no-padding padding-bottom class="card">
+
+      <ion-row>
+        <ion-col col-10>
+          <ion-item>
+            <ion-avatar item-left>
+              <img src="http://malimoncton.ga/storage/membre/youba.jpg">
+            </ion-avatar>
+            <h2 style="font-weight: bold">Youba Smk</h2>
+            <p>il ya 2h</p>
+            
+          </ion-item>
+        </ion-col >
+        <ion-col col-2>
+          <button no-margin no-padding clear color="black" ion-button icon-only style="float: right; top: 15px" (click)="presentPostPopover()">
+            <ion-icon name="more"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
       
-        <ion-note style="font-size: 12px">
-          11h ago
-        </ion-note>
+
+      <img src="http://miaafho.ml/doc/word.png" (click)="viewFile('http://miaafho.ml/doc/doc.docx', 'vnd.openxmlformats-officedocument.wordprocessingml.document')">
+
+      <p no-margin no-padding>
+        <button clear ion-button icon-only (click)="likeButton()" class="like-btn">
+          <ion-icon no-padding [name]="like_btn.icon_name" color="{{ like_btn.color }}" class="icon-space"></ion-icon> Merci
+        </button>
+        
+        <button no-margin no-padding clear color="black" ion-button icon-only style="float: right">
+          <ion-icon name="eye"></ion-icon> 13
+        </button>
+      </p>
+      <hr>
+
+      <ion-card-content>
+        <p class="like-content"><ion-badge>PHYS1373</ion-badge> <ion-badge>HIVER2017</ion-badge> <ion-badge>WORD</ion-badge> <ion-badge>FINAL</ion-badge></p>
+      </ion-card-content>
+
+    </ion-card>
+        <ion-card no-padding padding-bottom class="card">
+
+      <ion-row>
+        <ion-col col-10>
+          <ion-item>
+            <ion-avatar item-left>
+              <img src="http://malimoncton.ga/storage/tommy.jpg">
+            </ion-avatar>
+            <h2 style="font-weight: bold">Tommy Bia</h2>
+            <p>il ya 3h</p>
+            
+          </ion-item>
+        </ion-col >
+        <ion-col col-2>
+          <button no-margin no-padding clear color="black" ion-button icon-only style="float: right; top: 15px" (click)="presentPostPopover()">
+            <ion-icon name="more"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+      
+
+      <img src="http://miaafho.ml/doc/pdf.png" (click)="viewFile('http://miaafho.ml/doc/doc.pdf', 'pdf')">
+
+      <p no-margin no-padding>
+        <button clear ion-button icon-only (click)="likeButton()" class="like-btn">
+          <ion-icon no-padding [name]="like_btn.icon_name" color="{{ like_btn.color }}" class="icon-space"></ion-icon> Merci
+        </button>
+        
+        <button no-margin no-padding clear color="black" ion-button icon-only style="float: right">
+          <ion-icon name="eye"></ion-icon>44
+        </button>
+      </p>
+      <hr>
+
+      <ion-card-content>
+        <p class="like-content"><ion-badge>MATH2653</ion-badge> <ion-badge>HIVER2017</ion-badge> <ion-badge>PDF</ion-badge> <ion-badge>INTRA</ion-badge></p>
       </ion-card-content>
 
     </ion-card>

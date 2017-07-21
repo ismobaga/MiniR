@@ -1,0 +1,64 @@
+<ion-header>
+
+  <ion-navbar color="white">
+    <ion-title>{{ sender }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-note><p text-center no-padding no-margin>21 Juillet, 17:29</p></ion-note>
+    
+    <!-- Sender -->
+    <ion-item no-lines no-margin no-padding text-wrap>
+      <ion-avatar item-left>
+        <img [src]="profile_img">
+      </ion-avatar>
+      <div class="chatbox">LOL. qu'est que tu fout.</div>
+    </ion-item>
+
+    <!-- Me -->
+    <ion-item no-lines no-margin no-padding text-wrap>
+      <ion-avatar item-right>
+        <img src="http://malimoncton.ga/storage/membre/ismail.jpg">
+      </ion-avatar>
+      <div margin-left class="chatbox chatbox-right">Tes malade toi</div>
+    </ion-item>
+
+    
+    <ion-item no-lines no-margin no-padding text-wrap>
+      <ion-avatar item-left>
+        <img [src]="profile_img">
+      </ion-avatar>
+      <div class="chatbox">{{ last_message }}</div>
+    </ion-item>
+
+    <!-- Heart icon -->
+    <ion-item no-lines no-margin no-padding text-wrap *ngIf="send_like_icon" item-right>
+      <ion-avatar item-right>
+        <img src="http://malimoncton.ga/storage/membre/ismail.jpg">
+      </ion-avatar>
+      <div text-right [ngClass]="{'like-msg-btn': likeBtnVisible }">
+        <ion-icon name="heart" [ngClass]="{'like-btn': likeBtnVisible, 'heart-size': true }" color="danger"></ion-icon>
+      </div>
+    </ion-item>
+
+</ion-content>
+<!-- Footer -->
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons start left>
+      <button ion-button icon-right color="black">
+        <ion-icon name="images"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-input type="text" value=""></ion-input>
+    <ion-buttons end>
+      <button ion-button icon-right color="black" (click)="sendLike()">
+        <ion-icon name="heart-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

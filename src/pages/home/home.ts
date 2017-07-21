@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Content, PopoverController } from 'ionic-angular';
+import { NavController, App, Content, PopoverController } from 'ionic-angular';
+import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 import { PostPopover } from './post-popover';
+import { MessagePage } from  '../message/message';
 
 @Component({
   selector: 'page-home',
@@ -17,8 +19,25 @@ export class HomePage {
   public tap: number = 0;
 
 
-  constructor(public navCtrl: NavController, public popoverCtrl: PopoverController) {
+  constructor(public navCtrl: NavController,
+  	public popoverCtrl: PopoverController,
+  	private document: DocumentViewer,
+  	private app: App) {
 
+  }
+
+  goMessages(){
+  	this.app.getRootNav().push(MessagePage);
+  }
+    swipePage(event) {
+    if(event.direction === 1) { // Swipe Left
+      console.log("Swap Camera");
+    } 
+
+    if(event.direction === 2) { // Swipe Right
+      this.goMessages();
+    }
+    
   }
 
     tapPhotoLike(times) { // If we click double times, it will trigger like the post
@@ -28,6 +47,20 @@ export class HomePage {
     }
   }
 
+  viewFile(url, type){
+  	const options: DocumentViewerOptions = {
+  	title: 'My Viewer'
+}
+if (type==='image') {
+	
+	this.document.viewDocument(url, 'image/jpeg', options)
+}
+else{
+	this.document.viewDocument(url, 'application/'+type, options)
+}
+
+	
+  }
   presentPostPopover() {
     let popover = this.popoverCtrl.create(PostPopover);
 
