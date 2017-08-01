@@ -4,6 +4,8 @@ import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-vi
 import { PostPopover } from './post-popover';
 import { MessagePage } from  '../message/message';
 
+import { AuthService } from '../../providers/auth-service/auth-service';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -17,15 +19,43 @@ export class HomePage {
   };
 
   public tap: number = 0;
-
+  userDetails : any;
+  responseData: any;
+  dataSet : any;
+  userPostData = {"user_id":"","token":""};
 
   constructor(public navCtrl: NavController,
   	public popoverCtrl: PopoverController,
   	private document: DocumentViewer,
-  	private app: App) {
+  	private app: App,
+    public authService:AuthService) 
+  {
+    const data = JSON.parse(localStorage.getItem('userData'));
+    this.userDetails = data.userData;
+    this.userPostData.user_id = this.userDetails.id;
+    this.userPostData.token = this.userDetails.token;
+    this.getDocuments();
 
   }
 
+  getDocuments(){
+      this.authService.postData(this.userPostData, 'documents')
+      .then((result) => {
+        this.responseData = result;
+        if (this.responseData.documentsData) {
+          this.dataSet = this.responseData.documentsData;
+        } else {}
+      }, (err) => {
+
+      });
+  }
+  convertTime(created) {
+    let date = new Date(created);
+    return date;
+  }
+  toUpper(str:string){
+    return str.toUpperCase();
+  }
   goMessages(){
   	this.app.getRootNav().push(MessagePage);
   }

@@ -1,10 +1,12 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
 import { WelcomePage } from '../pages/welcome/welcome';
+import { SignupPage } from '../pages/signup/signup';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { MessagePage } from  '../pages/message/message';
@@ -29,12 +31,15 @@ import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { DocumentViewer } from '@ionic-native/document-viewer';
+import { AuthService } from '../providers/auth-service/auth-service';
+import { MomentModule } from 'angular2-moment';
 
 
 @NgModule({
   declarations: [
     MyApp,
     WelcomePage,
+    SignupPage,
     MessagePage,
     MessageDetailPage,
     NewMessagePage,
@@ -52,6 +57,8 @@ import { DocumentViewer } from '@ionic-native/document-viewer';
   ],
   imports: [
     BrowserModule,
+    HttpModule, 
+    MomentModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -59,6 +66,7 @@ import { DocumentViewer } from '@ionic-native/document-viewer';
     MyApp,
     AboutPage,
     WelcomePage,
+    SignupPage,
     MessagePage,
     MessageDetailPage,
     NewMessagePage,
@@ -80,7 +88,8 @@ import { DocumentViewer } from '@ionic-native/document-viewer';
     FilePath,
     Camera,
     DocumentViewer,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthService
   ]
 })
 export class AppModule {}

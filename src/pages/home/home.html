@@ -30,7 +30,7 @@
         <ion-col col-4>
           <button ion-button icon-left clear small>
             <ion-icon name="camera"></ion-icon>
-            <button ion-button icon-left clear>Photo</button>
+            <button ion-button icon-left clear>Photo   </button>
           </button>
         </ion-col>
         <ion-col col-4>
@@ -55,16 +55,16 @@
   <div (swipe)="swipePage($event)">
 
     <!-- Cards -->
-    <ion-card no-padding padding-bottom class="card">
+    <ion-card *ngFor="let item of dataSet" no-padding padding-bottom class="card">
 
       <ion-row>
         <ion-col col-10>
           <ion-item>
             <ion-avatar item-left>
-              <img src="http://miaafho.ml/img/profile.jpg">
+              <img src="{{item.profile_image}}">
             </ion-avatar>
-            <h2 style="font-weight: bold">Ismail Bagayoko</h2>
-            <p>il ya 10min</p>
+            <h2 style="font-weight: bold">{{item.first_name}} {{item.last_name}}</h2>
+            <p>{{convertTime(item.created_at) | amTimeAgo}}</p>
 
           </ion-item>
         </ion-col >
@@ -76,7 +76,7 @@
       </ion-row>
       
 
-      <img src="http://miaafho.ml/img/profile.jpg" (click)="viewFile('http://miaafho.ml/img/profile.jpg', 'image')">
+      <img src="{{item.thumbnail}}" (click)="viewFile(item.link, 'item.type')">
 
       <p no-margin no-padding>
         <button clear ion-button icon-only (click)="likeButton()" class="like-btn">
@@ -90,7 +90,9 @@
       <hr>
 
       <ion-card-content>
-        <p class="like-content"><ion-badge>INFO2012</ion-badge> <ion-badge>HIVER2017</ion-badge> <ion-badge>IMAGE</ion-badge> <ion-badge>INTRA</ion-badge></p>
+        <p class="like-content">
+        <ion-badge *ngFor="let tag of item.tags">{{ toUpper(tag.tag) }}</ion-badge>
+        </p>
         
       </ion-card-content>
 

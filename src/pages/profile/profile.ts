@@ -6,6 +6,7 @@ import {
          ToastController, 
          Platform, 
          Loading, 
+         App,
          LoadingController,
          ModalController
          } from 'ionic-angular';
@@ -42,13 +43,21 @@ export class ProfilePage {
   			 public toastCtrl: ToastController,
   			 public platform: Platform,
   			 public loadingCtrl: LoadingController,
+         private app:App,
          public modalCtrl: ModalController
   			 ) 
   {
   }
 
+  logout(){
+     localStorage.clear();
+     setTimeout(() => this.backToWelcome(), 1000);
+}
+backToWelcome(){
+     const root = this.app.getRootNav();
+   root.popToRoot();
+}
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
     this.profile_segment = 'timeline';
   }
   public doRefresh(refresher){

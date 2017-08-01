@@ -31,12 +31,12 @@
 	    <ion-input id="password" type="password" placeholder="Mot de passe" clearInput></ion-input>
   	</ion-item-->
     <ion-item class="itemInput">
-    <ion-label color="primary" floating>Username</ion-label>
-    <ion-input></ion-input>
+    <ion-label color="primary" floating>Email</ion-label>
+    <ion-input type="text" [(ngModel)]="userData.email"></ion-input>
     </ion-item>
     <ion-item class="itemInput">
     <ion-label color="primary" floating>Mot de passe</ion-label>
-    <ion-input type="password"></ion-input>
+    <ion-input type="password" [(ngModel)]="userData.password"></ion-input>
     </ion-item>
  
 

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
+import { TabsPage } from '../tabs/tabs';
+import { LoginPage } from '../login/login';
+import { WelcomePage } from '../welcome/welcome';
+import { AuthService } from '../../providers/auth-service/auth-service';
 /**
  * Generated class for the SignupPage page.
  *
@@ -14,11 +17,28 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class SignupPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  responseData : any;
+  userData = {"username": "","password": "", "first_name": "", "last_name": "","email": ""};
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authService:AuthService) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SignupPage');
+  signup(){
+     this.authService.postData(this.userData,'user').then((result) => {
+      this.responseData = result;
+      console.log(this.responseData);
+      localStorage.setItem('userData', JSON.stringify(this.responseData));
+      this.navCtrl.push(TabsPage);
+    }, (err) => {
+      // Error log
+    });
+
   }
 
+  login(){
+    //Login page link
+    this.navCtrl.push(WelcomePage);
+  }
 }
+
