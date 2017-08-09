@@ -1,3 +1,151 @@
 page-evenement {
+	:host > div { height: 100%; }
+        .event-container {
+        	background: none;
+          	//border-top: 2px darkgrey solid;
+          	//border-right: 100px solid transparent;
+ 			//border-bottom: 100px solid transparent;
+  			//border-left: 100px solid transparent;
+  		 	border-top: 20px solid #5ad9a4;
+  		 	border-top-left-radius: 50%;
+        }
+        .event{
+        	background: none;
+        	color: #e3f7ec;
+        }
+        .heures{
+        	color: #50b08b;
+        }
+        .no-event, .cal-sad{
+        	background: none;
+        	top: 0px;
+        }
+        .no-ev-img{
+        	  display: block;
+        	  top: 0px;
+    margin-left: auto;
+    margin-right: auto ;
+    background:none;
+        }
+        .no-ev-label{
+        	background: none; 
+		 
+			font-size: 24px; 
+			//padding-top: 30px;
+			margin: 0px;
+			margin-right: 0px;
+			font-weight: bold;
+			width: 100%;
+			color: #a4b2cd;
+        }
+          	#newBtn{
+		background-color: transparent;
+		color:#50b08b;
+		border-radius: 100px;
+		border-color:white;
+		border:1px solid #a4b2cd;
+		margin-top:25px;
+		height: 35px;
+		font-size: 20px;
+		position: relative;
+		
+	}
+        .no-events-label {
+          font-weight: bold;
+          color: darkgrey;
+          text-align: center;
+        }
+        .event-detail {
+          cursor: pointer;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .monthview-eventdetail-timecolumn {
+          width: 110px;
+          overflow: hidden;
+        }
+        .calendar-event-inner {
+          overflow: hidden;
+          background-color: #3a87ad;
+          color: white;
+          height: 100%;
+          width: 100%;
+          padding: 2px;
+          line-height: 15px;
+        }
+        @media (max-width: 750px) {
+          .calendar-event-inner {
+            font-size: 12px;
+          }
+        }
+   .event-col{
+   	background-color: red;
+   }
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td,
+    .table > tbody > tr > td, .table > tfoot > tr > td {
+          padding: 8px;
+          line-height: 20px;
+          vertical-align: top;
+          color: white;
+              
 
+        }
+         tbody > tr > td.monthview-current {
+          background: none;
+          background-color: #a4b2cd!important;
+        }
+   .monthview-secondary-with-event{
+   	background-color: #293d42!important;
+   	//color: #32db64!important;
+   }
+    tbody > tr > td.monthview-primary-with-event{
+        background-color: #34a7c1!important;
+  		//border: 2px solid white!important;
+        	
+   }
+   td.monthview-selected{
+   	background-color: #51054b!important;
+   }
+        tbody > tr > td{
+       	height: 20px!important;
+        border: none!important;
+        border-bottom: 1px solid black!important;
+        	//border-radius: 192px!important;
+       	//border-radius: 100%!important;
+        	color: white;
+        	//a utiliser color:#efefef!important; #51054b
+
+
+        }
+        .bg{
+        	background-color:#0c131f;
+			height: 100%;
+			color:#0c131f;
+        }
+        .table-bordered{
+        	border:none!important;
+        }
+
+         .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th,
+        .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+        	border:none!important;
+        }
+        .header-item, .arr-button{
+        	background: none; 
+        }
+        .arr-button{
+        	color: #a4b2cd;
+        }
+        .title{
+        	background: none; 
+			border: none; 
+			font-size: 26px; 
+			//border-radius: 3px;
+			padding-top: 1px;
+			margin: 0px;
+			margin-right: 0px;
+			font-weight: bold;
+			width: 100%;
+			color: #a4b2cd;
+        }
 }

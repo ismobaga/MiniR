@@ -11,7 +11,7 @@
     <ion-row>
       <ion-col col-4></ion-col>
       <ion-col col-4 style="margin-left: auto;margin-right: auto;display: block;">
-        <ion-img src="http://miaafho.ml/img/icon.png" width="80" height="80" id="icon"></ion-img>
+        <ion-img src="http://cdi.x10.mx/files/images/logo.png" width="80" height="80" id="icon"></ion-img>
       </ion-col>
       <ion-col col-4></ion-col>
     </ion-row>
@@ -19,20 +19,20 @@
 
   <ion-list class="list-form" style="margin-top:30px;margin-bottom: 30px;">
   
-        <ion-item>
+        <ion-item class="itemInput">
           <ion-label color="primary" floating>Prenom</ion-label>
           <ion-input type="text" [(ngModel)]="userData.first_name"></ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item class="itemInput">
           <ion-label color="primary" floating>Nom</ion-label>
           <ion-input type="text" [(ngModel)]="userData.last_name"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="itemInput">
           <ion-label color="primary" floating>Email</ion-label>
           <ion-input type="text" [(ngModel)]="userData.email"></ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item class="itemInput">
           <ion-label color="primary" floating>Password</ion-label>
           <ion-input type="password" [(ngModel)]="userData.password"></ion-input>
         </ion-item>

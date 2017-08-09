@@ -1,0 +1,118 @@
+page-document-detail {
+
+	#toolbar{
+		color:#0a0f19;
+	}
+			.bg{
+			background-color:#0c131f;
+			height: 100%;
+			color:#0c131f;
+			background-size: cover;
+			/*filter: blur(5px);*/
+			background-position: center center;
+		}
+				.main-content{
+			/*width: 100%;*/
+			/*height: 700px;*/
+			background-color: none;
+		}
+		#pp{
+			border-radius: 0%;
+			border: 4px solid #2a64d8;
+			height: 100px;
+			width: 100px;
+			z-index: 10;
+			margin-top: 100px;
+			position: relative;
+			left: 50%;
+			/*margin-right: -50%;*/
+			transform: translate(-50%, -50%);
+			/*box-shadow: -6px 15px 81px 3px white;*/
+
+		}
+		.round{
+			border-radius: 0%;
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			
+		}
+		  .doc-name{
+			
+			background: none; 
+			border: none; 
+			font-size: 24px; 
+			border-radius: 3px;
+			padding-top: 30px;
+			margin: 0px;
+			margin-right: 0px;
+			font-weight: bold;
+			width: 100%;
+			color: #a4b2cd;
+    /*margin-right: 30px;*/
+  }
+  #icon-left, #icon-right{
+			
+			z-index: 10;
+			margin-top: 100px;
+			position: relative;
+			color:#ffffff;
+			background-color:red;
+			transform: translateY( -50%);
+			height: 60px;
+			width: 50px;
+			font-size:30px;
+			border-radius: 100%;
+			padding-top:11px;
+			text-align: center;
+			overflow: visible;
+  }
+  #icon-left{
+	background-color:#2950d5;
+	left:-10%;
+  }
+   #icon-right{
+	background-color:#3ec9e6;
+	left:10%;
+  }
+  .auteur{
+	color:#354e7c;
+	text-align:center;
+	
+  }
+  
+  .dcard{
+  background-color:#131d30;
+
+  
+  }
+  .tagText{
+	font-size:24px;
+    margin:5px;
+    color: #fff!important;;
+  }
+   .tag{
+    display: inline-block;
+    margin: 0 5px 5px 0;
+    background: #028482;
+  }
+  .dernierItem{
+  		border: none;
+		background-color:#17233a;
+		color:#a4b2cd;
+  }
+  
+  	#viewBtn{
+		background-color: transparent;
+		color:white;
+		border-radius: 100px;
+		border-color:white;
+		border:1px solid white;
+		margin-top:25px;
+		height: 35px;
+		font-size: 16px;
+		position: relative;
+		
+	}
+
+}

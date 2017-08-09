@@ -1,9 +1,15 @@
 <ion-header >
-  <ion-navbar>
+  <ion-navbar color="iDark">
+    <ion-buttons left>
+      <button color="black" ion-button icon-only (click)="goCodeScanner()">
+        <ion-icon name="paper-plane"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Home</ion-title>
       <ion-buttons end right>
-      <button color="black" ion-button icon-only (click)="goMessages()">
+      <button color="black" id="msg" ion-button icon-only (click)="goMessages()">
         <ion-icon name="paper-plane"></ion-icon>
+        <ion-badge id="msg-badge">{{newMsgCount > 0 ? newMsgCount : '0'}}</ion-badge>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -16,7 +22,7 @@
       <ion-row>
         <ion-col col-2>
           <ion-thumbnail item-left>
-            <img src="http://miaafho.ml/img/profile.jpg">
+            <img src="{{userDetails.profile_image}}">
           </ion-thumbnail>
         </ion-col>
 
@@ -91,7 +97,7 @@
 
       <ion-card-content>
         <p class="like-content">
-        <ion-badge *ngFor="let tag of item.tags">{{ toUpper(tag.tag) }}</ion-badge>
+        <ion-badge class="tag" *ngFor="let tag of item.tags">{{toUpper(tag.tag)}}</ion-badge> 
         </p>
         
       </ion-card-content>
@@ -118,7 +124,7 @@
       </ion-row>
       
 
-      <img src="http://miaafho.ml/doc/word.png" (click)="viewFile('http://miaafho.ml/doc/doc.docx', 'vnd.openxmlformats-officedocument.wordprocessingml.document')">
+      <img src="http://miaafho.ml/doc/word.png" (click)="viewFile('http://cdi.x10.mx/api/download/doc.docx', 'vnd.openxmlformats-officedocument.wordprocessingml.document')">
 
       <p no-margin no-padding>
         <button clear ion-button icon-only (click)="likeButton()" class="like-btn">

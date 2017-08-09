@@ -36,9 +36,17 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
-);
+  dark:       #222,
+  iDark: (
+    base: #0a0f19,
+    contrast: #ffffff
+  ),
+  iTeal: (base:#34a7c1,
+		contrast: #34a7c1)
+  );
 
+
+//Surcharge de variables
 
 // App iOS Variables
 // --------------------------------------------------

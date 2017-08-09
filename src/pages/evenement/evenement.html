@@ -1,18 +1,100 @@
-<!--
-  Generated template for the EvenementPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>evenement</ion-title>
+  <ion-navbar color="iDark">
+    <ion-title>Calendrier</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="iTeal" (click)="addEvent()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-evenement page
+<ion-content color="iDark" class="bg">
+  <ion-item class="header-item" no-lines>
+    <ion-row no-padding no-margin>
+      <ion-col col-2>
+        <button ion-button icon-only class="arr-button" (click)="changeMonth(-1)">
+          <ion-icon name="arrow-dropleft-circle"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-8 no-padding no-margin text-center class="title">{{viewTitle}}</ion-col>
+      <ion-col col-2 >
+        <button ion-button icon-only class="arr-button"  (click)="changeMonth(1)">
+          <ion-icon name="arrow-dropright-circle"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+  <calendar [eventSource]="eventSource"
+  [calendarMode]="calendar.mode"
+  [currentDate]="calendar.currentDate"
+  (onEventSelected)="onEventSelected($event)"
+  (onTitleChanged)="onViewTitleChanged($event)"
+  (onTimeSelected)="onTimeSelected($event)"
+  [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate"
+  [dayviewAllDayEventTemplate]="dayviewAllDayEventTemplate"
+  [monthviewInactiveDisplayEventTemplate]="monthviewDisplayEventTemplate"
+  [monthviewEventDetailTemplate]="monthviewDefaultEventDetailTemplate"
+  [startingDayMonth]="1"
+  noEventsLabel="Pas d'evenement"
+  allDayLabel="Jour entier"
+  step="30" class="calendar" >
+</calendar>
+
+<ng-template #monthviewDefaultEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+  <ion-list class="event-container" no-lines has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+    <ion-item no-lines *ngFor="let event of selectedDate?.events" (click)="eventSelected(event)" class="event">
+    <ion-row>
+      <ion-col col-8>
+        <h2>{{event.title}}</h2>
+      </ion-col>
+      <ion-col col-4 *ngIf="!event.allDay" class="heures">
+        {{event.startTime|date: 'HH:mm'}}
+        -
+        {{event.endTime|date: 'HH:mm'}}
+      </ion-col>
+      <ion-col col-4 *ngIf="event.allDay" class="heures">
+        Jour entier
+      </ion-col>
+    </ion-row>
+    <p *ngIf="event.description.length!=0">{{event.description}}</p>
+  </ion-item>
+  <ion-item no-lines *ngIf="selectedDate?.events.length==0" class="no-event">
+    <ion-row padding margin>
+      <ion-col col-3>
+      </ion-col>
+      <ion-col col-6 class="cal-sad">
+       <img cache="true" class="no-ev-img" width="80" height="80" src="assets/images/cal-sad.png">
+     </ion-col>
+     <ion-col col-3>
+     </ion-col>
+   </ion-row>
+   <ion-row no-padding no-margin>
+    <ion-col no-padding no-margin col-2></ion-col>
+    <ion-col no-padding no-margin text-center col-8>
+      <button class="no-ev-label" > Pas d'venement</button>
+    </ion-col>
+    <ion-col col-1></ion-col>
+  </ion-row>
+  <ion-row no-padding no-margin>
+    <ion-col no-padding no-margin col-2></ion-col>
+    <ion-col no-padding no-margin text-center col-8>
+      <button ion-button id="newBtn"  clear  (click)="addEvent()">Ajoutez- en</button>
+    </ion-col>
+    <ion-col col-1></ion-col>
+  </ion-row>
+</ion-item>
+</ion-list>
+
+</ng-template>
+<ng-template #monthviewDisplayEventTemplate class="event-col" let-view="view" let-row="row" let-col="col">
+ {{view.dates[row*7+col].label}}
+</ng-template>
+
+<ng-template #defaultNormalEventTemplate let-displayEvent="displayEvent">
+  <div class="calendar-event-inner">{{displayEvent.event.title}}</div>
+</ng-template>
 </ion-content>

@@ -9,4 +9,17 @@ page-home {
     height: 100%;
     text-align: center;
   }
+  .tag{
+    display: inline-block;
+    margin: 0 5px 5px 0;
+    background: #028482;
+  }
+  #msg{
+    position: relative;
+  }
+  #msg-badge{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
 }

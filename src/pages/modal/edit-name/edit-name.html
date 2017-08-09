@@ -29,12 +29,12 @@
     <ion-label> 
       <ion-icon name="person" color="gray"></ion-icon>
     </ion-label>
-    <ion-input type="text" [value]="user.firstName"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.first_name"></ion-input>
   </ion-item>
     <ion-item>
     <ion-label> 
       <ion-icon name="person" color="gray"></ion-icon>
     </ion-label>
-    <ion-input type="text" [value]="user.lastName"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.last_name"></ion-input>
   </ion-item>
 </ion-content>

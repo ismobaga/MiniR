@@ -6,9 +6,18 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-toolbar>
     <ion-title>profile</ion-title>
-  </ion-navbar>
+	<ion-buttons end>
+      <button ion-button icon-only class="settings-button" color="royal" (click)="logout()">
+	  
+        <ion-icon name="settings">
+		<ion-badge *ngIf="userDetails.verified==0" id="notifocation">1</ion-badge>
+		</ion-icon>
+		
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 
 </ion-header>
 
@@ -23,12 +32,12 @@
     
   </ion-refresher-content>
 </ion-refresher>
-<div class="bg" [style.backgroundImage]="'url('+bgImage+')'">
+<div class="bg" [style.backgroundImage]="'url('+userDetails.profile_image+getTimeStamp()+')'">
 </div>
 <div class="main-content">
 	<div id="pp" (click)="presentActionSheet()">
         <!-- <img src="{{pathForImage(lastImage)}}"  class="round"> -->
-        <img src="{{bgImage}}"  class="round">
+        <img [src]="userDetails.profile_image+getTimeStamp()"  class="round">
 <div class="edit-icon" >
   
 <ion-icon class="icon" ios="md-create" md="md-create"></ion-icon>
@@ -41,7 +50,7 @@
   <ion-row no-padding no-margin>
     <ion-col no-padding no-margin col-2></ion-col>
       <ion-col no-padding no-margin text-center col-8>
-      <button class="edit-name" (click)="goEditProfileName()">Ismail Bagayoko</button>
+      <button class="edit-name" (click)="goEditProfileName()">{{userDetails.first_name}} {{userDetails.last_name}}</button>
     </ion-col>
     <ion-col col-1 (click)="goEditProfileName()"><ion-icon ios="md-create" md="md-create"></ion-icon></ion-col>
   </ion-row>
@@ -70,16 +79,28 @@
   <!-- Segment content -->
   <div [ngSwitch]="profile_segment">
     <ion-list *ngSwitchCase="'timeline'">
-      acceuil
-    </ion-list>
+      <ion-grid>
+  <ion-row>
+
+	
+
+<ion-col col-4 *ngFor="let item of documents" >
+	  <ion-card (click)="goShowDocumentDetails(item.id)">
+    <img src="http://cdi.x10.mx/files/images/thumbnail/{{item.type}}.png"/>
+    <!--div class="card-title">{{item.merci}} Merci</div-->
+    <div class="card-subtitle">{{item.views}} <ion-icon name="eye"></ion-icon></div>
+  </ion-card>
+</ion-col>
+ </ion-row>
+</ion-grid>
+<div class="no-document" *ngIf="!documents || documents.length===0">Pas de document encore</div>
+ </ion-list>
 
     <ion-list *ngSwitchCase="'document'">
       document
-
+	  
     </ion-list>
         <ion-list *ngSwitchCase="'evenement'">
-      
-            evenement
     </ion-list>
   </div>
 </div>

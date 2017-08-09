@@ -1,18 +1,41 @@
-<!--
-  Generated template for the DocumentPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>document</ion-title>
+    <ion-title>
+      PDF Options
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-document page
+
+  <div class="toggle">
+    <div class="toggle-element"> Offline </div>
+    <div class="toggle-element">
+      <ion-toggle toggle-text="Offline;Online" [(ngModel)]='OnlineToggle' color='navy'>
+      </ion-toggle>
+    </div >
+    <div class="toggle-element"> Online </div>
+  </div>
+
+  <div class="buttons">
+    <ion-label> Ionic Native InAppBrowser</ion-label>
+    <button ion-button primary (click)="open_inAppBrowser()">
+      Open PDF
+    </button>
+
+    <ion-label> Themeable Browser </ion-label>
+    <button ion-button primary (click)="open_themeable_pdf()">
+      Open PDF
+    </button>
+
+    <ion-label> Sitewearts Document Viewer </ion-label>
+    <button ion-button primary (click)="open_siteweartspdf()">
+      Open PDF
+    </button>
+
+    <ion-label> Android PDF Opener </ion-label>
+    <button ion-button primary (click)="openAndroidPDF()">
+      Open PDF
+    </button>
+  </div>
 </ion-content>

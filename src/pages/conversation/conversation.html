@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{user.username}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding #chatContainer>
+    <div class="chat" id="chat-autoscroll">
+        <!--<div class="bubble {{msg.uid == user.uid ? 'you' : 'me'}}" *ngFor="let msg of messages">{{msg.body}}</div>*!-->
+            <ul *ngFor="let msg of messages">
+            
+                <li class="{{msg.uid == user.uid ? 'you' : 'me'}}">
+                     <ion-item (click)="showDate()" no-lines no-margin no-padding text-wrap>
+                     <ion-avatar *ngIf="user.uid==msg.uid"   item-left>
+                        <img [src]="chat.recieverPhoto" />
+                     </ion-avatar>
+          
+                    <div class="chatbox {{msg.uid == user.uid ? '' : 'chatbox-right'}}">
+                        <p>
+                           {{msg.body}}
+                        </p>
+                    </div>
+                    <div class="date" *ngIf="dateVisible">
+                      {{msg.datetime | date:'dd/MM/yyyy H:mm'}}
+                    </div>
+                     </ion-item>
+                </li>
+            </ul>
+    </div>
+</ion-content>
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-input type="text" #input [(ngModel)]="message" placeholder="Message"></ion-input>
+            <button ion-fab mini class="send" (click)="send(input)"><ion-icon name="send"></ion-icon></button>
+        </ion-row>
+    </ion-grid>
+</ion-footer>
