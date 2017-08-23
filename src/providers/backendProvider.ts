@@ -15,24 +15,24 @@ export class BackendProvider {
 
 
     constructor(public sqlStorage: SqlStorage) {
-        //For browser test
+        //For browser 
         this.storage = sqlStorage;
         this.initBackend();
     }
 
     initBackend() {
-        this.storage.executeSql("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, uid TEXT, username TEXT, email TEXT, photo TEXT)", []);
+        this.storage.executeSql("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, uid TEXT, username TEXT, displayName TEXT,firstName TEXT, lastName TEXT, email TEXT, photoURL TEXT)", []);
         this.storage.executeSql("CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, uid, onlineKey TEXT, fromUid TEXT , toUid TEXT, body TEXT, msgType TEXT, msgDate Integer, msgStatus Integer, sentStatus Integer)", []);
         this.storage.executeSql("CREATE TABLE IF NOT EXISTS chats (id INTEGER PRIMARY KEY AUTOINCREMENT, uid TEXT, uid2 TEXT, datetime Integer,lastMsgText TEXT, lastMsgDate Integer, recieverName TEXT, recieverPhoto TEXT, notify Integer )", []);
-        this.storage.executeSql("CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, uid TEXT, username TEXT, email TEXT, photo TEXT )", []);
+        this.storage.executeSql("CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, uid TEXT, username TEXT, email TEXT, photoURL TEXT )", []);
         this.storage.executeSql("CREATE TABLE IF NOT EXISTS msg_queue (id INTEGER PRIMARY KEY AUTOINCREMENT, originalMsgId, uid, onlineKey TEXT, fromUid TEXT, toUid TEXT, body TEXT, msgType TEXT, msgDate Integer, msgStatus Integer, sentStatus Integer )", []);
-        this.storage.executeSql("CREATE TABLE IF NOT EXISTS chat_users (id INTEGER PRIMARY KEY AUTOINCREMENT,  uid TEXT, username TEXT, email TEXT, photo TEXT)", []);
+        this.storage.executeSql("CREATE TABLE IF NOT EXISTS chat_users (id INTEGER PRIMARY KEY AUTOINCREMENT,  uid TEXT, displayName TEXT, email TEXT, photoURL TEXT)", []);
         this.initUser();
-        console.log('initiation storage complete ');
+        console.log('initiation database complete ');
     }
 
     initUser() {
-        var self = this;
+        
         this.getUser().then((data) => {
             if (data.res.rows.length > 0) {
                 for (let i = 0; i < data.res.rows.length; i++) {
@@ -41,10 +41,13 @@ export class BackendProvider {
                         id: item.id,
                         uid: item.uid,
                         username: item.username,
+                        displayName:item.firstName+" "+item.lastName,
+                        firstName:item.firstName,
+                        lastName:item.lastName,
                         email: item.email,
-                        photo: item.photo
+                        photoURL: item.photoURL
                     }
-                    self.user = user;
+                    this.user = user;
                 }
             }
         }, (error) => {
@@ -57,19 +60,19 @@ export class BackendProvider {
     }
 
     updateUser(user: User) {
-        let query = 'UPDATE Users SET username = ? , email = ?, photo = ? WHERE id = ?';
-        return this.storage.executeSql(query, [user.username, user.email, user.photo, user.id]);
+        let query = 'UPDATE users SET username =? , displayName = ? , email = ?, photoURL = ? WHERE id = ?';
+        return this.storage.executeSql(query, [user.email, user.displayName, user.email, user.photoURL, user.id]);
     }
 
     addUser(user: User) {
         this.user = user;
-        let query = 'INSERT INTO Users (uid, username, email, photo ) VALUES (?,?,?,?)';
-        return this.storage.executeSql(query, [user.uid, user.username, user.email, user.photo]);
+        let query = 'INSERT INTO users (uid, username, displayName, email, photoURL ) VALUES (?,?,?,?)';
+        return this.storage.executeSql(query, [user.uid, user.email,user.displayName, user.email, user.photoURL]);
     }
 
     addMessage(message: Message) {
         console.log('saving msg : ');
-        let query = 'INSERT INTO Messages (uid, onlineKey, fromUid, toUid, body, msgType, msgDate, msgStatus, sentStatus) VALUES (?,?,?,?,?,?,?,?,?)';
+        let query = 'INSERT INTO messages (uid, onlineKey, fromUid, toUid, body, msgType, msgDate, msgStatus, sentStatus) VALUES (?,?,?,?,?,?,?,?,?)';
         this.storage.executeSql(query, [message.uid, message.onlineKey, message.from, message.to, message.body, message.type, message.datetime, message.status, message.sentstatus]);
     }
 
@@ -86,7 +89,7 @@ export class BackendProvider {
     }
 
     removeMessage(messageId) {
-        let query = 'DELETE FROM Messages WHERE id = ?';
+        let query = 'DELETE FROM messages WHERE id = ?';
         this.storage.executeSql(query, [messageId]);
     }
 
@@ -95,8 +98,7 @@ export class BackendProvider {
         return this.storage.executeSql(query, [chat.uid, chat.uid2, chat.datetime, chat.lastMsgText, chat.lastMsgDate, chat.recieverName, chat.recieverPhoto, chat.notify]);
     }
 
-
-    //This is the user which you chat with him/her but not added to contact
+    //Doit etre supprimer
     addChatUser(user: User) {
         var self = this;
         //To be sure there is no duplicat chat for single user
@@ -104,11 +106,11 @@ export class BackendProvider {
         this.storage.executeSql(query0, [user.uid]).then((data) => {
             if (data.res.rows.length > 0) {
                 let item = data.res.rows.item(0);
-                let query = 'UPDATE chat_users SET username = ?, email = ?, photo = ? WHERE id = ?';
-                self.storage.executeSql(query, [user.username, user.email, user.photo, item.id]);
+                let query = 'UPDATE chat_users SET displayName = ?, email = ?, photoURL = ? WHERE id = ?';
+                self.storage.executeSql(query, [user.displayName, user.email, user.photoURL, item.id]);
             } else {
-                let query = 'INSERT INTO chat_users (uid, username, email, photo ) VALUES (?,?,?,?)';
-                self.storage.executeSql(query, [user.uid, user.username, user.email, user.photo]);
+                let query = 'INSERT INTO chat_users (uid, displayName, email, photoURL ) VALUES (?,?,?,?)';
+                self.storage.executeSql(query, [user.uid, user.displayName, user.email, user.photoURL]);
             }
         }, (error) => {
             console.log(error);
@@ -130,17 +132,17 @@ export class BackendProvider {
         this.storage.executeSql(query2, [chat.uid2]);
 
         //Delete messages qui est connecte a ce chat
-        let query3 = 'DELETE FROM Messages WHERE ( fromUid = ? AND toUid = ? ) OR ( fromUid = ? AND toUid = ? )';
+        let query3 = 'DELETE FROM messages WHERE ( fromUid = ? AND toUid = ? ) OR ( fromUid = ? AND toUid = ? )';
         this.storage.executeSql(query3, [chat.uid, chat.uid2, chat.uid2, chat.uid]);
     }
 
-    //Testing function
+    //Test function
     removeAllChats() {
         let query = 'DELETE FROM chats';
         this.storage.executeSql(query);
         let query2 = 'DELETE FROM chat_users';
         this.storage.executeSql(query2);
-        let query3 = 'DELETE FROM Messages';
+        let query3 = 'DELETE FROM messages';
         this.storage.executeSql(query3);
     }
 
@@ -159,8 +161,8 @@ export class BackendProvider {
     }
 
     addContact(user) {
-        let query = 'INSERT INTO contacts (uid, username, email, photo ) VALUES (?,?,?,?)';
-        return this.storage.executeSql(query, [user.uid, user.username, user.email, user.photo]);
+        let query = 'INSERT INTO contacts (uid, username, email, photoURL ) VALUES (?,?,?,?)';
+        return this.storage.executeSql(query, [user.uid, user.username, user.email, user.photoURL]);
     }
 
     removeContact(contactId) {
@@ -170,7 +172,7 @@ export class BackendProvider {
 
     getMessages(uid, uid2) {
         //Les messages sent/recieved entre me (uid) et l'autre user (uid2) 
-        let query = 'SELECT * FROM Messages WHERE ( fromUid = ? AND toUid = ? ) OR ( fromUid = ? AND toUid = ? ) LIMIT 50';
+        let query = 'SELECT * FROM messages WHERE ( fromUid = ? AND toUid = ? ) OR ( fromUid = ? AND toUid = ? ) LIMIT 50';
         return this.storage.executeSql(query, [uid, uid2, uid2, uid]);
     }
 
@@ -197,7 +199,7 @@ export class BackendProvider {
         let query = 'DELETE FROM msg_queue WHERE id = ?';
         this.storage.executeSql(query, [messageId]);
     }
-
+    //doit etre supprimer
     getMessagesQueue() {
         let query = 'SELECT * FROM msg_queue';
         return this.storage.executeSql(query);

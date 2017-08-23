@@ -24,37 +24,7 @@ import { Conversation } from '../conversation/conversation';
   templateUrl: 'message.html',
 })
 export class MessagePage {
-	public messages = [
-    {
-      id: 1,
-      profile_img: 'http://malimoncton.ga/storage/tommy.jpg',
-      sender: 'Tommy Bia',
-      last_message: 'How you doin?',
-      time: '6h'
-    },
-    {
-      id: 2,
-      profile_img: 'http://malimoncton.ga/storage/membre/youba.jpg',
-      sender: 'Youba Smk',
-      last_message: 'Ouais?',
-      time: '6h'
-    },
-    {
-      id: 3,
-      profile_img: 'http://malimoncton.ga/storage/membre/raoul.jpg',
-      sender: 'Raoul Boudou',
-      last_message: 'LOL. Ionic in 2017',
-      time: '11h'
-    },
-    {
-      id: 4,
-      profile_img: 'http://malimoncton.ga/storage/membre/ismail.jpg',
-      sender: 'Ismail Bagayoko',
-      last_message: 'si je te dit',
-      time: '1d'
-    }
-    
-  ];
+
    @Input()
   chats: Chat[] = new Array();
   defaultPhoto = GlobalStatictVar.DEFAULT_PROFILE_PHOTO;
@@ -75,13 +45,13 @@ export class MessagePage {
   ionViewWillEnter() {
     this.initChats();
    //this.medProvid.removeAllChats();
-    this.logProvid.log('chats loaded!');
+    this.logProvid.log('chats charger!');
   }
 
   initChats() {
     this.chats = new Array();
     this.chatMap.clear();
-    var self = this;
+    
     this.medProvid.getChats().then((data) => {
 
       if (data.res.rows.length > 0) {
@@ -106,24 +76,25 @@ export class MessagePage {
           }
 
           //Fill user in chat as object to get photo etc
-          self.medProvid.getChatUser(currChat.uid2).then((data) => {
+          this.medProvid.getChatUser(currChat.uid2).then((data) => {
             if (data.res.rows.length > 0) {
               let item = data.res.rows.item(0);
               currChat.user = {
                 uid: item.uid,
-                username: item.username,
+                username: item.email,
+                displayName: item.displayName,
                 email: item.email,
-                photo: item.photo
+                photoURL: item.photoURL
               }
             }
-            self.chats.push(currChat);
-            self.chatMap.set(currChat.uid2, currChat);
-            self.logProvid.log('chat notify: ' + currChat.notify);
+            this.chats.push(currChat);
+            this.chatMap.set(currChat.uid2, currChat);
+            this.logProvid.log('chat notify: ' + currChat.notify);
             if (currChat.notify == 1) {//Fire notification event to add badge in chat tab
-              self.events.publish(GlobalStatictVar.NOTIFICATION_EVENT, true);
+              this.events.publish(GlobalStatictVar.NOTIFICATION_EVENT, true);
             }
           }, (err)=> {
-            self.logProvid.log('Fill user in chat err: ' + err);
+            this.logProvid.log('Fill user in chat err: ' + err);
           });
         }
       }
@@ -131,7 +102,7 @@ export class MessagePage {
        // this.userMessagesRef = this.onlineProv.getUserMessagesRef(this.loggedinUser.uid);
       }
     }, (error) => {
-      self.logProvid.log('error getting chat: ', error);
+      this.logProvid.log('MessagePage error getting chat: ', error);
     });
 
     this.chats.sort(function (val1, val2) {
@@ -139,24 +110,29 @@ export class MessagePage {
     });
   }
   ionViewWillUnload() {
-    this.logProvid.log('view unloaded!');
+    this.logProvid.log('MessagePage view unloaded!');
     this.events.unsubscribe(GlobalStatictVar.NEW_MESSAGE_EVENT);
   }
   
   messageArrived(message, senderUser) {
-    var self = this;
+    let self =this;
     let chat: Chat = this.chatMap.get(message.from);
     if (chat) {
       chat.lastMsgDate = message.datetime;
       chat.lastMsgText = message.body;
-      chat.recieverPhoto = senderUser.photo;
+      chat.recieverName = senderUser.displayName;
+      if(message.type===GlobalStatictVar.MSG_TYPE_PHOTO)
+        {
+          chat.lastMsgText = "image...";
+        }
+      chat.recieverPhoto = senderUser.photoURL;
       chat.notify = 1;
       this.logProvid.log('message new pushed ');
       this.chats.sort(function (val1, val2) {
         return val1.lastMsgDate - val2.lastMsgDate;
       });
-      this.changeDetectionRef.detectChanges();
-      this.medProvid.updateChat(chat);//Update the notify 
+      self.changeDetectionRef.detectChanges();
+      self.medProvid.updateChat(chat);//Update the notify 
     } else {//This means it's a new chat 
       this.medProvid.getChat(message.from, message.to).then((data) => {
         if (data.res.rows.length > 0) {
@@ -167,14 +143,19 @@ export class MessagePage {
             uid2: item.uid2,
             datetime: item.datetime,
             lastMsgText: message.body,
+
             lastMsgDate: message.datetime,
-            recieverName: senderUser.username,
-            recieverPhoto: senderUser.photo,
+            recieverName: senderUser.displayName,
+            recieverPhoto: senderUser.photoURL,
             user: senderUser,
             notify: 1
           }
+           if(message.type===GlobalStatictVar.MSG_TYPE_PHOTO)
+        {
+          chat.lastMsgText = "image...";
+        }
           self.logProvid.log('chat new pushed ');
-          //self.chats.push(chat);
+          self.chats.push(chat);
           self.chats.unshift(chat);
           self.chatMap.set(chat.uid2, chat);
           self.changeDetectionRef.detectChanges();
@@ -182,12 +163,12 @@ export class MessagePage {
         }
       }, (err) =>{
 
-      self.logProvid.log('error getting chat: ' + err);
+      this.logProvid.log('MessagePage error getting chat: ' + err);
       });
     }
 
     //Update chat tab badge
-    self.events.publish(GlobalStatictVar.NOTIFICATION_EVENT, true);
+    this.events.publish(GlobalStatictVar.NOTIFICATION_EVENT, true);
   }
   openConversation(user) {
    this.navCtrl.push(Conversation, user);

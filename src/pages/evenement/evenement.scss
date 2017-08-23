@@ -16,13 +16,23 @@ page-evenement {
         .heures{
         	color: #50b08b;
         }
-        .no-event, .cal-sad{
+         .cal-sad{
+         position: relative;
         	background: none;
-        	top: 0px;
+        }
+        .no-event{
+          position: absolute;
+          bottom: 0%;
+          padding: none;
+          margin: none;
+          background: none;
         }
         .no-ev-img{
         	  display: block;
-        	  top: 0px;
+            height: 50px;
+            width: 50px;
+            margin-top: 50px;
+        	 //top: -60%;
     margin-left: auto;
     margin-right: auto ;
     background:none;
@@ -30,7 +40,7 @@ page-evenement {
         .no-ev-label{
         	background: none; 
 		 
-			font-size: 24px; 
+			font-size: 20px; 
 			//padding-top: 30px;
 			margin: 0px;
 			margin-right: 0px;
@@ -79,7 +89,7 @@ page-evenement {
           }
         }
    .event-col{
-   	background-color: red;
+    background-color: red;
    }
     .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td,
     .table > tbody > tr > td, .table > tfoot > tr > td {
@@ -90,22 +100,6 @@ page-evenement {
               
 
         }
-         tbody > tr > td.monthview-current {
-          background: none;
-          background-color: #a4b2cd!important;
-        }
-   .monthview-secondary-with-event{
-   	background-color: #293d42!important;
-   	//color: #32db64!important;
-   }
-    tbody > tr > td.monthview-primary-with-event{
-        background-color: #34a7c1!important;
-  		//border: 2px solid white!important;
-        	
-   }
-   td.monthview-selected{
-   	background-color: #51054b!important;
-   }
         tbody > tr > td{
        	height: 20px!important;
         border: none!important;
@@ -117,6 +111,25 @@ page-evenement {
 
 
         }
+         tbody > tr > td.monthview-current {
+          background: none;
+          background-color: #a4b2cd!important;
+        }
+    tbody > tr >td.monthview-secondary-with-event{
+    background-color: #293d42!important;
+    color: #32db64!important;
+   }
+    tbody > tr > td.monthview-primary-with-event{
+        background-color: #34a7c1!important;
+      //border: 2px solid white!important;
+          
+   }
+   tbody > tr > td.monthview-primary-with-event.monthview-selected{
+    background-color: #51054b!important;
+   }
+   td.monthview-selected{
+    background-color: #51054b!important;
+   }
         .bg{
         	background-color:#0c131f;
 			height: 100%;

@@ -1,37 +1,47 @@
-<ion-header>
-    <ion-navbar>
-        <ion-title>{{user.username}}</ion-title>
+<ion-header >
+    <ion-navbar color="iDark">
+        <ion-title>{{user.displayName}}</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding #chatContainer>
+<ion-content #chatContainer >
     <div class="chat" id="chat-autoscroll">
         <!--<div class="bubble {{msg.uid == user.uid ? 'you' : 'me'}}" *ngFor="let msg of messages">{{msg.body}}</div>*!-->
-            <ul *ngFor="let msg of messages">
+        <ion-list no-margin no-padding no-lines>
+            <ion-item *ngFor="let msg of messages" text-wrap>
             
-                <li class="{{msg.uid == user.uid ? 'you' : 'me'}}">
-                     <ion-item (click)="showDate()" no-lines no-margin no-padding text-wrap>
+                <!-- <li class="{{msg.uid == user.uid ? 'you' : 'me'}}"> -->
+                     <!-- <ion-item  no-lines no-margin no-padding text-wrap> -->
                      <ion-avatar *ngIf="user.uid==msg.uid"   item-left>
                         <img [src]="chat.recieverPhoto" />
                      </ion-avatar>
-          
-                    <div class="chatbox {{msg.uid == user.uid ? '' : 'chatbox-right'}}">
-                        <p>
+                    <ion-avatar item-right *ngIf="loggedinUser.uid == msg.uid">
+                    <img [src]="loggedinUser.photoURL">
+                    </ion-avatar>
+                    <div class="chatbox {{msg.uid == user.uid ? 'me' : 'you'}} {{msg.type==1 ? 'img' : ''}}">
+                        <p *ngIf="msg.type==0">
                            {{msg.body}}
                         </p>
+                        <img class="img" src="{{msg.body}}" *ngIf="msg.type==1">
                     </div>
                     <div class="date" *ngIf="dateVisible">
                       {{msg.datetime | date:'dd/MM/yyyy H:mm'}}
                     </div>
                      </ion-item>
-                </li>
-            </ul>
+                <!-- </li> -->
+            <!-- </ion-item> -->
+            </ion-list>
     </div>
 </ion-content>
 <ion-footer>
-    <ion-grid>
-        <ion-row>
+    <ion-toolbar color="iDark">
+    <ion-buttons start left>
+      <button (click)="sendPicture()" ion-button icon-right color="black">
+        <ion-icon name="images"></ion-icon>
+      </button>
+    </ion-buttons>
             <ion-input type="text" #input [(ngModel)]="message" placeholder="Message"></ion-input>
+            <ion-buttons end>
             <button ion-fab mini class="send" (click)="send(input)"><ion-icon name="send"></ion-icon></button>
-        </ion-row>
-    </ion-grid>
+            </ion-buttons>
+  </ion-toolbar>
 </ion-footer>

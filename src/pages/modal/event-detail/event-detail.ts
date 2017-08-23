@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {  ViewController, LoadingController, NavController, NavParams } from 'ionic-angular';
-import * as moment from 'moment';
+
 /**
  * Generated class for the EditNamePage page.
  *
@@ -8,12 +8,13 @@ import * as moment from 'moment';
  * on Ionic pages and navigation.
  */
 @Component({
-  selector: 'page-new-event',
-  templateUrl: 'new-event.html',
+  selector: 'page-event-detail',
+  templateUrl: 'event-detail.html',
 })
-export class NewEventPage {
-  event = {startTime: new Date().toISOString(), endTime: new Date().toISOString(), allDay: false, description:'', isPublic:true};
-  minDate= new Date().toISOString();
+export class EventDetailPage {
+	public user = {
+		annee: "2e Annee"
+	};
 
   constructor(
   	public navCtrl: NavController,
@@ -21,17 +22,14 @@ export class NewEventPage {
   	public viewCtrl: ViewController,
     public loadingCtrl: LoadingController
     ) {
-    let preselectedDate = moment(this.navParams.get('selectedDay')).format();
-    this.event.startTime = preselectedDate;
-    this.event.endTime = preselectedDate;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditNamePage');
   }
 
-    save() {
-    this.viewCtrl.dismiss(this.event)
+    updateProfileAnnee() {
+    
   }
 
   dismiss() {

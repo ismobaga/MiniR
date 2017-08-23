@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, Input, ChangeDetectorRef, NgZone } from '@angular/core';
 import { NavController, Events, LoadingController, App, Content, PopoverController, AlertController } from 'ionic-angular';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 import { PostPopover } from './post-popover';
@@ -13,7 +13,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { MediatorProvider } from '../../providers/mediatorProvider';
 import { LogProvider } from '../../providers/logProvider';
 
-import { GlobalStatictVar } from "../../shared/interfaces";
+import { GlobalStatictVar, User } from "../../shared/interfaces";
 
 
 @Component({
@@ -31,7 +31,7 @@ export class HomePage {
   };
 
   public tap: number = 0;
-  userDetails : any;
+  userDetails : any={} ;
   responseData: any;
   dataSet : any;
   userPostData = {"user_id":"","token":""};
@@ -41,6 +41,7 @@ export class HomePage {
   	public popoverCtrl: PopoverController,
   	private document: DocumentViewer,
   	private app: App,
+    public zone:NgZone,
     public authService:AuthService,
     private file: File,
 	private barcodeScanner:BarcodeScanner,
@@ -52,39 +53,51 @@ export class HomePage {
     public changeDetectionRef: ChangeDetectorRef,
     public medProvid: MediatorProvider) 
   {
-    if (JSON.parse(localStorage.getItem('userData'))){
-    const data = JSON.parse(localStorage.getItem('userData'));
-    this.userDetails = data.userData;
-    this.userPostData.user_id = this.userDetails.id;
-    this.userPostData.token = this.userDetails.token;
-           let user = {
-            uid: '',
-            password:'',
-            email: '',
-            photo:'',
-            username:''
-        };
+    // if (JSON.parse(localStorage.getItem('userData'))){
+    // const data = JSON.parse(localStorage.getItem('userData'));
+    // this.userDetails = data.userData;
+    // this.userPostData.user_id = this.userDetails.id;
+    // this.userPostData.token = this.userDetails.token;
+    //        let user = {
+    //         uid: '',
+    //         password:'',
+    //         email: '',
+    //         photo:'',
+    //         username:''
+    //     };
+    let self =this;
         events.subscribe(GlobalStatictVar.NOTIFICATION_EVENT, (notify) => {
-      this.logProvid.log('notify: ' + notify);
-      if (notify) {
-        this.newMsgCount++;
-      } else {
-        this.newMsgCount--;
-      }
+        this.logProvid.log('notify: ' + notify);
+          self.zone.run(()=>{
+        if (notify) {
+
+          this.newMsgCount++;
+        } else {
+          this.newMsgCount--;
+        }
+          });
       this.changeDetectionRef.detectChanges();
     });
+        this.authService.getUserDetails().then((user:any)=>{
+          self.userDetails = user;
+          self.userDetails.displayName=user.firstName+" "+user.lastName;
+          self.authService.updateUserLocal(self.userDetails);
+        }, (err)=>{
+       self.userDetails= self.authService.getUserLocal();
+
+        })
     this.getDocuments();
-          let userDet = this.userDetails;
-                user.uid = userDet.id;
-                user.email = userDet.email;
-                user.username = userDet.username;
-                user.photo = userDet.profile_image;
-                this.medProvid.saveLoggedinUser(user);
+          //let userDet = this.userDetails;
+                // user.uid = userDet.id;
+                // user.email = userDet.email;
+                // user.username = userDet.username;
+                // user.photo = userDet.profile_image;
+               // this.medProvid.saveLoggedinUser(user);
                 
-  }
-  else{
-    this.navCtrl.push(WelcomePage);
-  }
+  // }
+  // else{
+  //   this.navCtrl.push(WelcomePage);
+  // }
   }
 
   getDocuments(){

@@ -6,6 +6,7 @@ import { Conversation } from '../conversation/conversation';
 import { ProfilePage } from '../profile/profile';
 import { Subscription } from 'rxjs/Subscription';
 import { LogProvider } from '../../providers/logProvider';
+import { AuthService } from '../../providers/auth-service/auth-service';
 
 
 
@@ -23,18 +24,25 @@ export class ContactPage {
   itemSubscription: Subscription;
   searchKey = '';
 
-  constructor(public navCtrl: NavController, public medProvid: MediatorProvider, public logProvid: LogProvider) {
+  constructor(public authService:AuthService, public navCtrl: NavController, public medProvid: MediatorProvider, public logProvid: LogProvider) {
   }
 
   ionViewDidLoad() {
-    this.loggedinUser = this.medProvid.loggedinUser;
+
+    this.loggedinUser = this.authService.getUserLocal();
   }
 
   ionViewWillEnter() {
-    this.initContacts();
-    this.loadOnlineUsers(); //Async
+     this.initContacts();
+    //this.getUsers();
+     this.loadOnlineUsers(); //Async
   }
 
+ getUsers(){
+   this.authService.getAllUsers().then((res:any)=>{
+     this.contacts = res;
+   })
+ }
   initContacts() {
     this.contacts = new Array();
     var self = this;
@@ -49,9 +57,12 @@ export class ContactPage {
           let user = {
             id: item.id,
             uid: item.uid,
-            username: item.username,
+            username: item.email,
+            firstName:item.firstName,
+            lastName:item.lastName,
+            displayName:item.firstName+" "+item.lastName,
             email: item.email,
-            photo: item.photo,
+            photoURL: item.photoURL,
             isContact: true
           }
           if (user===undefined) {
@@ -77,15 +88,15 @@ export class ContactPage {
       this.contacts = new Array();
       //filter users contacts ( LocalStorage )
       this.contacts.filter((item) => {
-        if (item.username.toLowerCase().includes(val.toLowerCase())) {
+        if (item.displayName.toLowerCase().includes(val.toLowerCase())) {
           self.contacts.push(item);
         }
       });
 
       //filter online users
       this.users.filter((item) => {
-        if (item.username.toLowerCase().includes(val.toLowerCase()) ) {
-          self.contacts.push(item);
+        if (item.displayName.toLowerCase().includes(val.toLowerCase()) ) {
+          this.contacts.push(item);
         }
       });
 
@@ -106,8 +117,8 @@ export class ContactPage {
     let items ;
     this.medProvid.getUsers().then((result)=>{
     	items = result;
-    	console.log(result);
-    console.log(items);
+    	//console.log(result);
+    //console.log(items);
     this.users = new Array();
     this.deAttach();
     var self = this;
@@ -115,16 +126,19 @@ export class ContactPage {
       items.forEach(snapshot => {
 
         var childData = snapshot;//.val();
-        let user = {
+        let user = childData;
+        user.diplayName = childData.firstName+" "+childData.lastName;
+       /* let user = {
           uid: childData.uid,
-          username: childData.username,
+          username: childData.email,
+          displayName: childData.firstName+" "+childData.lastName,
           email: childData.email,
           photo: childData.photo,
           isContact: true,
-        }
+        }*/
         self.users.push(user);
         self.contacts.push(user);
-        self.logProvid.log('online user pushed: ' + user.username);
+        self.logProvid.log('online user pushed: ' + user.displayName);
       });
     //});
     });
@@ -144,8 +158,8 @@ export class ContactPage {
   }
 
   removeContact(index, contact) {
-    this.medProvid.removeContact(contact.id);
-    this.contacts.splice(index);
+   // this.medProvid.removeContact(contact.id);
+   // this.contacts.splice(index);
   }
 
   ionViewWillLeave() {

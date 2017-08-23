@@ -77,19 +77,29 @@ export class MediatorProvider {
                     self.logProvid.log("msg arrived to: " + msg.to);
 
                     //updating the sender info { now what I do care for is sender photo }
-                    let userRef;
-                    self.onlineProv.getUser(senderUID).then((result) => {
-        // localStorage.removeItem('userData');
-                    userRef = result['userData'];
-                    //userRef.once('value').then(function (snapshot) {
-                      //  let value = snapshot.val();
+                    let userRef = self.onlineProv.getUser(senderUID);
+                        userRef.once('value').then(function (snapshot) {
+                        let value = snapshot.val();
                         let senderUser = {
-                            uid: userRef.id,
-                            username: userRef.username,
-                            email: userRef.email,
-                            photo: userRef.profile_image
-                        }
-                        self.logProvid.log('msg published');
+                            uid: value.uid,
+                            displayName: value.firstName+" "+value.lastName,
+                            firstName:value.firstName,
+                            lastName: value.lastName,
+                            email: value.email,
+                            photoURL: value.photoURL
+                        };
+                        console.log('sender', senderUser)
+        // localStorage.removeItem('userData');
+                    // userRef = result['userData'];
+                    // //userRef.once('value').then(function (snapshot) {
+                    //   //  let value = snapshot.val();
+                    //     let senderUser = {
+                    //         uid: userRef.id,
+                    //         displayName: userRef.username,
+                    //         email: userRef.email,
+                    //         photoURL: userRef.profile_image
+                    //     }
+                        self.logProvid.log('MediatorProvider msg published');
                         self.messageRecieved(msg, senderUser);
       }, (err) => {
      });;
@@ -103,20 +113,17 @@ export class MediatorProvider {
 
     initLogedinUser() {
         var self = this;
-        this.backProvid.getUser().then((data) => {
-            if (data.res.rows.length > 0) {
-                let item = data.res.rows.item(0);
-                let user = {
-                    id: item.id,
-                    uid: item.uid,
-                    username: item.username,
-                    email: item.email,
-                    photo: item.photo
-                }
+        let userRef = this.onlineProv.getUserDetails()
+          .then(function (snapshot:any) {
+                        let user = snapshot;
+                        
+                   
+                    //user.displayName=user.firstName+" "+user.lastName,
+           
                 self.loggedinUser = user;
                 self.backProvid.initUser();
                 self.logProvid.log('loggedinUser: ' + self.loggedinUser);
-            }
+            
         }, (error) => {
             self.logProvid.log('get user error: ' + error);
         });
@@ -137,28 +144,31 @@ export class MediatorProvider {
 
     saveRegisteredUser(newUser: User) {
         var self = this;
-        this.backProvid.addUser(newUser).then(() => {
-            self.backProvid.getUser().then((data) => {
-                if (data.res.rows.length > 0) {
-                    let item = data.res.rows.item(0);
-                    let user = {
-                        id: item.id,
-                        uid: item.uid,
-                        username: item.username,
-                        email: item.email,
-                        photo: item.photo
-                    }
-                    self.loggedinUser = user;
-                    self.backProvid.user = user;
-                    self.onlineProv.updateUser(user);//Update user info on online db in /Users/ references & user profile ( auth user )
+                    this.loggedinUser = JSON.parse(localStorage.getItem('userData'));;
+                    self.backProvid.user = self.loggedinUser;
                     self.subscribeToMessages();
-                }
-            }, (error) => {
-                self.logProvid.log('get user error: ' + error);
-            });
-            self.logProvid.log('User inserted');
+        self.backProvid.addUser(newUser).then(() => {
+            // self.backProvid.getUser().then((data) => {
+                // if (data.res.rows.length > 0) {
+                //     let item = data.res.rows.item(0);
+                //     let user = {
+                //         id: item.id,
+                //         uid: item.uid,
+                //         username: item.email,
+                //         email: item.email,
+                //         displayName:item.firstName+" "+item.lastName,
+                //         firstName: item.firstName,
+                //         lastName: item.lastName,
+                //         photoURL: item.photoURL
+                //     }
+                    //self.onlineProv.updateUser(user);//Update user info on online db in /Users/ references & user profile ( auth user )
+                // }
+            // }, (error) => {
+                // self.logProvid.log('get user error: ' + error);
+            // self.logProvid.log('Insert user error: ' + error.message);
+            // });
         }, (error) => {
-            self.logProvid.log('Insert user error: ' + error.message);
+            self.logProvid.log('User inserted');
         });
     }
 
@@ -175,25 +185,28 @@ export class MediatorProvider {
             newUser.username = onlineUser.username;
             newUser.photo = onlineUser.photo*/
             ////
-            self.backProvid.addUser(newUser).then(() => {
-                self.backProvid.getUser().then((data) => {
-                    if (data.res.rows.length > 0) {
-                        let item = data.res.rows.item(0);
-                        let user = {
-                            id: item.id,
-                            uid: item.uid,
-                            username: item.username,
-                            email: item.email,
-                            photo: item.photo
-                        }
-                        self.loggedinUser = user;
-                        self.backProvid.user = user;
+                        self.loggedinUser = JSON.parse(localStorage.getItem('userData'));
+                        self.backProvid.user = JSON.parse(localStorage.getItem('userData'));
                         self.subscribeToMessages();
+            self.backProvid.addUser(newUser).then(() => {
+                // self.backProvid.getUser().then((data) => {
+                    // if (data.res.rows.length > 0) {
+                    //     let item = data.res.rows.item(0);
+                    //     let user = {
+                    //         id: item.id,
+                    //         uid: item.uid,
+                    //         username: item.email,
+                    //         email: item.email,
+              /*      //     }
                     }
                 }, (error) => {
                     self.logProvid.log('get user error: ' + error);
                 });
-                self.logProvid.log('User inserted');
+                self.logProvid.log('User inserted');*/
+                    //         displayName:item.firstName+" "+item.lastName,
+                    //         firstName: item.firstName,
+                    //         lastName: item.lastName,
+                    //         photoURL: item.photoURL
             }, (error) => {
                 self.logProvid.log('Insert user error: ' + error.message);
             });
@@ -211,7 +224,10 @@ export class MediatorProvider {
                     uid: newUser.uid,
                     username: newUser.username,
                     email: newUser.email,
-                    photo: newUser.photo
+                    photoURL: newUser.photoURL,
+                    displayName:item.firstName+" "+item.lastName,
+                    firstName: item.firstName,
+                    lastName: item.lastName,
                 }
                 self.loggedinUser = user;
                 self.backProvid.user = user;
@@ -377,17 +393,20 @@ export class MediatorProvider {
                     datetime: item.datetime,
                     lastMsgText: message.body,
                     lastMsgDate: message.datetime,
-                    recieverName: senderUser.username,
-                    recieverPhoto: senderUser.photo,
+                    recieverName: senderUser.displayName,
+                    recieverPhoto: senderUser.photoURL,
                     notify: item.notify
                 }
-                this.logProvid.log('NOTI::Chat already exist!');
+                self.logProvid.log('NOTI::Chat already exist!');
+                if(message.type===GlobalStatictVar.MSG_TYPE_PHOTO){
+                    chat.lastMsgText='image...'
+                }
                 //Update chat with the new info { lastMsg, lastMsgDate & ( recieverName & photo ) }
                 self.backProvid.updateChat(chat).then((data) => {
 
                     //After updating local db with new message publish event to update view in chat page and/or conversation page
                     self.events.publish(GlobalStatictVar.NEW_MESSAGE_EVENT, message, senderUser);
-                    this.logProvid.log('NOTI::NEW_MESSAGE_EVENT!');
+                    self.logProvid.log('NOTI::NEW_MESSAGE_EVENT!');
                     //After being sure the new message arrived & saved in local db now I can update message status online to (READ)
                     self.onlineProv.updateMessageStatus(message.onlineKey, message, GlobalStatictVar.MSG_STATUS_READ);
                 });
@@ -399,11 +418,13 @@ export class MediatorProvider {
                     datetime: new Date().getTime(),
                     lastMsgText: message.body,
                     lastMsgDate: message.datetime,
-                    recieverName: senderUser.username,
-                    recieverPhoto: senderUser.photo,
+                    recieverName: senderUser.displayName,
+                    recieverPhoto: senderUser.photoURL,
                     notify: 0
                 }
-
+                 if(message.type===GlobalStatictVar.MSG_TYPE_PHOTO){
+                    chat.lastMsgText='image...'
+                }
                 self.backProvid.addChat(chat).then((data) => {
                     self.logProvid.log('NOTI::New chat added! ');
                     //After updating local db with new message publish event to update view in chat page and/or conversation page
@@ -453,19 +474,22 @@ export class MediatorProvider {
 
                         self.onlineProv.updateMessageStatus(msg.onlineKey, msg, GlobalStatictVar.MSG_STATUS_READ);
 
-                        //let userRef = self.onlineProv.getUser(userData.uid);
-                         let userRef;
-                    self.onlineProv.getUser(userData.uid).then((result) => {
+                        let userRef = self.onlineProv.getUser(userData.uid);
+                         //let userRef;
+                         userRef.once('value').then(function (snapshot) {
+                        let senderUser=snapshot.val();
+                        senderUser.displayName = senderUser.firstName+" "+ senderUser.lastName;
+                    //self.onlineProv.getUser(userData.uid).then((result) => {
         // localStorage.removeItem('userData');
-                    userRef = result['userData'];
+                    //userRef = result['userData'];
                     //userRef.once('value').then(function (snapshot) {
                       //  let value = snapshot.val();
-                        let senderUser = {
+                  /*      let senderUser = {
                             uid: userRef.id,
                             username: userRef.username,
                             email: userRef.email,
                             photo: userRef.profile_image
-                        }
+                        }*/
                         // userRef.once('value').then(function (snapshot) {
                             // let value = snapshot.val();
                             // let senderUser = {

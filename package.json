@@ -45,6 +45,7 @@
         "cordova-plugin-document-viewer": "^0.9.5",
         "cordova-plugin-file": "^4.3.3",
         "cordova-plugin-file-transfer": "^1.6.3",
+        "cordova-plugin-filechooser": "^1.0.1",
         "cordova-plugin-filepath": "^1.0.2",
         "cordova-plugin-inappbrowser": "^1.7.1",
         "cordova-plugin-splashscreen": "^4.0.3",
@@ -69,7 +70,7 @@
         "@ionic/app-scripts": "2.0.2",
         "@ionic/cli-plugin-cordova": "1.6.2",
         "@ionic/cli-plugin-ionic-angular": "1.4.1",
-        "ionic": "3.7.0",
+        "ionic": "3.8.0",
         "typescript": "2.3.4"
     },
     "description": "An Ionic project",
@@ -87,7 +88,8 @@
             "ionic-plugin-keyboard": {},
             "phonegap-plugin-barcodescanner": {},
             "cordova-plugin-filepath": {},
-            "cordova-sqlite-storage": {}
+            "cordova-sqlite-storage": {},
+            "cordova-plugin-filechooser": {}
         },
         "platforms": [
             "android",

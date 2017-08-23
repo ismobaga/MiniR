@@ -1,5 +1,8 @@
 {
   "name": "MiniR",
   "app_id": "b4b86fe2",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

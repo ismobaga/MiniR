@@ -30,6 +30,7 @@
   </ion-item>
   <calendar [eventSource]="eventSource"
   [calendarMode]="calendar.mode"
+  
   [currentDate]="calendar.currentDate"
   (onEventSelected)="onEventSelected($event)"
   (onTitleChanged)="onViewTitleChanged($event)"
@@ -46,7 +47,8 @@
 
 <ng-template #monthviewDefaultEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
   <ion-list class="event-container" no-lines has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-    <ion-item no-lines *ngFor="let event of selectedDate?.events" (click)="eventSelected(event)" class="event">
+  <ion-item-sliding class="event" no-lines *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
+    <ion-item no-lines  class="event">
     <ion-row>
       <ion-col col-8>
         <h2>{{event.title}}</h2>
@@ -62,15 +64,22 @@
     </ion-row>
     <p *ngIf="event.description.length!=0">{{event.description}}</p>
   </ion-item>
+  <ion-item-options side="left" *ngIf="event.uid==loggedUser.id">
+      <button ion-button color="primary">
+        <ion-icon name="md-create"></ion-icon>
+        Edit
+      </button>
+      </ion-item-options>
+  </ion-item-sliding>
   <ion-item no-lines *ngIf="selectedDate?.events.length==0" class="no-event">
-    <ion-row padding margin>
-      <ion-col col-3>
-      </ion-col>
-      <ion-col col-6 class="cal-sad">
+    <ion-row padding no-margin>
+      <!-- <ion-col col-3> -->
+      <!-- </ion-col> -->
+      <!-- <ion-col col-6 class="cal-sad"> -->
        <img cache="true" class="no-ev-img" width="80" height="80" src="assets/images/cal-sad.png">
-     </ion-col>
-     <ion-col col-3>
-     </ion-col>
+     <!-- </ion-col> -->
+     <!-- <ion-col col-3> -->
+     <!-- </ion-col> -->
    </ion-row>
    <ion-row no-padding no-margin>
     <ion-col no-padding no-margin col-2></ion-col>

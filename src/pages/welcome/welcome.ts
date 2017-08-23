@@ -64,7 +64,7 @@ export class WelcomePage {
                 user.email = userDet.email;
                 user.username = userDet.username;
                 user.photo = userDet.profile_image;
-                this.medProvid.saveLoggedinUser(user);
+              //this.medProvid.saveLoggedinUser(user);
 
                 
       }).catch(function(error) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import {
          NavController, 
          NavParams, 
@@ -21,12 +21,6 @@ import { EditAnneePage } from '../modal/edit-annee/edit-annee';
 import { DocumentDetailPage } from '../modal/document-detail/document-detail';
 
 import { WelcomePage } from  '../welcome/welcome';
-
-
-import { File, FileEntry } from '@ionic-native/file';
-import { Transfer, TransferObject, FileUploadOptions } from '@ionic-native/transfer';
-import { FilePath } from '@ionic-native/file-path';
-import { Camera } from '@ionic-native/camera';
 
 import { AuthService } from '../../providers/auth-service/auth-service';
 import { MediatorProvider } from '../../providers/mediatorProvider';
@@ -55,15 +49,11 @@ export class ProfilePage {
   constructor(public navCtrl: NavController,
   			 public navParams: NavParams, 
          private readonly http: Http,
-  			 private camera: Camera, 
-  			 private transfer: Transfer,
-  			 private file: File,
-  			 private filePath: FilePath,
   			 public actionSheet: ActionSheetController,
   			 public toastCtrl: ToastController,
-  			 public platform: Platform,
   			 public loadingCtrl: LoadingController,
          private app:App,
+         public zone:NgZone,
 		     public alertCtrl:AlertController,
          public modalCtrl: ModalController,
          public authService:AuthService,
@@ -72,25 +62,17 @@ export class ProfilePage {
   {
     if (JSON.parse(localStorage.getItem('userData'))){
       const data = JSON.parse(localStorage.getItem('userData'));
-      this.userDetails = data.userData;
-      this.userPostData.user_id = this.userDetails.id;
-      this.userPostData.token = this.userDetails.token;
+      this.userDetails = data;
+      this.userPostData.user_id = "1";
+      this.userPostData.token = "this.userDetails.token";
       this.getMyDocuments();
      }
   else{
     this.navCtrl.push(WelcomePage);
   }
-        //Platform check to determine storage directory prefix
-      if (this.platform.is('ios')) {
-       // this.storageDirectory = cordova.file.documentsDirectory;
-      } else if(this.platform.is('android')) {
-       // this.storageDirectory = cordova.file.dataDirectory;
-      } 
-
+       
   }
-getTimeStamp(){
-  return "?"+this.timeStamp;
-}
+
   getMyDocuments(){
       this.authService.postData(this.userPostData, 'documents/'+this.userPostData.user_id)
       .then((result) => {
@@ -114,6 +96,15 @@ backToWelcome(){
 }
   ionViewDidLoad() {
     this.profile_segment = 'timeline';
+    this.loadUserdetails();
+  }
+  loadUserdetails(){
+    this.authService.getUserDetails().then((res:any)=> {
+      this.userDetails = res;
+      this.zone.run(()=>{
+        this.userDetails.photoURL= res.photoURL;
+      })
+    })
   }
   public doRefresh(refresher){
     this.authService.postData(this.userPostData, 'user/'+this.userPostData.user_id)
@@ -162,15 +153,18 @@ backToWelcome(){
   }
     goEditProfileName() {
     // Open it as a modal page
-	let params = this.userPostData;
-	params['first_name']= this.userDetails.first_name
-	params['last_name']= this.userDetails.last_name;
+	let params = [];
+	params['firstName']= this.userDetails.firstName
+	params['lastName']= this.userDetails.lastName;
     let modal = this.modalCtrl.create(EditNamePage, params);
 	modal.onDidDismiss(() => {
      
-	   const data = JSON.parse(localStorage.getItem('userData'));
-    this.userDetails = data.userData;
-	console.log(data);
+	   let name = JSON.parse(localStorage.getItem('name'));
+    this.zone.run(()=>{
+      this.userDetails.firstName= name.firstName;
+      this.userDetails.lastName = name.lastName;
+    })
+	    
 
    });
 	modal.present();
@@ -178,102 +172,12 @@ backToWelcome(){
   goEditProfileAnnee() {
     // Open it as a modal page
     let modal = this.modalCtrl.create(EditAnneePage);
-    modal.present();
+   // modal.present();
   }
-
-  public presentActionSheet(){
-  	let actionSheet = this.actionSheet.create({
-  		title:"La source de l'image",
-  		buttons: [
-	  		{
-	  			text: "Choisir",
-	  			handler: () => {
-	  				this.selectPhoto();
-	  			}
-	  		},
-	  		{
-	  			text: "Camera",
-	  			handler: () => {
-	  			    this.takePhoto();
-	  			}
-	  		},
-	  		{
-	  			text: "Cancel",
-	  			role: "cancel"
-	  		}
-  		]
-  	});
-  	actionSheet.present();
-  }
-
- takePhoto() {
-    this.camera.getPicture({
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.CAMERA,
-      encodingType: this.camera.EncodingType.PNG,
-      saveToPhotoAlbum: true
-    }).then(imageData => {
-     // this.myPhoto = 'data:image/jpeg;base64,' + imageData;
-      this.uploadImage2(imageData);
-    }, error => {
-      this.error = JSON.stringify(error);
+  editProfilePicture(){
+    this.authService.updateUserProfilePicture().then((url)=>{
     });
   }
-
-  selectPhoto(): void {
-    this.camera.getPicture({
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      quality: 100,
-      encodingType: this.camera.EncodingType.PNG,
-    }).then(imageData => {
-     // this.myPhoto = 'data:image/png;base64,' + imageData;
-      this.uploadImage2(imageData);
-    }, error => {
-      this.error = JSON.stringify(error);
-    });
-  }
-
-   public uploadImage2(targetPath: any){
-      var url = "http://cdi.x10.mx/api/user/update/image";
-
-      //var targetPath = this.pathForImage(this.lastImage);
-      //file name
-     //var filename = this.lastImage;
-
-      var options = {
-        fileKey: "profile",
-        fileName: "image.png",
-        chunkedMode: false,
-        mimeType: "multipart/form-data",
-        params: { 'token':this.userPostData.token,
-                  'user_id': this.userPostData.user_id}
-      };
-      const fileTransfer: TransferObject = this.transfer.create();
-      this.loading = this.loadingCtrl.create({
-        content:'Cargement...',
-      });
-      this.loading.present();
-
-      fileTransfer.upload(targetPath, url, options).then(data =>{
-        this.loading.dismissAll();
-        this.presentToast('Image charger avec successs');
-        let res:any = {image_url:""};
-
-        res = data.response;
-          this.userDetails.profile_image = res.image_url;
-        this.timeStamp = Date.now()*1000;
-      }, err => {
-        this.loading.dismissAll();
-        this.presentToast('Erreur lors du chargement');
-
-      });
-    }
-
-
-
-
 
   	presentToast(text){
   		let toast = this.toastCtrl.create({
@@ -283,20 +187,7 @@ backToWelcome(){
   		});
   		toast.present();
   	}
-  	public pathForImage(img){
-  		if (img === null) {
-  			return '';
-  		}
-  		else{
-  			return this.storageDirectory + img;
-  		}
-  	}
 
-  	createFileName(){
-  		var d = new Date();
-  		var n = d.getTime();
-  		return n + '.jpg';
-  	}
 
 
 }

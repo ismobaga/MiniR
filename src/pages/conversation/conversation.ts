@@ -3,7 +3,9 @@ import { NavParams, Events, Content } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { User, Chat, Message, GlobalStatictVar } from '../../shared/interfaces';
 import { MediatorProvider } from '../../providers/mediatorProvider';
+import { ImgHandlerProvider } from '../../providers/img-handler/img-handler';
 import { LogProvider } from '../../providers/logProvider';
+import { AuthService } from '../../providers/auth-service/auth-service';
 
 @Component({
   selector: 'page-conversation',
@@ -26,7 +28,7 @@ export class Conversation {
   //if you want to know more about navigating lifecycle events in ionic go here http://blog.ionic.io/navigating-lifecycle-events/
   isUserHere: boolean = false;
 
-  constructor(private navParam: NavParams, public medProvid: MediatorProvider, public events: Events, public logProvid: LogProvider
+  constructor(public authService:AuthService, public imgHandler:ImgHandlerProvider,private navParam: NavParams, public medProvid: MediatorProvider, public events: Events, public logProvid: LogProvider
     , public changeDetectionRef: ChangeDetectorRef) {
     this.user = this.navParam.data;
     events.subscribe(GlobalStatictVar.NEW_MESSAGE_EVENT, (message, sender) => {
@@ -39,7 +41,8 @@ export class Conversation {
   }
   ionViewDidLoad() {
     //we only need this call for one time when view loaded to cach
-    this.loggedinUser = this.medProvid.loggedinUser;
+    this.loggedinUser = this.authService.getUserLocal();
+    // this.loggedinUser = this.medProvid.loggedinUser;
     //this.scrollChat();
   }
 
@@ -60,7 +63,7 @@ export class Conversation {
     this.medProvid.getChat(this.loggedinUser.uid, this.user.uid).then((data) => {
       if (data.res.rows.length > 0) {
         let item = data.res.rows.item(0);
-        self.chat = {
+        this.chat = {
           id: item.id,
           uid: item.uid,
           uid2: item.uid2,
@@ -78,14 +81,14 @@ export class Conversation {
         }
       } else {
 
-        self.chat = {
+        this.chat = {
           uid: this.loggedinUser.uid,
           uid2: this.user.uid,
           datetime: new Date().getTime(),
           lastMsgText: "",
           lastMsgDate: new Date().getTime(),
-          recieverName: this.user.username,
-          recieverPhoto: this.user.photo,
+          recieverName: this.user.displayName,
+          recieverPhoto: this.user.photoURL,
           notify: 0
         }
         this.medProvid.addChat(this.chat);
@@ -110,7 +113,7 @@ export class Conversation {
             status: item.msgStatus,
           }
           self.messages.push(currMsg);
-          self.scrollChat();
+          this.scrollChat();
         }
       }
     }, (error) => {
@@ -122,8 +125,13 @@ export class Conversation {
       return val1.datetime - val2.datetime;
     });
   }
-
-  send(input: any) {
+  sendPicture(){
+    this.imgHandler.storeImage().then((imgUrl:any)=>{
+      this.message = imgUrl;
+      this.send("", GlobalStatictVar.MSG_TYPE_PHOTO)
+    })
+  }
+  send(input: any, msgType=GlobalStatictVar.MSG_TYPE_MSG) {
 
     //pas de pace pour  les msg vide
     if (!this.message || this.message.trim() == '') {
@@ -135,14 +143,14 @@ export class Conversation {
       from: this.loggedinUser.uid,
       to: this.user.uid,
       body: this.message,
-      type: GlobalStatictVar.MSG_TYPE_MSG,
+      type: msgType,
       datetime: new Date().getTime(),
       status: GlobalStatictVar.MSG_STATUS_UN_READ,
       sentstatus: GlobalStatictVar.MSG_STATUS_SENT
     }
 
 
-    //If the online status false message will be put in Firebase queue and I don't want this
+    //If the online status false message will be put in Firebase queue mais
     //J'utilse le mien 
  //  if (this.medProvid.onlineStatus) {
       this.medProvid.sendMessage(msg);
@@ -153,7 +161,9 @@ export class Conversation {
       // this.medProvid.addMessageToQueue(msg);
       // this.logProvid.log('msg queued!');
   //  }
-
+    if(msg.type==GlobalStatictVar.MSG_TYPE_PHOTO){
+      msg.body='image...';
+    }
     this.updateChat(this.chat, msg.body, msg.datetime);
     this.messages.push(msg);
     this.message = "";
@@ -175,7 +185,10 @@ export class Conversation {
   }
 
   scrollChat() {
+    setTimeout(()=>{
     this.chatContainer.scrollToBottom(300);
+    }, 500)
+      
   }
 
   ionViewWillLeave() {

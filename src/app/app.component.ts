@@ -4,10 +4,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AngularFireAuth} from 'angularfire2/auth';
-//import { TabsPage } from '../pages/tabs/tabs';
-import { WelcomePage } from '../pages/welcome/welcome';
-import { HomePage } from '../pages/home/home';
-//import { DocumentDetailPage } from '../pages/modal/document-detail/document-detail';
+import { TabsPage } from '../pages/tabs/tabs';
+//import { WelcomePage } from '../pages/welcome/welcome';
+//import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 
 import { MediatorProvider } from '../providers/mediatorProvider';
 
@@ -18,9 +18,9 @@ import { MediatorProvider } from '../providers/mediatorProvider';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = WelcomePage;
+  rootPage:any ;//= LoginPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, afAuth: AngularFireAuth, public medProvid: MediatorProvider) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afAuth: AngularFireAuth, public medProvid: MediatorProvider) {
     platform.ready().then(() => {
       // const authObserver = afAuth.authState.subscribe(user => {
       //     if (JSON.parse(localStorage.getItem('userData'))) { 
@@ -34,8 +34,20 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
+      medProvid.initLocaleDB();
       splashScreen.hide();
+      this.intialize();
        //medProvid.initLocaleDB();
+    });
+  }
+
+     intialize() {
+    this.afAuth.authState.subscribe(auth => {
+      if (auth) {
+        this.rootPage = TabsPage;
+      } else {
+        this.rootPage = LoginPage;
+      }
     });
   }
 }

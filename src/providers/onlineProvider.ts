@@ -23,7 +23,12 @@ export class OnlineProvider {
   connectionRef: any;
   loggedinUser: User;
 
-  constructor(public afAuth: AngularFireAuth,public authService:AuthService,public http: Http, private angularFire: AngularFireDatabase, public events: Events, public logProvid: LogProvider) {
+  constructor(public afAuth: AngularFireAuth, 
+             // public authService: AuthService,
+              public http: Http, 
+              private angularFire: AngularFireDatabase, 
+              public events: Events,
+               public logProvid: LogProvider) {
   }
 
   initConnectionStatus() {
@@ -63,16 +68,23 @@ export class OnlineProvider {
 
     //let userRef = this.angularFire.object(`${USERS_REF}/${uid}`, { preserveSnapshot: true });
     //userRef.subscribe(snapshot => {
-      this.getUser(uid).then((result)=>{
+       let userRef = this.getUser(uid);
+                        userRef.once('value').then(function (snapshot) {
+                        let value = snapshot.val();
+      // this.getUser(uid).then((result:any)=>{
 
-      let value = result;
-      self.loggedinUser = {
+      // let value = result;
+      self.loggedinUser = value;
+      self.loggedinUser.displayName=value.firstName+" "+value.lastName;
+     /* self.loggedinUser = {
         uid: value['uid'],
-        username: value['username'],
+        firstName: value['firstName'],
+        lastName: value['lastName'],
+        username: value['email'],
         email: value['email'],
         photo: value['profile_image']
-      }
-      this.events.publish(GlobalStatictVar.ONLINE_USER_EVENT, self.loggedinUser);
+      }*/
+      self.events.publish(GlobalStatictVar.ONLINE_USER_EVENT, self.loggedinUser);
       });
   // });
   }
@@ -84,14 +96,14 @@ export class OnlineProvider {
       uid: user.uid,
       username: user.username,
       email: user.email,
-      photo: user.photo
+      photoURL: user.photoURL
     });
 
     let onlineUser = firebase.auth().currentUser;
 
     onlineUser.updateProfile({
       displayName: user.username,
-      photoURL: user.photo
+      photoURL: user.photoURL
     }).then(function () {
     }, function (error) {
     });
@@ -99,7 +111,23 @@ export class OnlineProvider {
 
   getUsers()  {
     let url='http://cdi.x10.mx/api/users';
-    return this.authService.postData('','users');
+    // return this.authService.getAllUsers();
+    return new Promise((resolve, reject)=>{
+       // firebase.database().ref('${USERS_REF}/')//
+      firebase.database().ref('/users/').orderByChild('uid').once('value', (snapchot)=>{
+        let usersData =snapchot.val();
+        let temps = []
+        for(let key in usersData){
+          temps.push(usersData[key])
+        }
+        resolve(temps);
+      }).catch((err)=>{
+        reject(err);
+      });
+    //});  
+});
+  }
+    //return this.authService.postData('','users');
     
    // let users= new Array;
 /*  //   return new Promise((resolve, reject) => {
@@ -125,7 +153,7 @@ export class OnlineProvider {
  // Use this to put back all translated items in a single array again.
  //.toArray();
     //return this.angularFire.list(USERS_REF, { preserveSnapshot: true });
-  }
+ 
 
   filterUsersByName(username) {
     return this.angularFire.list(USERS_REF, {
@@ -136,15 +164,25 @@ export class OnlineProvider {
     });
   }
   userPostData= {user_id:'', token:''}
+    getUserDetails(){
+    return new Promise((resolve, reject)=>{
+      firebase.database().ref('/users').child(firebase.auth().currentUser.uid).once('value', (snapshot)=>{
+        resolve(snapshot.val());
+      }).catch((err)=>{
+        reject(err);
+      })
+    });
+  }
   //get user information { just for test }
   getUser(uid) {
-      const userData = JSON.parse(localStorage.getItem('userData'));
-      let userDetails = userData.userData;
-      this.userPostData.user_id = userDetails.id;
-      this.userPostData.token = userDetails.token;
+    //   const userData = JSON.parse(localStorage.getItem('userData'));
+    //   let userDetails = userData.userData;
+    //   this.userPostData.user_id = userDetails.id;
+    //   this.userPostData.token = userDetails.token;
 
-    let data;
-     return this.authService.postData(this.userPostData, 'user/'+uid);
+    // let data;
+     // return this.authService.postData(this.userPostData, 'user/'+uid);
+      return firebase.database().ref(`${USERS_REF}/${uid}`);
      //   setTimeout(function () {
            
       //  },1000);

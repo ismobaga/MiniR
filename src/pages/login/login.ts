@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
+import { AuthService } from '../../providers/auth-service/auth-service';
+import { UserCred } from '../../shared/interfaces';
+import { TabsPage } from '../tabs/tabs';
+import { SignupPage } from '../signup/signup';
+import { ResetPasswordPage } from '../resetpassword/resetpassword';
 /**
  * Generated class for the LoginPage page.
  *
@@ -13,12 +17,27 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+	userCred= {} as UserCred;
+	constructor(public authService:AuthService, public navCtrl: NavController, public navParams: NavParams) {
+  	}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  	ionViewDidLoad() {
+    	console.log('ionViewDidLoad LoginPage');
+  	}
+  	login(){
+  		this.authService.login(this.userCred).then((res:any)=>{
+  			if(!res.code)
+  				this.navCtrl.setRoot(TabsPage);
+        else
+  			alert(res);
+  		});
+ 	 }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
+ 	signup(){
+ 		this.navCtrl.push(SignupPage);
+  	}
+  	resetPassword(){
+  		this.navCtrl.push(ResetPasswordPage);
+  	}
 
 }

@@ -7,11 +7,9 @@ import { AuthService } from '../../../providers/auth-service/auth-service';
   templateUrl: 'edit-name.html',
 })
 export class EditNamePage {
-	public user = {
-		first_name: "Ismail",
-		last_name: "Bagayoko",
-		user_id: "",
-		token:""
+	public name = {
+		firstName: "Ismail",
+		lastName: "Bagayoko"
 	};
 
   constructor(
@@ -21,10 +19,8 @@ export class EditNamePage {
     public loadingCtrl: LoadingController,
 	private authService: AuthService
     ) {
-		this.user.first_name = navParams.get('first_name');
-		this.user.last_name = navParams.get('last_name');
-		this.user.user_id = navParams.get('user_id');
-		this.user.token = navParams.get('token');
+		this.name.firstName = navParams.get('firstName');
+		this.name.lastName = navParams.get('lastName');
   }
 
   ionViewDidLoad() {
@@ -35,21 +31,12 @@ export class EditNamePage {
     let loader = this.loadingCtrl.create({
       duration: 200
     });
-    loader.present()
-	.then( () =>{
-		this.authService.postData(this.user, 'user/update/name')
-			.then((result) => {
-				// localStorage.removeItem('userData');
-				let data = JSON.parse(localStorage.getItem('userData'));
-				data.userData['first_name'] = this.user.first_name;
-				data.userData['last_name'] = this.user.last_name;
-        
-				localStorage.setItem('userData', JSON.stringify(data));
-				console.log(result);
-				}, (err) => {
-					console.log(err);
-				});
-	this.navCtrl.pop()} ); // Get back to profile page. You should do that after you got data from API
+    loader.present();
+	this.authService.editName(this.name).then((result) => {
+     loader.dismiss();
+		localStorage.setItem('name', JSON.stringify(this.name));
+	}, (err) => {});
+	this.navCtrl.pop() // Get back to profile page. You should do that after you got data from API
 	}
 	
   dismiss() {

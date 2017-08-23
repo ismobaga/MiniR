@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, NavParams } from 'ionic-angular';
+import { NavController, LoadingController, NavParams, ToastController  } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { LoginPage } from '../login/login';
-import { WelcomePage } from '../welcome/welcome';
+import { ProfilePicturePage } from '../profile-picture/profile-picture';
 import { AuthService } from '../../providers/auth-service/auth-service';
-import { AngularFireAuth } from 'angularfire2/auth';
-import firebase from 'firebase/app';
 /**
  * Generated class for the SignupPage page.
  *
@@ -19,41 +17,40 @@ import firebase from 'firebase/app';
 })
 export class SignupPage {
 
-  responseData : any;
-  userData = {"password": "", "first_name": "", "last_name": "","email": ""};
+  newUser = {password: "", first_name: "", last_name: "",email: ""};
 
 
-  constructor(public afAuth: AngularFireAuth, public loadingCtrl:LoadingController,public navCtrl: NavController, public navParams: NavParams, public authService:AuthService) {
+  constructor(public toastCtrl:ToastController, public loadingCtrl:LoadingController,public navCtrl: NavController, public navParams: NavParams, public authService:AuthService) {
   }
 
   signup(){
-	   let loader = this.loadingCtrl.create({
-      duration: 200
-    });
-    loader.present(); 
-     this.authService.postData(this.userData,'user').then((result) => {
-      this.responseData = result;
-      //console.log(this.responseData);
-	  
-      localStorage.setItem('userData', JSON.stringify(this.responseData));
-      let token = this.responseData.userData.fireToken;
-      this.afAuth.auth.signInWithCustomToken(token).catch(function(error) {
-      // Handle Errors here.
-      // var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
+	  let toster = this.toastCtrl.create({duration:300, position:'bottom'});
+    if (this.newUser.email=='' || this.newUser.password=='' || this.newUser.first_name=='' || this.newUser.last_name=='') {
+      toster.setMessage('Tous les champs sont obligatoire');
+      toster.present();
+    }
+    else if (this.newUser.password.length<6) {
+      toster.setMessage('Mot de passe faible');
+      toster.present();
+    }
+    else{
+      let loader = this.loadingCtrl.create({
+        content:'Chargement...'
       });
-      this.navCtrl.push(TabsPage);
-    }, (err) => {
-      // Error log
-      console.log(err);
-    });
-
+      loader.present();
+      this.authService.addUser(this.newUser).then((res:any) => {
+        loader.dismiss();
+        if(res.success)
+          this.navCtrl.push(ProfilePicturePage);
+        else
+          alert('Errr '+ res);
+      });
+    }
   }
 
-  login(){
+  goback(){
     //Login page link
-    this.navCtrl.push(WelcomePage);
+    this.navCtrl.setRoot(LoginPage);
   }
 }
 

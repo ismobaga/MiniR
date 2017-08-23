@@ -1,59 +1,21 @@
-
-page-new-event {
-
-	.header{
-		height:50px;
-		background-color: #354789;
-		position: relative;
-		padding-bottom: 10px;
-	}
-	.closeBtn{
-		position: absolute;
-		left: 45%;
-		height: 100%;
-		width: 15%;
-		bottom: -50%;
-		background-color: #425599;
-		// overflow: visible;
-		z-index: 5;
-		color: #f4ea0d;
-		border-radius: 50%;
-		border: 5px none solid;
-		font-size: 2.0em;
-	}
+page-event-detail {
 
 	#toolbar{
-		color: #354789;
+		color:#0a0f19;
 	}
 			.bg{
-			//background-color:#2f4078;
-			 background-color:#0c131f;
+			background-color:#0c131f;
 			height: 100%;
 			color:#0c131f;
 			background-size: cover;
-			padding-top: 10px;
-		    filter: blur(0.3px);
+			/*filter: blur(5px);*/
 			background-position: center center;
 		}
-		.content{
-			background-color:#2f4078;
-		}
-			.main-content{
+				.main-content{
 			/*width: 100%;*/
 			/*height: 700px;*/
 			background-color: none;
 		}
-.group-header{
-			border: none;
-			//background-color:#17233a;
-			background: none;
-			color:#29c7f4;
-	
-}
-.igroup{
-	border: none;
-}
-
 		#pp{
 			border-radius: 0%;
 			border: 4px solid #2a64d8;
@@ -68,34 +30,33 @@ page-new-event {
 			/*box-shadow: -6px 15px 81px 3px white;*/
 
 		}
-		.footer{
-			height:50px;
-			background-color: #35c5e7;
-			padding-top: 10px;
-		}
-		.footerBtn{
-			background-color: #35c5e7;
-			color: #dcf1f9;
+		.round{
+			border-radius: 0%;
+			height: 100%;
 			width: 100%;
-			font-size: 2.0em;
+			position: absolute;
+			
 		}
-
-		.date, .heure{
-
-		display: block;
-		padding-left: 0px!important;
-		margin-left: 0px;
-		text-align: left!important;
-		}
-		.date{
-			position: relative;
-			left: 0%
-		}
+		  .doc-name{
+			
+			background: none; 
+			border: none; 
+			font-size: 24px; 
+			border-radius: 3px;
+			padding-top: 30px;
+			margin: 0px;
+			margin-right: 0px;
+			font-weight: bold;
+			width: 100%;
+			color: #a4b2cd;
+    /*margin-right: 30px;*/
+  }
   #icon-left, #icon-right{
 			
 			z-index: 10;
 			margin-top: 100px;
 			position: relative;
+			color:#ffffff;
 			background-color:red;
 			transform: translateY( -50%);
 			height: 60px;
@@ -137,26 +98,9 @@ page-new-event {
   }
   .dernierItem{
   		border: none;
-  		background: none;
-		// background-color:#17233a;
-		color:#dceff4;
-		// color:#a4b2cd;
-  }
-        	#newBtn{
-		background-color: transparent;
-		color:#50b08b;
-		border-radius: 100px;
-		border-color:white;
-		border:1px solid #a4b2cd;
-		margin-top:25px;
-		//height: 35px;
-		font-size: 14px;
-		position: relative;
-		
-	}
-  .pinBtn{
-  	background: none;
-  	color:#f4ea0d;
+		background-color:#17233a;
+		color:#a4b2cd;
+		width: 50%;
   }
   
   	#viewBtn{

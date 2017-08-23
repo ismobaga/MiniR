@@ -32,12 +32,12 @@
     
   </ion-refresher-content>
 </ion-refresher>
-<div class="bg" [style.backgroundImage]="'url('+userDetails.profile_image+getTimeStamp()+')'">
+<div class="bg" [style.backgroundImage]="'url('+userDetails.photoURL+')'">
 </div>
 <div class="main-content">
-	<div id="pp" (click)="presentActionSheet()">
+	<div id="pp" (click)="editProfilePicture()">
         <!-- <img src="{{pathForImage(lastImage)}}"  class="round"> -->
-        <img [src]="userDetails.profile_image+getTimeStamp()"  class="round">
+        <img [src]="userDetails.photoURL"  class="round">
 <div class="edit-icon" >
   
 <ion-icon class="icon" ios="md-create" md="md-create"></ion-icon>
@@ -50,14 +50,14 @@
   <ion-row no-padding no-margin>
     <ion-col no-padding no-margin col-2></ion-col>
       <ion-col no-padding no-margin text-center col-8>
-      <button class="edit-name" (click)="goEditProfileName()">{{userDetails.first_name}} {{userDetails.last_name}}</button>
+      <button class="edit-name" (click)="goEditProfileName()">{{userDetails.firstName}} {{userDetails.lastName}}</button>
     </ion-col>
     <ion-col col-1 (click)="goEditProfileName()"><ion-icon ios="md-create" md="md-create"></ion-icon></ion-col>
   </ion-row>
     <ion-row no-padding no-margin>
     <ion-col no-padding no-margin col-2></ion-col>
       <ion-col no-padding no-margin text-center col-8>
-      <button class="edit-annee" (click)="goEditProfileAnnee()">2e Année</button>
+      <button class="edit-annee" (click)="goEditProfileAnnee()">{{userDetails.email}}</button>
     </ion-col>
     <ion-col col-1 (click)="goEditProfileAnnee()"><ion-icon ios="md-create" md="md-create"></ion-icon></ion-col>
   </ion-row>

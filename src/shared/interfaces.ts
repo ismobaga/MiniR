@@ -7,10 +7,18 @@ export interface User {
     uid?: string;
     username?: string;
     email: string;
+    displayName?:string;
     password?: string;
-    photo?: string;
+    firstName: string;
+    lastName: string;
+    photoURL?: string;
     birthdate?: number;
     isContact?: boolean;
+}
+
+export interface UserCred{
+    email:string;
+    password:string;
 }
 
 export interface Message {
@@ -59,7 +67,7 @@ export class GlobalStatictVar {
     public static MSG_TYPE_LOCATION = 4;
     public static MSG_TYPE_VOICE = 5;
 
-    public static DEFAULT_PROFILE_PHOTO = '../assets/imgz/noimg.png';
+    public static DEFAULT_PROFILE_PHOTO = '../assets/image/default-profile.png';
 
     public static ONLINE_EVENT = 'online';
     public static OFFLINE_EVENT = 'offline';
