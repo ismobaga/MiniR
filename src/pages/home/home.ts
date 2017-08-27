@@ -1,9 +1,12 @@
-import { Component, ViewChild, Input, ChangeDetectorRef, NgZone } from '@angular/core';
-import { NavController, Events, LoadingController, App, Content, PopoverController, AlertController } from 'ionic-angular';
+import { Component, ViewChild, Input, ChangeDetectorRef, NgZone,  } from '@angular/core';
+import { NavController, Events, LoadingController, App, Content, PopoverController, AlertController, ModalController, Tabs } from 'ionic-angular';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 import { PostPopover } from './post-popover';
 import { MessagePage } from  '../message/message';
 import { WelcomePage } from  '../welcome/welcome';
+import { NewEventPage } from '../modal/new-event/new-event';
+import { NewDocumentPage } from '../modal/new-document/new-document';
+import { EventProvider } from '../../providers/eventProvider';
 
 import { AuthService } from '../../providers/auth-service/auth-service';
 
@@ -14,6 +17,7 @@ import { MediatorProvider } from '../../providers/mediatorProvider';
 import { LogProvider } from '../../providers/logProvider';
 
 import { GlobalStatictVar, User } from "../../shared/interfaces";
+import { DocumentProvider } from '../../providers/document/document';
 
 
 @Component({
@@ -34,6 +38,7 @@ export class HomePage {
   userDetails : any={} ;
   responseData: any;
   dataSet : any;
+  tabs:Tabs;
   userPostData = {"user_id":"","token":""};
   fileTransfer: FileTransferObject = this.transfer.create();
 
@@ -44,12 +49,15 @@ export class HomePage {
     public zone:NgZone,
     public authService:AuthService,
     private file: File,
-	private barcodeScanner:BarcodeScanner,
-	private loadingCtrl:LoadingController,
-	public alertCtrl: AlertController,
+    public modalCtrl:ModalController,
+	  private barcodeScanner:BarcodeScanner,
+	  private loadingCtrl:LoadingController,
+	  public alertCtrl: AlertController,
     private transfer: FileTransfer,
     public events: Events,
+    public documentProvider:DocumentProvider,
     public logProvid: LogProvider, 
+    public eventProvider:EventProvider,
     public changeDetectionRef: ChangeDetectorRef,
     public medProvid: MediatorProvider) 
   {
@@ -65,6 +73,7 @@ export class HomePage {
     //         photo:'',
     //         username:''
     //     };
+    this.tabs = this.navCtrl.parent;
     let self =this;
         events.subscribe(GlobalStatictVar.NOTIFICATION_EVENT, (notify) => {
         this.logProvid.log('notify: ' + notify);
@@ -99,7 +108,34 @@ export class HomePage {
   //   this.navCtrl.push(WelcomePage);
   // }
   }
-
+  goToMyProfile(){
+    this.tabs.select(3);
+  }
+  newEvent(){
+    let modal = this.modalCtrl.create(NewEventPage, {selectedDay: new Date()});
+    modal.present();
+    modal.onDidDismiss(data =>{
+      if (data) {
+        let eventData = data;
+        this.eventProvider.addEvent(eventData);  
+      }
+    });
+  }
+  newFile(){
+    this.documentProvider.ask().then((res)=>{
+      this.newDocument(res);
+    });
+  }
+  newDocument(res=null){
+    let modal;
+    if(res=null){
+      modal = this.modalCtrl.create(NewDocumentPage);   
+    }
+    else{
+      modal = this.modalCtrl.create(NewDocumentPage, {document:res});   
+    }
+    modal.present();
+  }
   getDocuments(){
 	   let loader = this.loadingCtrl.create({
       duration: 200

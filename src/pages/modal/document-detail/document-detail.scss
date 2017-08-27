@@ -3,6 +3,11 @@ page-document-detail {
 	#toolbar{
 		color:#0a0f19;
 	}
+	  #description, #author{
+  	color: #efefef;
+  	background-color:#0c131f;
+  	
+  }
 			.bg{
 			background-color:#0c131f;
 			height: 100%;
@@ -14,7 +19,11 @@ page-document-detail {
 				.main-content{
 			/*width: 100%;*/
 			/*height: 700px;*/
+			padding: 8px;
 			background-color: none;
+			p{
+				color: #a4b2cd;
+			}
 		}
 		#pp{
 			border-radius: 0%;
@@ -29,6 +38,13 @@ page-document-detail {
 			transform: translate(-50%, -50%);
 			/*box-shadow: -6px 15px 81px 3px white;*/
 
+		}
+		 .footer{
+		  	background-color: #0c131f;
+		  	padding: 15px;
+  		}
+		#qrBtn{
+			background: none;
 		}
 		.round{
 			border-radius: 0%;
@@ -50,6 +66,47 @@ page-document-detail {
 			width: 100%;
 			color: #a4b2cd;
     /*margin-right: 30px;*/
+  }
+  #fileDiv{
+    // border: 2px #fff solid;
+    background-color: #cc9999;
+    background-color: rgba(204, 99, 99, 0.3);
+    display: block;
+    position: relative;
+    padding: 4px;
+    border-radius: 4px;
+
+
+  }
+  #preview{
+    background-color: red;
+    background-size: cover;
+    color:white;
+    height: 40px;
+    max-width: 30%;
+    padding: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    // margin: 3px; 
+    top: 6px;
+    left: 4px;
+    word-wrap:break-word;
+    position: absolute;
+    border-radius: 15%;
+  }
+  #name{
+    position: absolute;
+    top: 5px;
+    color:#efefef;
+    left: 30%;
+    //right: 0%;
+    h3{
+      color: #efefef;
+
+    }
+    p{
+      color:#b1b1b1
+    }
   }
   #icon-left, #icon-right{
 			

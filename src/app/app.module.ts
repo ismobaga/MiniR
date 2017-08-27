@@ -27,6 +27,8 @@ import { EditAnneePage } from '../pages/modal/edit-annee/edit-annee';
 import { DocumentDetailPage } from '../pages/modal/document-detail/document-detail';
 import { EventDetailPage } from '../pages/modal/event-detail/event-detail';
 import { NewEventPage } from '../pages/modal/new-event/new-event';
+import { NewDocumentPage } from '../pages/modal/new-document/new-document';
+import { QRCodePage } from '../pages/modal/qr-code/qr-code';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -49,6 +51,7 @@ import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { QRCodeModule, QRCodeComponent } from 'angular2-qrcode';
 
 import { SqlStorage } from '../shared/SqlStorage';
 import { UtilsProvider } from '../providers/utilsProvider';
@@ -62,6 +65,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { ImgHandlerProvider } from '../providers/img-handler/img-handler';
 import { ChatProvider } from '../providers/chat/chat';
+import { DocumentProvider } from '../providers/document/document';
 
 
 
@@ -95,16 +99,20 @@ export const firebaseConfig = {
     HomePage,
     ProfilePage,
     TabsPage,
+    QRCodePage,
+    NewDocumentPage,
     ParallaxDirective,
     EditNamePage,
     EditAnneePage,
 	DocumentDetailPage,
     EventDetailPage
+
   ],
   imports: [
     BrowserModule,
     HttpModule, 
     MomentModule,
+    QRCodeModule,
     NgCalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
@@ -119,6 +127,7 @@ export const firebaseConfig = {
     MessagePage,
     Conversation,
     LoginPage,
+    NewDocumentPage,
     ProfilePicturePage,
     MessageDetailPage,
     NewMessagePage,
@@ -130,6 +139,7 @@ export const firebaseConfig = {
     ProfilePage,
     HomePage,
     TabsPage,
+    QRCodePage,
     EditNamePage,
     EditAnneePage,
 	DocumentDetailPage,
@@ -157,7 +167,8 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: LOCALE_ID, useValue:'fr-CA'},
     ImgHandlerProvider,
-    ChatProvider
+    ChatProvider,
+    DocumentProvider
   ]
 })
 export class AppModule {}

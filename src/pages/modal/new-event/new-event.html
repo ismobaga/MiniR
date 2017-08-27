@@ -1,7 +1,6 @@
 
-<ion-header id="toolbar">
-       <button (click)="dismiss()" ion-button clear item-right class="closeBtn" type="button">
-            
+<ion-header id="toolbar" color="iDark">
+       <button (click)="dismiss()" ion-button clear item-right class="closeBtn" type="button" color="iTeal">
             <ion-icon name="close" ></ion-icon>
           </button>
   <!--ion-toolbar id="toolbar" color="iDark">
@@ -21,20 +20,16 @@
 </ion-header>
 
 
-<ion-content no-bounces >
-<!-- <div class="header">
-       <button ion-button clear item-right class="closeBtn" type="button">
-            
-            <ion-icon name="close" ></ion-icon>
-          </button>
-</div> -->
+<ion-content>
+
   <div class="bg" >
    
 
     <div class="main-content">
       <ion-list>
       <ion-item-group class="igroup">
-    <ion-item-divider class="group-header">Ajout d' evenement</ion-item-divider>
+    <ion-item-divider *ngIf="!title" class="group-header">Ajout d' evenement</ion-item-divider>
+    <ion-item-divider  *ngIf="title" class="group-header">{{title}}</ion-item-divider>
         <ion-item class="dernierItem">
           <ion-input type="text" placeholder="Titre" [(ngModel)]="event.title" ></ion-input>
         </ion-item>
@@ -52,8 +47,7 @@
         <ion-item class="dernierItem" no-lines>
           <ion-label>Jour entier</ion-label>
           <ion-toggle [(ngModel)]="event.allDay" color="energized"></ion-toggle>
-          <!-- <ion-checkbox displayFormat="DD/MM/YYYY HH:mm" [(ngModel)]="event.allDay" ></ion-checkbox> -->
-          <!--button ion-button id="newBtn" right clear  (click)="addEvent()">Jour entier</button-->
+
         </ion-item>
           <ion-item ion-item class="dernierItem">
           <!-- <ion-col  col-3 item-start> -->
@@ -76,12 +70,12 @@
           </div>
         <ion-col col-3 item-end class="dernierItem" *ngIf="!event.allDay">
             
-          <ion-datetime *ngIf="!event.allDay" displayFormat="HH:mm" [(ngModel)]="event.endTime" [min]="event.startTime" ></ion-datetime>
+          <ion-datetime *ngIf="!event.allDay" displayFormat="HH:mm" [(ngModel)]="event.endTime" [min]="event.startTime"></ion-datetime>
         </ion-col>
         </ion-item>
         </ion-item-group>
-        <ion-item class="dernierItem">
-          <ion-input type="text" placeholder="Descrription" [(ngModel)]="event.description" ></ion-input>
+        <ion-item class="dernierItem" text-wrap>
+          <ion-input type="text" text-wrap placeholder="Descrription" [(ngModel)]="event.description" ></ion-input>
         </ion-item>
       </ion-list>
 
@@ -95,7 +89,10 @@
     </div>
   </ion-content>
 <ion-footer>
-  <button (click)="save()" full class="footerBtn">
+  <button (click)="save()" *ngIf="!isEdit" full class="footerBtn">
     Ajouter cet évenement
+  </button>
+  <button (click)="edit()" *ngIf="isEdit" full class="footerBtn">
+    Edit cet évenement
   </button>
 </ion-footer>

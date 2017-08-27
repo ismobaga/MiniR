@@ -1,5 +1,5 @@
 import { Component, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
-import { NavParams, Events, Content } from 'ionic-angular';
+import { NavParams, Events, Content, NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { User, Chat, Message, GlobalStatictVar } from '../../shared/interfaces';
 import { MediatorProvider } from '../../providers/mediatorProvider';
@@ -28,14 +28,35 @@ export class Conversation {
   //if you want to know more about navigating lifecycle events in ionic go here http://blog.ionic.io/navigating-lifecycle-events/
   isUserHere: boolean = false;
 
-  constructor(public authService:AuthService, public imgHandler:ImgHandlerProvider,private navParam: NavParams, public medProvid: MediatorProvider, public events: Events, public logProvid: LogProvider
+  constructor(public navCtrl:NavController ,public authService:AuthService, public imgHandler:ImgHandlerProvider,private navParam: NavParams, public medProvid: MediatorProvider, public events: Events, public logProvid: LogProvider
     , public changeDetectionRef: ChangeDetectorRef) {
     this.user = this.navParam.data;
     events.subscribe(GlobalStatictVar.NEW_MESSAGE_EVENT, (message, sender) => {
       this.messageArrived(message, sender);
     });
   }
+  goBack(){
+    this.navCtrl.pop();
+  }
+  change() {
+    // get elements
+    var element   = document.getElementById('input');
+    var textarea  = element.getElementsByTagName('textarea')[0];
 
+    // set default style for textarea
+    textarea.style.minHeight  = '0';
+    textarea.style.height     = '0';
+
+    // limit size to 96 pixels (6 lines of text)
+    var scroll_height = textarea.scrollHeight;
+    if(scroll_height > 96)
+      scroll_height = 96;
+
+    // apply new style
+    element.style.height      = scroll_height + "px";
+    textarea.style.minHeight  = scroll_height + "px";
+    textarea.style.height     = scroll_height + "px";
+}
   showDate(){
   	this.dateVisible = !this.dateVisible;
   }
@@ -167,7 +188,7 @@ export class Conversation {
     this.updateChat(this.chat, msg.body, msg.datetime);
     this.messages.push(msg);
     this.message = "";
-
+    this.change();
     this.scrollChat();
     input.setFocus();
     this.changeDetectionRef.detectChanges();

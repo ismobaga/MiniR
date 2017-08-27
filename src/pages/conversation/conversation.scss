@@ -5,6 +5,7 @@ page-conversation {
   .content{
     background-color:#0c131f;
     color: #0c131f;
+    height: auto;
   }
   .chat{
     background: none;
@@ -27,6 +28,7 @@ page-conversation {
     background-color:#17233a;
     border-radius: 5px;
     box-shadow: 0 0 6px #17233a;
+    word-wrap:break-word;
     // box-shadow: 0 0 6px #B2B2B2;
     background-color:#17233a;
     display: inline-block;
@@ -93,6 +95,10 @@ page-conversation {
     .footer{
         background-color: #17233a;
     }
+    .backIcon {
+
+    font-size: 1.7em;
+}
 
 
 }

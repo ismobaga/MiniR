@@ -1,0 +1,56 @@
+
+<ion-header color="iDark">
+  <ion-toolbar id="toolbar" color="iDark">
+    <ion-buttons left>
+      <button col-1 ion-button round icon-only color="iTeal">
+        <ion-avatar item-left round>
+              <img src="http://malimoncton.ga/storage/membre/ismail.jpg">
+          </ion-avatar>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()" color="iTeal">
+        <ion-icon name="close" ></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Nouveau Document</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+  <div class="bg" >
+  <ion-list no-lines padding>
+   <ion-textarea (input)="change()" rows="1" id="documentTextInput" [(ngModel)]="document.text" placeholder="Une petite description">
+   </ion-textarea>
+      <ion-item id="fileDiv" *ngIf="documentLoaded">
+          <div id="preview">
+            .DOCX
+          </div>
+          <div id="name">
+            <h3 *ngIf="document.name">{{document.name}}</h3>
+            <h3 *ngIf="!document.name">No name</h3>
+            <p *ngIf="document.size">{{document.size}}</p>
+          </div>
+        </ion-item>
+  </ion-list>
+    </div>
+  
+     
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar color="iDark">
+    <ion-buttons start left>
+      <button (click)="getDocument()" ion-button icon-right color="iTeal">
+        <ion-icon name="image"></ion-icon>
+      </button>
+    </ion-buttons>
+      <ion-buttons right>
+
+        <button ion-button round (click)="publier()" color="iTeal">
+          Publier
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>

@@ -9,6 +9,9 @@ page-home {
     height: 100%;
     text-align: center;
   }
+  .tags{
+    padding-top: 2px;
+  }
   .tag{
     display: inline-block;
     margin: 0 5px 5px 0;
@@ -21,5 +24,69 @@ page-home {
     position: absolute;
     top: 0px;
     right: 0px;
+  }
+  .dcard{
+    background-color:#0c131f;
+    //background: none;
+    color:#efefef;
+    text-align: center;
+    ion-row{
+      background: none;
+      ion-col{
+        background: none;
+        ion-item{
+          background: none;
+          h2{
+            color: #efefef;
+          }
+        }
+      }
+    }
+    ion-card-content{
+      p{
+        color: #cfcfcf;
+      }
+    }
+  }
+  #fileDiv{
+    // border: 2px #fff solid;
+    background-color: #cc9999;
+    background-color: rgba(204, 99, 99, 0.3);
+    display: block;
+    position: relative;
+    padding: 4px;
+    border-radius: 4px;
+
+
+  }
+  #preview{
+    background-color: red;
+    background-size: cover;
+    color:white;
+    height: 40px;
+    max-width: 30%;
+    padding: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    // margin: 3px; 
+    top: 6px;
+    left: 4px;
+    word-wrap:break-word;
+    position: absolute;
+    border-radius: 15%;
+  }
+  #name{
+    position: absolute;
+    top: 5px;
+    color:#efefef;
+    left: 30%;
+    //right: 0%;
+    h3{
+      color: #efefef;
+
+    }
+    p{
+      color:#b1b1b1
+    }
   }
 }

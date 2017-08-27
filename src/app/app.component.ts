@@ -12,11 +12,13 @@ import { LoginPage } from '../pages/login/login';
 import { MediatorProvider } from '../providers/mediatorProvider';
 
 
-
+var cordova;
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+
 })
+
 export class MyApp {
   rootPage:any ;//= LoginPage;
 
@@ -37,7 +39,10 @@ export class MyApp {
       medProvid.initLocaleDB();
       splashScreen.hide();
       this.intialize();
+      if(cordova && cordova.plugins.keyboard ){
+        cordova.plugins.keyboard.dislableScroll(true);
        //medProvid.initLocaleDB();
+      }
     });
   }
 

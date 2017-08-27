@@ -1,7 +1,13 @@
-<ion-header >
-    <ion-navbar color="iDark">
+<ion-header>
+<ion-toolbar id="toolbar" color="iDark">
+    <ion-buttons left>
+        <button ion-button (click)="goBack()" color="iTeal">
+            <ion-icon class="backIcon" name="arrow-back"></ion-icon>
+            &nbsp;Back
+        </button>
+    </ion-buttons>
         <ion-title>{{user.displayName}}</ion-title>
-    </ion-navbar>
+    </ion-toolbar>
 </ion-header>
 <ion-content #chatContainer >
     <div class="chat" id="chat-autoscroll">
@@ -27,8 +33,6 @@
                       {{msg.datetime | date:'dd/MM/yyyy H:mm'}}
                     </div>
                      </ion-item>
-                <!-- </li> -->
-            <!-- </ion-item> -->
             </ion-list>
     </div>
 </ion-content>
@@ -39,7 +43,7 @@
         <ion-icon name="images"></ion-icon>
       </button>
     </ion-buttons>
-            <ion-input type="text" #input [(ngModel)]="message" placeholder="Message"></ion-input>
+            <ion-textarea type="text" rows="1" #input id="input" [(ngModel)]="message" placeholder="Message" (input)="change()"></ion-textarea>
             <ion-buttons end>
             <button ion-fab mini class="send" (click)="send(input)"><ion-icon name="send"></ion-icon></button>
             </ion-buttons>

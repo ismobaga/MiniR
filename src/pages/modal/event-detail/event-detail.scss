@@ -1,119 +1,109 @@
 page-event-detail {
 
 	#toolbar{
-		color:#0a0f19;
+		// color:#0a0f19;
 	}
-			.bg{
+			.bg, .dcard{
 			background-color:#0c131f;
 			height: 100%;
-			color:#0c131f;
+			//color:#0c131f;
 			background-size: cover;
 			/*filter: blur(5px);*/
-			background-position: center center;
+			// background-position: center center;
 		}
 				.main-content{
 			/*width: 100%;*/
 			/*height: 700px;*/
-			background-color: none;
+			// background-color: none;
+			   position: relative;
+    text-align: center;
+  	// box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color:#0c131f;
 		}
-		#pp{
-			border-radius: 0%;
-			border: 4px solid #2a64d8;
-			height: 100px;
-			width: 100px;
-			z-index: 10;
-			margin-top: 100px;
-			position: relative;
-			left: 50%;
-			/*margin-right: -50%;*/
-			transform: translate(-50%, -50%);
-			/*box-shadow: -6px 15px 81px 3px white;*/
+    .action-sheets-basic-page{
+      .ion-md-trash {
+      color: #ED4248;
+    }
+      .ion-ios-trash {
+      color: #ED4248;
+    }
+    }
+	ion-card {
+    position: relative;
+    text-align: center;
+    background-color:#0c131f;
+    background-size: cover;
+  	box-shadow: none;
+  	margin:0px;
+  	width: 100%;
 
-		}
-		.round{
-			border-radius: 0%;
-			height: 100%;
-			width: 100%;
-			position: absolute;
-			
-		}
-		  .doc-name{
-			
-			background: none; 
-			border: none; 
-			font-size: 24px; 
-			border-radius: 3px;
-			padding-top: 30px;
-			margin: 0px;
-			margin-right: 0px;
-			font-weight: bold;
-			width: 100%;
-			color: #a4b2cd;
-    /*margin-right: 30px;*/
   }
-  #icon-left, #icon-right{
-			
-			z-index: 10;
-			margin-top: 100px;
-			position: relative;
-			color:#ffffff;
-			background-color:red;
-			transform: translateY( -50%);
-			height: 60px;
-			width: 50px;
-			font-size:30px;
-			border-radius: 100%;
-			padding-top:11px;
-			text-align: center;
-			overflow: visible;
+  ion-row{
+
+    background: transparent;
   }
-  #icon-left{
-	background-color:#2950d5;
-	left:-10%;
-  }
-   #icon-right{
-	background-color:#3ec9e6;
-	left:10%;
-  }
-  .auteur{
-	color:#354e7c;
-	text-align:center;
+  ion-col{
+    background-color:#0c131f;
+    background-size: cover;
+    color: #efefef;
+    font-size: 1em;
+
 	
   }
-  
-  .dcard{
-  background-color:#131d30;
+  #titleBloc{
+  	text-align: left;
+  	width: 80%;
+  	padding-top: 0px;
+  	position: absolute;
+  	background: none;
+  	word-wrap:break-word;
+  	// color: #eee;
+  	
+  }
+  #headerEv{
+  	padding-top: 4px;
+  	padding-left: 4px;
+  	min-height: 88px;
+  	display: block;
+  	width: 100%;
+  	word-wrap:break-word;
+  	position: relative;
+  	background-color: #008080;
 
-  
   }
-  .tagText{
-	font-size:24px;
-    margin:5px;
-    color: #fff!important;;
+  #meteo{
+  	background: none;
+  	// color: black;
+  	width: 20%;
+  	right: 0%;
+  	font-size: 2.0em;
+  	position: absolute;
   }
-   .tag{
-    display: inline-block;
-    margin: 0 5px 5px 0;
-    background: #028482;
+  ion-item{
   }
-  .dernierItem{
-  		border: none;
-		background-color:#17233a;
-		color:#a4b2cd;
-		width: 50%;
+  #description, #author{
+  	color: #efefef;
+  	background-color:#0c131f;
+  	
   }
-  
-  	#viewBtn{
-		background-color: transparent;
-		color:white;
-		border-radius: 100px;
-		border-color:white;
-		border:1px solid white;
-		margin-top:25px;
-		height: 35px;
-		font-size: 16px;
-		position: relative;
-		
-	}
+  #editBtn{
+  	border-color: #f4ea0d;
+	color:#e4ea0d;
+  }
+  #deleteBtn{
+  	border-color: #CC000d;
+	color:#CC000d;
+  }
+  .footer{
+  	background-color: #0c131f;
+  	padding: 15px;
+  }
+#qrBtn{
+	background: none;
+}
+  .buttons{
+  	background-color: #0c131f;
+  }
+
 
 }

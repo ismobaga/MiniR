@@ -16,18 +16,19 @@
 </ion-header>
 
 <ion-content>
+
   <ion-card>
     <ion-card-content>
 
       <ion-row>
         <ion-col col-2>
-          <ion-thumbnail item-left>
+          <ion-thumbnail item-left (click)="goToMyProfile()">
             <img [src]="userDetails.photoURL">
           </ion-thumbnail>
         </ion-col>
 
         <ion-col col-9 center text-center>
-          <ion-note>
+          <ion-note (click)="newDocument()">
             Vous avez quelque chos a partager?
           </ion-note>
         </ion-col>
@@ -40,14 +41,14 @@
           </button>
         </ion-col>
         <ion-col col-4>
-          <button ion-button icon-left clear small> 
+          <button (click)="newFile()" ion-button icon-left clear small> 
             <ion-icon name="document"></ion-icon>
             Document 
           </button>
         </ion-col>
                <ion-col col-4>
-          <button ion-button icon-left clear small> 
-            <ion-icon name="document"></ion-icon>
+          <button (click)="newEvent()" ion-button icon-left clear small> 
+            <ion-icon name="md-calendar"></ion-icon>
             Evenement 
           </button>
 
@@ -61,6 +62,57 @@
   <div (swipe)="swipePage($event)">
 
     <!-- Cards -->
+    <ion-card class="dcard">
+      <ion-row>
+        <ion-col col-10>
+          <ion-item>
+            <ion-avatar item-left>
+              <img src="http://malimoncton.ga/storage/membre/ismail.jpg">
+            </ion-avatar>
+            <h2 style="font-weight: bold">Ismail Bagayoko</h2>
+            <p>{{"2017/08/24 19:25:22" | amTimeAgo}}</p>
+          </ion-item>
+        </ion-col >
+        <ion-col col-2>
+          <button no-margin no-padding clear color="black" ion-button icon-only style="float: right; top: 15px" (click)="presentPostPopover()">
+            <ion-icon name="more"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-card-content>
+        <p>une description de skdf kdjf fkdxj dkujf dfn fd us dfd kdjf zeu hju gj</p>
+        <ion-item id="fileDiv">
+          <div id="preview">
+            .DOCX
+          </div>
+          <div id="name">
+            <h3>Document Info.pdf</h3>
+            <p>2.61MB</p>
+          </div>
+        </ion-item>
+        <p class="tags">
+        <ion-badge class="tag" >TAG1</ion-badge> 
+        <ion-badge class="tag" >TAG2</ion-badge> 
+        <ion-badge class="tag" >TAG4</ion-badge> 
+        </p>
+          <ion-row>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="thumbs-up"></ion-icon>
+        <div>12 Merci</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="eye"></ion-icon>
+        <div>4 vues</div>
+      </button>
+    </ion-col>
+    
+  </ion-row>
+        
+      </ion-card-content>
+    </ion-card>
     <ion-card *ngFor="let item of dataSet" no-padding padding-bottom class="card">
 
       <ion-row>

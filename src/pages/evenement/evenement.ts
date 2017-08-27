@@ -83,6 +83,9 @@ export class EvenementPage {
   onEventSelected(event){
   	let start = moment(event.startTime).format('LLLL');
   	let end = moment(event.endTime).format('LLLL');
+    console.log(start)
+    console.log("Dans eve", event);
+    
      let modal = this.modalCtrl.create(EventDetailPage, event);
     modal.present();
     modal.onDidDismiss(data =>{

@@ -35,6 +35,7 @@
         "@ionic-native/transfer": "^3.14.0",
         "@ionic/storage": "2.0.1",
         "angular2-moment": "^1.6.0",
+        "angular2-qrcode": "^2.0.1",
         "angularfire2": "^4.0.0-rc.1",
         "cordova-android": "^6.2.3",
         "cordova-browser": "^4.1.0",

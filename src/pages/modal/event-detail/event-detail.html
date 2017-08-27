@@ -1,9 +1,4 @@
-<!--
-  Generated template for the EditNamePage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header id="toolbar">
 
   <ion-toolbar id="toolbar" color="iDark">
@@ -28,45 +23,52 @@
  
 
 <div class="main-content">
-<ion-card class="dcard">
-
-  <div >
-    <h1>Event titre</h1>
-    <p class="tagText">
+<!-- <ion-card class="dcard"> -->
+<div id="headerEv">
+  
+  <div id="titleBloc">
+    <h1>{{event.title}}</h1>
   </div>
-<ion-item class="dernierItem">
-    <span item-left><b>Location</b></span>
-    <button ion-button icon-left clear item-end>
-      MRR 202
-    </button>
-   
-  </ion-item>
-  <ion-item class="dernierItem">
-    <span item-left><b>Date</b></span>
-    <button ion-button icon-left clear item-end>
-      Samedi lz 20 Sep
-    </button>
-   12:00-13:66
-  </ion-item>
-
-</ion-card>
- <ion-row no-padding no-margin>
- <!-- <ion-col id="icon-right" no-padding no-margin col-2><ion-icon name="md-share"></ion-icon></ion-col> -->
-  <ion-col no-padding no-margin col-8>
-  Event Titel jffd kgflgj 
+  <div id="meteo">
+    <ion-icon name="{{meteoIcon | async}}"></ion-icon>
+    <div class="temperature">{{meteoTemperature | async}}<span class="celsius" style="display:inline" aria-label="°Celsius">°C</span></div>
+  </div>
+</div>
+ 
+<ion-row>
+<ion-col col-6>
+    <div><ion-icon name="pin"></ion-icon></div><br>
+    <div>MRR 202 </div>
   </ion-col>
-   <ion-col  id="icon-left" col-2 no-padding no-margin ><ion-icon name="md-share"></ion-icon></ion-col>
-  </ion-row>
-  <h2 class="auteur">Par: Ismail Bagayoko</h2>
+  <ion-col col-6>
+    <div><ion-icon name="time"></ion-icon></div ><br>
+    <div>{{getEventDate()}}</div>
+  </ion-col>
+</ion-row>
+<ion-item id="description" no-lines text-wrap *ngIf="event.description">
+  <ion-icon name="quote" item-start></ion-icon>
+  {{event.description}}
+</ion-item>
+<ion-item id="author" no-lines text-wrap *ngIf="event.user">
+   <ion-avatar item-start>
+      <img [src]="event.user.photoURL" >
+    </ion-avatar>
+  {{event.user.displayName}}
+</ion-item>
+<button ion-button outline icon-left round id="editBtn" *ngIf="can" (click)="editEvent()">
+ <ion-icon name="md-create"></ion-icon>Edit</button>
+ <button ion-button outline icon-left round id="deleteBtn" *ngIf="can" (click)="deleteEvent()">
+ <ion-icon name="trash"></ion-icon>Supprimer</button>
 
-   </div>
-   <ion-row no-padding no-margin>
-    <ion-col no-padding no-margin col-2></ion-col>
-      <ion-col no-padding no-margin text-center col-8>
-<button ion-button id="viewBtn"  clear  (click)="viewDocument()">Ouvrir</button>
-    </ion-col>
-    <ion-col col-1></ion-col>
-  </ion-row>
+
+
  
 </div>
+</div>
 </ion-content>
+<ion-footer class="footerClass">
+    
+            <ion-buttons end>
+            <button ion-button outline round id="qrBtn" (click)="qrCode()" color="iTeal"><ion-icon name="md-barcode"></ion-icon></button>
+            </ion-buttons>
+</ion-footer> 

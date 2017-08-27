@@ -25,30 +25,45 @@
 
 <ion-content>
 <div class="bg" >
-  <ion-row no-padding no-margin>
+<!--   <ion-row no-padding no-margin>
     <ion-col no-padding no-margin col-2></ion-col>
       <ion-col no-padding no-margin text-center col-8>
       <button class="doc-name" >Document Name</button>
     </ion-col>
     <ion-col col-1></ion-col>
   </ion-row>
-
+ -->
 <div class="main-content">
- <ion-row no-padding no-margin>
+<p>une description de skdf kdjf fkdxj dkujf dfn fd us dfd kdjf zeu hju gj</p>
+<!--  <ion-row no-padding no-margin>
  <ion-col id="icon-right" no-padding no-margin col-2><ion-icon name="md-share"></ion-icon></ion-col>
   <ion-col no-padding no-margin col-8>
-	<div id="pp" >
-        <!-- <img src="{{pathForImage(lastImage)}}"  class="round"> -->
+  <div id="pp" >
+        <img src="{{pathForImage(lastImage)}}"  class="round">
         <img src="assets/images/qr.png"  class="round">
 
   </div>
   </ion-col>
    <ion-col  id="icon-left" col-2 no-padding no-margin ><ion-icon name="md-share"></ion-icon></ion-col>
-  </ion-row>
-  <h2 class="auteur">Par: Ismail Bagayoko</h2>
+  </ion-row> -->
+  <ion-item id="author" no-lines text-wrap >
+   <ion-avatar item-start>
+      <img src="assets/images/qr.png" >
+    </ion-avatar>
+  Ismail Bagayoko
+</ion-item>
   <ion-card class="dcard">
 
   <div >
+        <ion-item id="fileDiv" no-lines>
+          <div id="preview">
+            .PDF
+          </div>
+          <div id="name">
+            <h3>Document Info.pdf</h3>
+            <p>26.1MB</p>
+          </div>
+        </ion-item>
     <p class="tagText">
 		<ion-badge class="tag">MATH2653</ion-badge>
 		<ion-badge class="tag">HIVER2017</ion-badge>
@@ -79,3 +94,9 @@
  
 </div>
 </ion-content>
+<ion-footer class="footerClass">
+    
+            <ion-buttons end>
+            <button ion-button outline round id="qrBtn" (click)="qrCode()" color="iTeal"><ion-icon name="md-barcode"></ion-icon></button>
+            </ion-buttons>
+</ion-footer> 

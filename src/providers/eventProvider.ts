@@ -20,11 +20,18 @@ export class EventProvider {
     	return this.afdatabase.list('/events/');
     }
     addEvent(event){
-    	event.uid= this.userDetails.uid;
-    	this.afdatabase.list('/events/').push(event);
+        event.uid= this.userDetails.uid;
+        this.afdatabase.list('/events/').push(event);
+    }
+    editEvent(key, event){
+        event.uid= this.userDetails.uid;
+        this.afdatabase.database.ref('/events/'+key).update(event);
     }
     getUser(uid){
-    	return this.onlineProv.getUser(uid);
+        return this.onlineProv.getUser(uid);
+    }
+    deleteEvent(key){
+    	this.afdatabase.object('/events/'+key).remove();
     }
     
 }

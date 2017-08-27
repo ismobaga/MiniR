@@ -1,0 +1,25 @@
+
+<ion-header id="toolbar">
+
+  <ion-toolbar id="toolbar" color="iDark">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()" color="iTeal">
+        <ion-icon name="close" ></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="dismiss()" color="iTeal">
+        <ion-icon name="close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+ 
+<ion-content color="iDark">
+  <div class="qr-code">
+    <!-- <img src="{{imgUrl}}"> -->
+    <qr-code [value]="getQRCode()" [size]="150" ></qr-code>
+  </div>
+
+</ion-content>
