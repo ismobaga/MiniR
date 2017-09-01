@@ -3,7 +3,7 @@ import { NavController, Events, LoadingController, App, Content, PopoverControll
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 import { PostPopover } from './post-popover';
 import { MessagePage } from  '../message/message';
-import { WelcomePage } from  '../welcome/welcome';
+// import { WelcomePage } from  '../welcome/welcome';
 import { NewEventPage } from '../modal/new-event/new-event';
 import { NewDocumentPage } from '../modal/new-document/new-document';
 import { EventProvider } from '../../providers/eventProvider';
@@ -11,7 +11,7 @@ import { EventProvider } from '../../providers/eventProvider';
 import { AuthService } from '../../providers/auth-service/auth-service';
 
 import { File } from '@ionic-native/file';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { MediatorProvider } from '../../providers/mediatorProvider';
 import { LogProvider } from '../../providers/logProvider';
@@ -128,28 +128,52 @@ export class HomePage {
   }
   newDocument(res=null){
     let modal;
-    if(res=null){
+    if(res===null){
       modal = this.modalCtrl.create(NewDocumentPage);   
     }
     else{
-      modal = this.modalCtrl.create(NewDocumentPage, {document:res});   
+      modal = this.modalCtrl.create(NewDocumentPage, {'docData':res});   
     }
     modal.present();
   }
   getDocuments(){
-	   let loader = this.loadingCtrl.create({
-      duration: 200
-    });
-    loader.present(); 
-      this.authService.postData(this.userPostData, 'documents')
-      .then((result) => {
-        this.responseData = result;
-        if (this.responseData.documentsData) {
-          this.dataSet = this.responseData.documentsData;
-        } else {}
-      }, (err) => {
+	   // let loader = this.loadingCtrl.create({
+    //   duration: 200
+    // });
+    // loader.present(); 
+      // this.authService.postData(this.userPostData, 'documents')
+      // .then((result) => {
+      //   this.responseData = result;
+      //   if (this.responseData.documentsData) {
+      //     this.dataSet = this.responseData.documentsData;
+      //   } else {}
+      // }, (err) => {
 
-      });
+      // });
+      this.documentProvider.getDocuments().subscribe(data=>{
+        let documents = [];
+        let self =this;
+        self.dataSet = []
+         data.forEach((doc)=>{
+           let document =doc;
+          let userRef= this.documentProvider.getUser(doc.authorUid);
+           userRef.once('value').then( (snapshot) => {
+           //let user = result['userData'];
+          // user.uid = user.id;
+           //user.photo= user.profile_image;
+           // let user = snapshot.val();
+           // user.displayName = user.firstName+" "+user.lastName;
+           document.user = snapshot.val();
+           console.log(document);
+           documents.push(document);
+           // self.dataSet.push(documents);
+
+           self.zone.run(()=>{
+            self.dataSet.push(document);
+           })
+         });
+      })
+     })
   }
   convertTime(created) {
     let date = new Date(created);
@@ -212,7 +236,7 @@ export class HomePage {
 };
 
   let pathto = this.downloadFile(url);
-  console.log(this.file.dataDirectory+'file.pdf');
+  console.log(/*this.file.dataDirectory+'file.pdf'*/pathto);
   console.log('Viewer');
 	this.document.viewDocument(this.file.dataDirectory+'file.pdf', 'application/pdf', options)
 }
@@ -229,8 +253,8 @@ export class HomePage {
     // handle error
   });
   }
-  presentPostPopover() {
-    let popover = this.popoverCtrl.create(PostPopover);
+  presentPostPopover(key) {
+    let popover = this.popoverCtrl.create(PostPopover, {'key':key});
 
     popover.present();
   }

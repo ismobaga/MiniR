@@ -3,8 +3,8 @@ import { NavController, NavParams, ModalController } from 'ionic-angular';
 import * as moment from 'moment';
 import { NewEventPage } from '../modal/new-event/new-event';
 import { EventDetailPage } from '../modal/event-detail/event-detail';
-import { AngularFireDatabase } from 'angularfire2/database';
 import { EventProvider } from '../../providers/eventProvider'
+import { AngularFireDatabase } from 'angularfire2/database';
 
 
 @Component({

@@ -51,19 +51,26 @@ export interface Chat {
     notify?: number; //1 if this chat unread yet 
 }
 
-export interface Document {
+export interface IDocument {
     text?:string, 
-    name:string, 
-    extentsion?:string, 
+    name?:string, 
+    extension?:string, 
     size?:string, 
-    tags?:Array<string>,
-    url:string,
+    tags?:Array<Tag>,
+    downloadURL?:string,
     views:number,
     merci:number,
     authorUid:string,
-    date:string
+    date:string,
+    fullPath?:string,
+    color:string,
+    hasFile:boolean
   }
-
+export interface Tag{
+     display:string,
+     value: string,
+            readonly?:boolean
+}
 export class GlobalStatictVar {
 
     public static MSG_STATUS_UN_READ = 0;

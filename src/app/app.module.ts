@@ -23,12 +23,14 @@ import { EvenementPage } from '../pages/evenement/evenement';
 import { ProfilePage } from '../pages/profile/profile';
 import { TabsPage } from '../pages/tabs/tabs';
 import { EditNamePage } from '../pages/modal/edit-name/edit-name';
+import { EditDocumentNamePage } from '../pages/modal/edit-document-name/edit-document-name';
 import { EditAnneePage } from '../pages/modal/edit-annee/edit-annee';
 import { DocumentDetailPage } from '../pages/modal/document-detail/document-detail';
 import { EventDetailPage } from '../pages/modal/event-detail/event-detail';
 import { NewEventPage } from '../pages/modal/new-event/new-event';
 import { NewDocumentPage } from '../pages/modal/new-document/new-document';
 import { QRCodePage } from '../pages/modal/qr-code/qr-code';
+import { EditTagsPage } from '../pages/modal/edit-tags/edit-tags'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -44,6 +46,7 @@ import { DocumentViewer } from '@ionic-native/document-viewer';
 import { AuthService } from '../providers/auth-service/auth-service';
 import { MomentModule } from 'angular2-moment';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Keyboard } from '@ionic-native/keyboard';
 
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -51,7 +54,7 @@ import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { QRCodeModule, QRCodeComponent } from 'angular2-qrcode';
+import { QRCodeModule } from 'angular2-qrcode';
 
 import { SqlStorage } from '../shared/SqlStorage';
 import { UtilsProvider } from '../providers/utilsProvider';
@@ -67,7 +70,9 @@ import { ImgHandlerProvider } from '../providers/img-handler/img-handler';
 import { ChatProvider } from '../providers/chat/chat';
 import { DocumentProvider } from '../providers/document/document';
 
-
+import { TagInputModule } from 'ng2-tag-input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed! 
+ 
 
 
 export const firebaseConfig = {
@@ -104,14 +109,18 @@ export const firebaseConfig = {
     ParallaxDirective,
     EditNamePage,
     EditAnneePage,
+    EditDocumentNamePage,
+    EditTagsPage,
 	DocumentDetailPage,
     EventDetailPage
 
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule, 
     MomentModule,
+    TagInputModule, BrowserAnimationsModule,
     QRCodeModule,
     NgCalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),
@@ -132,6 +141,7 @@ export const firebaseConfig = {
     MessageDetailPage,
     NewMessagePage,
     DocumentPage,
+    EditTagsPage,
     NewEventPage,
     EvenementPage,
     ContactPage,
@@ -142,6 +152,7 @@ export const firebaseConfig = {
     QRCodePage,
     EditNamePage,
     EditAnneePage,
+    EditDocumentNamePage,
 	DocumentDetailPage,
     EventDetailPage
     ],
@@ -154,6 +165,7 @@ export const firebaseConfig = {
     FileTransfer,
     FilePath,
     Camera,
+    Keyboard,
     SQLite,
     DocumentViewer,
     AuthService,

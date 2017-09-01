@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { FileChooser } from '@ionic-native/file-chooser';
 import firebase from 'firebase';
 import {  ToastController, ActionSheetController, LoadingController  } from 'ionic-angular';
 import { File, FileEntry } from '@ionic-native/file';
@@ -18,7 +17,7 @@ export class ImgHandlerProvider {
 	nativePath:any;
 	fireStore = firebase.storage();
 	imageURL;
-  constructor(public fileChooser: FileChooser, public actionSheet: ActionSheetController, public camera: Camera, public loadingCtrl:LoadingController, public toastCtrl: ToastController) {
+  constructor(public actionSheet: ActionSheetController, public camera: Camera, public loadingCtrl:LoadingController, public toastCtrl: ToastController) {
     console.log('Hello ImgHandlerProvider Provider');
   }
 
@@ -149,7 +148,7 @@ storeImage(){
         {
           text: "Choisir",
           handler: () => {
-            this.storeImg(this.camera.PictureSourceType.CAMERA).then((url)=>{
+              this.storeImg(this.camera.PictureSourceType.PHOTOLIBRARY).then((url)=>{
               resolve(url);
             });
           }
@@ -157,7 +156,7 @@ storeImage(){
         {
           text: "Camera",
           handler: () => {
-              this.storeImg(this.camera.PictureSourceType.PHOTOLIBRARY).then((url)=>{
+            this.storeImg(this.camera.PictureSourceType.CAMERA).then((url)=>{
                 resolve(url);
               });
           }
@@ -169,8 +168,7 @@ storeImage(){
       ]
     });
     actionSheet.present();
- }
- );
+ });
   }
   storeImg(type){
         return new Promise((resolve, reject) => {

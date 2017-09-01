@@ -37,7 +37,7 @@
         <ion-col col-4>
           <button ion-button icon-left clear small>
             <ion-icon name="camera"></ion-icon>
-            <button ion-button icon-left clear>Photo   </button>
+            <button ion-button icon-left clear>Photo</button>
           </button>
         </ion-col>
         <ion-col col-4>
@@ -62,50 +62,50 @@
   <div (swipe)="swipePage($event)">
 
     <!-- Cards -->
-    <ion-card class="dcard">
+    <ion-card class="dcard" *ngFor="let item of dataSet">
       <ion-row>
         <ion-col col-10>
           <ion-item>
             <ion-avatar item-left>
-              <img src="http://malimoncton.ga/storage/membre/ismail.jpg">
+              <img [src]="item.user.photoURL">
             </ion-avatar>
-            <h2 style="font-weight: bold">Ismail Bagayoko</h2>
-            <p>{{"2017/08/24 19:25:22" | amTimeAgo}}</p>
+            <h2 style="font-weight: bold">item.user.displayName</h2>
+            <p>{{item.date | amTimeAgo}}</p>
           </ion-item>
         </ion-col >
         <ion-col col-2>
-          <button no-margin no-padding clear color="black" ion-button icon-only style="float: right; top: 15px" (click)="presentPostPopover()">
+          <button no-margin no-padding clear color="black" ion-button icon-only style="float: right; top: 15px" (click)="presentPostPopover(item.$key)">
             <ion-icon name="more"></ion-icon>
           </button>
         </ion-col>
       </ion-row>
       <ion-card-content>
-        <p>une description de skdf kdjf fkdxj dkujf dfn fd us dfd kdjf zeu hju gj</p>
-        <ion-item id="fileDiv">
+        <p *ngIf="item.text">{{item.text}}</p>
+        <ion-item id="fileDiv" *ngIf="item.hasFile">
           <div id="preview">
-            .DOCX
+            .{{item.extension}}
           </div>
           <div id="name">
-            <h3>Document Info.pdf</h3>
-            <p>2.61MB</p>
+            <h3>{{item.name}}</h3>
+            <p>{{item.size}}</p>
           </div>
         </ion-item>
         <p class="tags">
-        <ion-badge class="tag" >TAG1</ion-badge> 
-        <ion-badge class="tag" >TAG2</ion-badge> 
-        <ion-badge class="tag" >TAG4</ion-badge> 
+        <ion-badge class="tag" *ngFor="let tag of item.tags">{{toUpper(tag.display)}}</ion-badge> 
+        <!-- <ion-badge class="tag" >TAG2</ion-badge>  -->
+        <!-- <ion-badge class="tag" >TAG4</ion-badge>  -->
         </p>
           <ion-row>
     <ion-col>
       <button ion-button icon-left clear small>
         <ion-icon name="thumbs-up"></ion-icon>
-        <div>12 Merci</div>
+        <div>{{item.merci}} Merci</div>
       </button>
     </ion-col>
     <ion-col>
       <button ion-button icon-left clear small>
         <ion-icon name="eye"></ion-icon>
-        <div>4 vues</div>
+        <div>{{item.views}} vues</div>
       </button>
     </ion-col>
     
@@ -149,7 +149,7 @@
 
       <ion-card-content>
         <p class="like-content">
-        <ion-badge class="tag" *ngFor="let tag of item.tags">{{toUpper(tag.tag)}}</ion-badge> 
+        <!-- <ion-badge class="tag" *ngFor="let tag of item.tags">{{toUpper(tag.tag)}}</ion-badge>  -->
         </p>
         
       </ion-card-content>

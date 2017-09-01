@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { Keyboard } from '@ionic-native/keyboard';
 import { AngularFireAuth} from 'angularfire2/auth';
 import { TabsPage } from '../pages/tabs/tabs';
 //import { WelcomePage } from '../pages/welcome/welcome';
@@ -12,7 +12,6 @@ import { LoginPage } from '../pages/login/login';
 import { MediatorProvider } from '../providers/mediatorProvider';
 
 
-var cordova;
 
 @Component({
   templateUrl: 'app.html',
@@ -22,7 +21,7 @@ var cordova;
 export class MyApp {
   rootPage:any ;//= LoginPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afAuth: AngularFireAuth, public medProvid: MediatorProvider) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afAuth: AngularFireAuth, public medProvid: MediatorProvider, public keyboard: Keyboard) {
     platform.ready().then(() => {
       // const authObserver = afAuth.authState.subscribe(user => {
       //     if (JSON.parse(localStorage.getItem('userData'))) { 
@@ -35,14 +34,13 @@ export class MyApp {
       // });
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+
       statusBar.styleDefault();
       medProvid.initLocaleDB();
       splashScreen.hide();
       this.intialize();
-      if(cordova && cordova.plugins.keyboard ){
-        cordova.plugins.keyboard.dislableScroll(true);
+       // this.keyboard.disableScroll(true);
        //medProvid.initLocaleDB();
-      }
     });
   }
 

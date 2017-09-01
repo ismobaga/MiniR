@@ -1,11 +1,13 @@
 import { Component, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
-import { NavParams, Events, Content, NavController } from 'ionic-angular';
+import { Platform, NavParams, Events, Content, NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { User, Chat, Message, GlobalStatictVar } from '../../shared/interfaces';
 import { MediatorProvider } from '../../providers/mediatorProvider';
 import { ImgHandlerProvider } from '../../providers/img-handler/img-handler';
 import { LogProvider } from '../../providers/logProvider';
 import { AuthService } from '../../providers/auth-service/auth-service';
+import { Keyboard } from '@ionic-native/keyboard';
+
 
 @Component({
   selector: 'page-conversation',
@@ -28,12 +30,23 @@ export class Conversation {
   //if you want to know more about navigating lifecycle events in ionic go here http://blog.ionic.io/navigating-lifecycle-events/
   isUserHere: boolean = false;
 
-  constructor(public navCtrl:NavController ,public authService:AuthService, public imgHandler:ImgHandlerProvider,private navParam: NavParams, public medProvid: MediatorProvider, public events: Events, public logProvid: LogProvider
+  constructor(private platform: Platform, private keyboard: Keyboard, public navCtrl:NavController ,public authService:AuthService, public imgHandler:ImgHandlerProvider,private navParam: NavParams, public medProvid: MediatorProvider, public events: Events, public logProvid: LogProvider
     , public changeDetectionRef: ChangeDetectorRef) {
     this.user = this.navParam.data;
     events.subscribe(GlobalStatictVar.NEW_MESSAGE_EVENT, (message, sender) => {
       this.messageArrived(message, sender);
     });
+    if (platform.is('ios')) {
+      let  appEl = <HTMLElement>(document.getElementsByTagName('ION-APP')[0]),
+      appElHeight = appEl.clientHeight;
+      this.keyboard.disableScroll(true);
+      this.keyboard.onKeyboardShow().subscribe((e)=>{
+        appEl.style.height = (appElHeight - (<any>e).keyboardHeight) + 'px';
+      })
+      window.addEventListener('native.keyboardhide', () => {
+        appEl.style.height = '100%';
+      });
+    }
   }
   goBack(){
     this.navCtrl.pop();
@@ -56,9 +69,9 @@ export class Conversation {
     element.style.height      = scroll_height + "px";
     textarea.style.minHeight  = scroll_height + "px";
     textarea.style.height     = scroll_height + "px";
-}
+  }
   showDate(){
-  	this.dateVisible = !this.dateVisible;
+    this.dateVisible = !this.dateVisible;
   }
   ionViewDidLoad() {
     //we only need this call for one time when view loaded to cach
@@ -173,71 +186,71 @@ export class Conversation {
 
     //If the online status false message will be put in Firebase queue mais
     //J'utilse le mien 
- //  if (this.medProvid.onlineStatus) {
+    //  if (this.medProvid.onlineStatus) {
       this.medProvid.sendMessage(msg);
       this.logProvid.log('msg sent!');
-  // } else {
-      //online DB is offline add msg to queue
-      // msg.sentstatus = GlobalStatictVar.MSG_STATUS_UN_SENT;
-      // this.medProvid.addMessageToQueue(msg);
-      // this.logProvid.log('msg queued!');
-  //  }
-    if(msg.type==GlobalStatictVar.MSG_TYPE_PHOTO){
-      msg.body='image...';
-    }
-    this.updateChat(this.chat, msg.body, msg.datetime);
-    this.messages.push(msg);
-    this.message = "";
-    this.change();
-    this.scrollChat();
-    input.setFocus();
-    this.changeDetectionRef.detectChanges();
-    this.logProvid.log('check chat: ' + this.chat.id);
-  }
-
-
-  updateChat(chat, lastMsgText, lastMsgDate) {
-    //call cette fonction pour chaque msg sent/recieve
-    //Je pouvait a faire quant on sort (ionViewWillLeave) mais l'app peut cracher ou si le user quit 
-    //aors pour faire sur que le chat est a jour dans le local db
-    chat.lastMsgText = lastMsgText;
-    chat.lastMsgDate = lastMsgDate;
-    this.medProvid.updateChat(chat);
-  }
-
-  scrollChat() {
-    setTimeout(()=>{
-    this.chatContainer.scrollToBottom(300);
-    }, 500)
-      
-  }
-
-  ionViewWillLeave() {
-    //Supprimer le chat s'il ya pas de message entre deux users
-    if (this.messages.length == 0) {
-      this.medProvid.removeChate(this.chat);
-      this.logProvid.log('chat vide supprimer');
-    }
-    this.deAttach();
-    this.isUserHere = false;
-  }
-
-  deAttach() {
-    if (this.events) {
-      this.events.unsubscribe(GlobalStatictVar.NEW_MESSAGE_EVENT);
-    }
-  }
-
-  messageArrived(message, senderUser) {
-    if (this.isUserHere) {
-      if (this.user.uid == message.uid) {
-
-        this.messages.push(message);
+      // } else {
+        //online DB is offline add msg to queue
+        // msg.sentstatus = GlobalStatictVar.MSG_STATUS_UN_SENT;
+        // this.medProvid.addMessageToQueue(msg);
+        // this.logProvid.log('msg queued!');
+        //  }
+        if(msg.type==GlobalStatictVar.MSG_TYPE_PHOTO){
+          msg.body='image...';
+        }
+        this.updateChat(this.chat, msg.body, msg.datetime);
+        this.messages.push(msg);
+        this.message = "";
+        this.change();
         this.scrollChat();
+        input.setFocus();
         this.changeDetectionRef.detectChanges();
-        this.logProvid.log('new message arrive');
-        this.events.publish(GlobalStatictVar.NOTIFICATION_EVENT, false);
+        this.logProvid.log('check chat: ' + this.chat.id);
+      }
+
+
+      updateChat(chat, lastMsgText, lastMsgDate) {
+        //call cette fonction pour chaque msg sent/recieve
+        //Je pouvait a faire quant on sort (ionViewWillLeave) mais l'app peut cracher ou si le user quit 
+        //aors pour faire sur que le chat est a jour dans le local db
+        chat.lastMsgText = lastMsgText;
+        chat.lastMsgDate = lastMsgDate;
+        this.medProvid.updateChat(chat);
+      }
+
+      scrollChat() {
+        setTimeout(()=>{
+          this.chatContainer.scrollToBottom(300);
+        }, 500)
+
+      }
+
+      ionViewWillLeave() {
+        //Supprimer le chat s'il ya pas de message entre deux users
+        if (this.messages.length == 0) {
+          this.medProvid.removeChate(this.chat);
+          this.logProvid.log('chat vide supprimer');
+        }
+        this.deAttach();
+        this.isUserHere = false;
+      }
+
+      deAttach() {
+        if (this.events) {
+          this.events.unsubscribe(GlobalStatictVar.NEW_MESSAGE_EVENT);
+        }
+      }
+
+      messageArrived(message, senderUser) {
+        if (this.isUserHere) {
+          if (this.user.uid == message.uid) {
+
+            this.messages.push(message);
+            this.scrollChat();
+            this.changeDetectionRef.detectChanges();
+            this.logProvid.log('new message arrive');
+            this.events.publish(GlobalStatictVar.NOTIFICATION_EVENT, false);
+          }
+        }
       }
     }
-  }
-}

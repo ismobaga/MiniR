@@ -25,15 +25,20 @@
    <ion-textarea (input)="change()" rows="1" id="documentTextInput" [(ngModel)]="document.text" placeholder="Une petite description">
    </ion-textarea>
       <ion-item id="fileDiv" *ngIf="documentLoaded">
-          <div id="preview">
-            .DOCX
+          <div id="preview" (click)=color() [style.background-color]="document.color">
+            .{{this.document.extentsion}}
           </div>
-          <div id="name">
-            <h3 *ngIf="document.name">{{document.name}}</h3>
+          <div id="name" (click)="editDocumentName()">
+            <h3 *ngIf="document.name">{{document.name+'.'}}{{this.document.extentsion}}</h3>
             <h3 *ngIf="!document.name">No name</h3>
-            <p *ngIf="document.size">{{document.size}}</p>
+            <p *ngIf="document.size">{{document.size}} bytes</p>
           </div>
         </ion-item>
+        <!-- <ion-item > -->
+        <div (click)="editTags()" id="tagDiv">
+        <p id="tagLabel">Tags :</p> <p class="tags"><ion-badge *ngFor="let tag of document.tags" class="tag" >{{tag.display}}</ion-badge></p>
+        
+        </div>
   </ion-list>
     </div>
   

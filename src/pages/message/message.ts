@@ -7,7 +7,7 @@ import { MediatorProvider } from '../../providers/mediatorProvider';
 
 
 import { MessageDetailPage } from '../message-detail/message-detail';
-import { NewMessagePage } from '../new-message/new-message';
+// import { NewMessagePage } from '../new-message/new-message';
 import { ContactPage } from '../contact/contact';
 import { LogProvider } from '../../providers/logProvider';
 import { Conversation } from '../conversation/conversation';

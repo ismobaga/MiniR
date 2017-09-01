@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, ToastController, ModalController } from 'ionic-angular';
+import { ViewController, ToastController, ModalController, NavParams } from 'ionic-angular';
 import { DocumentDetailPage } from '../modal/document-detail/document-detail';
 
 @Component({
@@ -12,7 +12,9 @@ import { DocumentDetailPage } from '../modal/document-detail/document-detail';
 })
 export class PostPopover {
   constructor(
-         public modalCtrl: ModalController,public viewCtrl: ViewController, public toastCtrl: ToastController) {}
+         public modalCtrl: ModalController,public viewCtrl: ViewController, public toastCtrl: ToastController, public navParms: NavParams) {
+
+  }
 
   close() {
     this.presentToast();
@@ -21,7 +23,7 @@ export class PostPopover {
   showDocumentDetail(){
 	  	  	      // Open it as a modal page
 	
-    let modal = this.modalCtrl.create(DocumentDetailPage);
+    let modal = this.modalCtrl.create(DocumentDetailPage, this.navParms.data);
 
 	modal.present();
 	this.viewCtrl.dismiss()

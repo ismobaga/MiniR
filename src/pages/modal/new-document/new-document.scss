@@ -1,5 +1,74 @@
 
 page-new-document {
+  #tagLabel{
+    padding-top: 2px;
+    margin-bottom: 0;
+    word-wrap:break-word;
+    width: 100%;
+    color: #efefef;
+  }
+ .tags{
+    padding-top: 2px;
+    margin-top: 0;
+    word-wrap:break-word;
+    height: auto;
+    display: block;
+    width: 100%;
+  }
+  .tag{
+    display: inline-block;
+    margin: 0 5px 5px 0;
+    background: #028482;
+  }
+  .content{
+    background-color:#0c131f;
+    color: #0c131f;
+    font-size: 1.7em;
+  }
 
+    #fileDiv{
+    // border: 2px #fff solid;
+    background-color: #cc9999;
+    background-color: rgba(204, 99, 99, 0.3);
+    display: block;
+    position: relative;
+    padding: 4px;
+    border-radius: 4px;
+
+
+  }
+  #documentTextInput{
+    color: #efefef;
+  }
+  #preview{
+    // background-color: red;
+    background-size: cover;
+    color:white;
+    height: 40px;
+    max-width: 30%;
+    padding: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    // margin: 3px; 
+    top: 6px;
+    left: 4px;
+    word-wrap:break-word;
+    position: absolute;
+    border-radius: 15%;
+  }
+  #name{
+    position: absolute;
+    top: 5px;
+    color:#efefef;
+    left: 30%;
+    //right: 0%;
+    h3{
+      color: #efefef;
+
+    }
+    p{
+      color:#b1b1b1
+    }
+  }
 
 }
