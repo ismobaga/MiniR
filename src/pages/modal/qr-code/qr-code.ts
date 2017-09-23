@@ -29,7 +29,7 @@ export class QRCodePage {
     temp.type = this.params.type;
     temp.ref = this.params.ref;
     temp.key = this.params.key;
-    temp.key = this.params.title
+    temp.title = this.params.title
     let code:string = JSON.stringify(temp);
     console.log(code);
     console.log(temp);

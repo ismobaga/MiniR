@@ -31,7 +31,9 @@ export class HomePage {
 
   public like_btn = {
     color: 'black',
-    icon_name: 'heart-outline'
+    icon_name: 'ios-thumbs-up-outline',
+    icon_name_liked : 'thumbs-up',
+     color_liked : 'danger'
   };
 
   public tap: number = 0;
@@ -136,8 +138,12 @@ export class HomePage {
     }
     modal.present();
   }
+  likeDocument(key, number){
+
+  }
+        documents = [];
   getDocuments(){
-	   // let loader = this.loadingCtrl.create({
+     // let loader = this.loadingCtrl.create({
     //   duration: 200
     // });
     // loader.present(); 
@@ -151,8 +157,8 @@ export class HomePage {
 
       // });
       this.documentProvider.getDocuments().subscribe(data=>{
-        let documents = [];
         let self =this;
+        self.documents = [];
         self.dataSet = []
          data.forEach((doc)=>{
            let document =doc;
@@ -163,18 +169,28 @@ export class HomePage {
            //user.photo= user.profile_image;
            // let user = snapshot.val();
            // user.displayName = user.firstName+" "+user.lastName;
+           document.liked = false
+           let merciTab : Array<string> = <Array<string>> doc.merciArray;
+           if (merciTab) {
+             document.liked =  merciTab[doc.authorUid]==doc.authorUid;
+    
+
+           }
            document.user = snapshot.val();
-           console.log(document);
-           documents.push(document);
+           //console.log(document);
            // self.dataSet.push(documents);
+     
 
            self.zone.run(()=>{
-            self.dataSet.push(document);
+            self.documents.push(document);
+          // self.documents[document.$key] = document;
+            //self.dataSet[document.$key] =document;
            })
          });
       })
      })
   }
+  //75;1065    
   convertTime(created) {
     let date = new Date(created);
     return date;
@@ -186,7 +202,7 @@ export class HomePage {
   	this.app.getRootNav().push(MessagePage);
   }
   goCodeScanner(){
-	        console.log("Scanner Camera");
+	      console.log("Scanner Camera");
 			let loader = this.loadingCtrl.create({
       duration: 200
     });
@@ -226,7 +242,7 @@ export class HomePage {
     tapPhotoLike(times) { // If we click double times, it will trigger like the post
     this.tap++;
     if(this.tap % 2 === 0) {
-      this.likeButton();
+      //this.likeButton();
     }
   }
 
@@ -254,20 +270,15 @@ export class HomePage {
   });
   }
   presentPostPopover(key) {
-    let popover = this.popoverCtrl.create(PostPopover, {'key':key});
+    let popover = this.popoverCtrl.create(PostPopover, {'key':key, 'uid': this.userDetails.uid});
 
     popover.present();
   }
-    likeButton() {
-    if(this.like_btn.icon_name === 'heart-outline') {
-      this.like_btn.icon_name = 'heart';
-      this.like_btn.color = 'danger';
-      // Do some API job in here for real!
-    }
-    else {
-      this.like_btn.icon_name = 'heart-outline';
-      this.like_btn.color = 'black';
-    }
+
+    likeButton(key) {
+ 
+
+    this.documentProvider.like(key, this.userDetails.uid);
   }
 
 }

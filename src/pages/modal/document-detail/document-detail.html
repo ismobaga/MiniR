@@ -34,7 +34,7 @@
   </ion-row>
  -->
 <div class="main-content">
-<p>une description de skdf kdjf fkdxj dkujf dfn fd us dfd kdjf zeu hju gj</p>
+<p>{{document.text}}</p>
 <!--  <ion-row no-padding no-margin>
  <ion-col id="icon-right" no-padding no-margin col-2><ion-icon name="md-share"></ion-icon></ion-col>
   <ion-col no-padding no-margin col-8>
@@ -48,36 +48,35 @@
   </ion-row> -->
   <ion-item id="author" no-lines text-wrap >
    <ion-avatar item-start>
-      <img src="assets/images/qr.png" >
+      <img [src]="document.author.photoURL" >
     </ion-avatar>
-  Ismail Bagayoko
+  {{document.author.displayName}}
 </ion-item>
   <ion-card class="dcard">
 
   <div >
-        <ion-item id="fileDiv" no-lines>
+        <ion-item id="fileDiv" no-lines *ngIf="document.hasFile">
           <div id="preview">
-            .PDF
+            .{{document.extension}}
           </div>
           <div id="name">
-            <h3>Document Info.pdf</h3>
-            <p>26.1MB</p>
+            <h3>{{document.name}}</h3>
+            <p>{{document.size}}</p>
           </div>
         </ion-item>
     <p class="tagText">
-		<ion-badge class="tag">MATH2653</ion-badge>
-		<ion-badge class="tag">HIVER2017</ion-badge>
-		<ion-badge class="tag">MATH2653</ion-badge>
-		<ion-badge class="tag">HIVER2017</ion-badge></p>
+    <ion-badge class="tag" *ngFor="let tag of document.tags">{{toUpper(tag.display)}}</ion-badge> 
+    </p>
   </div>
 <ion-item class="dernierItem">
-    <span item-left>il ya 18 min</span>
-    <button ion-button icon-right clear item-end>
-      20
-	  Merci
-    </button>
+    <span item-left>{{document.date | amTimeAgo}}</span>
+      <button ion-button icon-right clear item-end (click)="likeButton(document.$key)">
+        <ion-icon *ngIf="!liked"  name="{{like_btn.icon_name}}" color="{{ like_btn.color }}"></ion-icon>
+        <ion-icon *ngIf="liked"  name="{{like_btn.icon_name_liked}}" color="{{ like_btn.color_liked }}"></ion-icon>
+        <div>{{noLike}} Merci</div>
+      </button>
 	 <button ion-button icon-right clear item-end>
-      20
+      {{document.views}} 
 	  <ion-icon name="eye"></ion-icon>
     </button>
   </ion-item>

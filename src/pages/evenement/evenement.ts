@@ -40,16 +40,14 @@ export class EvenementPage {
         this.eventSource = [] ;
         let events = [];
         let self =this;
-        console.log('data', data);
+       
          data.forEach((ev)=>{
            let event =ev;
            event.startTime = new Date(ev.startTime);
            event.endTime = new Date(ev.endTime);
           let userRef= this.eventProvider.getUser(ev.uid);
            userRef.once('value').then(function (snapshot) {
-           //let user = result['userData'];
-          // user.uid = user.id;
-           //user.photo= user.profile_image;
+
            let user =snapshot.val();
            user.displayName = user.firstName+" "+user.lastName;
            event.user=user;

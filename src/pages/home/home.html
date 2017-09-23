@@ -17,7 +17,7 @@
 
 <ion-content>
 
-  <ion-card>
+  <ion-card class="dcard">
     <ion-card-content>
 
       <ion-row>
@@ -62,14 +62,14 @@
   <div (swipe)="swipePage($event)">
 
     <!-- Cards -->
-    <ion-card class="dcard" *ngFor="let item of dataSet">
+    <ion-card class="dcard" *ngFor="let item of documents">
       <ion-row>
         <ion-col col-10>
           <ion-item>
             <ion-avatar item-left>
               <img [src]="item.user.photoURL">
             </ion-avatar>
-            <h2 style="font-weight: bold">item.user.displayName</h2>
+            <h2 style="font-weight: bold">{{item.user.displayName}}</h2>
             <p>{{item.date | amTimeAgo}}</p>
           </ion-item>
         </ion-col >
@@ -97,8 +97,9 @@
         </p>
           <ion-row>
     <ion-col>
-      <button ion-button icon-left clear small>
-        <ion-icon name="thumbs-up"></ion-icon>
+      <button ion-button icon-left clear small (click)="likeButton(item.$key)">
+        <ion-icon *ngIf="!item.liked"  [name]="like_btn.icon_name" color="{{ like_btn.color }}"></ion-icon>
+        <ion-icon *ngIf="item.liked"  [name]="like_btn.icon_name_liked" color="{{ like_btn.color_liked }}"></ion-icon>
         <div>{{item.merci}} Merci</div>
       </button>
     </ion-col>
@@ -113,6 +114,7 @@
         
       </ion-card-content>
     </ion-card>
+    <!-- 
     <ion-card *ngFor="let item of dataSet" no-padding padding-bottom class="card">
 
       <ion-row>
@@ -149,13 +151,13 @@
 
       <ion-card-content>
         <p class="like-content">
-        <!-- <ion-badge class="tag" *ngFor="let tag of item.tags">{{toUpper(tag.tag)}}</ion-badge>  -->
+         <ion-badge class="tag" *ngFor="let tag of item.tags">{{toUpper(tag.tag)}}</ion-badge> 
         </p>
         
       </ion-card-content>
 
-    </ion-card>
-        <ion-card no-padding padding-bottom class="card">
+    </ion-card> -->
+<!--         <ion-card no-padding padding-bottom class="card">
 
       <ion-row>
         <ion-col col-10>
@@ -232,7 +234,7 @@
         <p class="like-content"><ion-badge>MATH2653</ion-badge> <ion-badge>HIVER2017</ion-badge> <ion-badge>PDF</ion-badge> <ion-badge>INTRA</ion-badge></p>
       </ion-card-content>
 
-    </ion-card>
+    </ion-card> -->
 
   </div>
 </ion-content>

@@ -19,6 +19,9 @@ export class EventProvider {
     getEvents(){
     	return this.afdatabase.list('/events/');
     }
+    getEvent(key){
+        return this.afdatabase.database.ref('/events/').child(key);
+    }
     addEvent(event){
         event.uid= this.userDetails.uid;
         this.afdatabase.list('/events/').push(event);

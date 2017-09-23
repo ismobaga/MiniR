@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import {  ViewController, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { ModalController, ViewController, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { DocumentProvider } from '../../../providers/document/document';
+import { QRCodePage } from '../qr-code/qr-code';
 
 /**
  * Generated class for the EditNamePage page.
@@ -12,25 +14,86 @@ import {  ViewController, LoadingController, NavController, NavParams } from 'io
   templateUrl: 'document-detail.html',
 })
 export class DocumentDetailPage {
-	public user = {
-		annee: "2e Annee"
-	};
+  document:any;
+    public like_btn = {
+    color: 'black',
+    icon_name: 'ios-thumbs-up-outline',
+    icon_name_liked : 'thumbs-up',
+     color_liked : 'danger'
+  };
+  liked:boolean;
+  noLike:number;
 
   constructor(
   	public navCtrl: NavController,
   	public navParams: NavParams,
   	public viewCtrl: ViewController,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public documentProvider:  DocumentProvider,
+    public modalCtrl: ModalController
     ) {
-  }
+    this.document = {color:'red',
+                     authorUid:"Qnh1a3hqFnha15YJGhIwGVG86fA3",
+                     date:"2017-09-06T00:21:10.454Z",
+                     downloadURL:"https://firebasestorage.googleapis.com/v0/b/cdi-mini.appspot.com/o/documents%2FQnh1a3hqFnha15YJGhIwGVG86fA3%2Fdocs64ac4bcea9-f64ea-a9d31-def8a-9cbf6ae1877cb62?alt=media&token=598e4eee-c54f-44b8-af81-369d8aa9b501",
+                     extension:"EXT",
+                     fullPath:"documents/Qnh1a3hqFnha15YJGhIwGVG86fA3/docs64ac4bcea9-f64ea-a9d31-def8a-9cbf6ae1877cb62",
+                     hasFile:true,
+                     liked:false,
+                     merci:1,
+                     merciArray:{Qnh1a3hqFnha15YJGhIwGVG86fA3: "Qnh1a3hqFnha15YJGhIwGVG86fA3"},
+                     name:"Emplo du temps",
+                     size:242200,
+                     tags:[{display: "...", value: "..."},{display: "..", value: ".."}],
+                     text:"                           ",
+                     views:0,
+                     author:{
+                       displayName:"name ..",
+                       photoURL:""
+                     }
+                   }
 
+  }
+  toUpper(str:string){
+    return str.toUpperCase();
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditNamePage');
+
+    this.documentProvider.getDocument(this.navParams.data.key).once('value').then((data) => {
+      this.document = data.val();
+      this.document.author={
+                       displayName:"name ..",
+                       photoURL:""
+                     }
+      this.documentProvider.getUser(this.document.authorUid).once('value').then(author=>{
+        this.document.author = author.val();
+      });
+      console.log(this.document.author)
+      this.liked = this.document.liked;
+      this.noLike = this.document.merci;
+      console.log(this.document);
+    });
+  }
+  likeButton(key) {
+   if(this.liked){
+     this.noLike--;
+     this.liked = false;
+   }
+   else{
+     this.noLike++;
+     this.liked = true; 
+   }
+
+    this.documentProvider.like(this.navParams.data.key, this.navParams.data.uid);
   }
 
-    updateProfileAnnee() {
-    
-  }
+   qrCode(){
+     console.log(this.navParams.get('key'))
+    let modal = this.modalCtrl.create(QRCodePage, {type: 'document', ref:'documents', key:this.navParams.get('key'), title:''});
+    modal.present();
+
+ }
 
   dismiss() {
    this.viewCtrl.dismiss();

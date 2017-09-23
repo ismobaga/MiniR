@@ -17,6 +17,7 @@ import { MessageDetailPage } from '../pages/message-detail/message-detail';
 import { Conversation } from '../pages/conversation/conversation';
 import { NewMessagePage } from '../pages/new-message/new-message';
 import { PostPopover } from '../pages/home/post-popover';
+import { QRResult } from '../pages/popover/qr-result/qr-result';
 import { DocumentPage } from '../pages/document/document';
 import { EvenementPage } from '../pages/evenement/evenement';
 
@@ -98,6 +99,7 @@ export const firebaseConfig = {
     NewEventPage,
     AboutPage,
     PostPopover,
+    QRResult,
     DocumentPage,
     EvenementPage,
     ContactPage,
@@ -146,6 +148,7 @@ export const firebaseConfig = {
     EvenementPage,
     ContactPage,
     PostPopover,
+    QRResult,
     ProfilePage,
     HomePage,
     TabsPage,

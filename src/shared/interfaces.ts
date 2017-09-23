@@ -60,6 +60,7 @@ export interface IDocument {
     downloadURL?:string,
     views:number,
     merci:number,
+    merciArray?:Array<string>,
     authorUid:string,
     date:string,
     fullPath?:string,
@@ -69,7 +70,7 @@ export interface IDocument {
 export interface Tag{
      display:string,
      value: string,
-            readonly?:boolean
+     readonly?:boolean
 }
 export class GlobalStatictVar {
 
@@ -86,6 +87,8 @@ export class GlobalStatictVar {
     public static MSG_TYPE_FILE = 3;
     public static MSG_TYPE_LOCATION = 4;
     public static MSG_TYPE_VOICE = 5;
+    public static MSG_TYPE_POST = 6 ;
+    public static MSG_TYPE_EVENT = 7;
 
     public static DEFAULT_PROFILE_PHOTO = '../assets/image/default-profile.png';
 
@@ -95,6 +98,9 @@ export class GlobalStatictVar {
     public static NEW_MESSAGE_EVENT = 'newMessage';
     public static UPDATE_CHAT_EVENT = 'updateChat';
     public static NOTIFICATION_EVENT = 'notification';
+
+    public static DATA_TYPE_POST = 'document';
+    public static DATA_TYPE_EVENT = 'event';
 
 
 }

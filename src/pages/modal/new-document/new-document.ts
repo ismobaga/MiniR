@@ -32,7 +32,7 @@ export class NewDocumentPage {
     public loadingCtrl: LoadingController,
     public documentProvider:DocumentProvider
     ) {
-    this.document = {text:"",name:"no name", views:0, merci:0, authorUid:"", date:"" , hasFile:false, downloadURL:"", tags:[], color:'red'};
+    this.document = {text:"",name:"no name", views:0, merci:0, merciArray:[], authorUid:"", date:"" , hasFile:false, downloadURL:"", tags:[], color:'red'};
 
         if (this.navParams.get('doc')) {
           setTimeout(()=>{

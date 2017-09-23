@@ -168,8 +168,55 @@ export class DocumentProvider {
 getDocuments(){
       return this.afdatabase.list('/documents/');
     }
+getDocument(key){
+      return this.afdatabase.database.ref('/documents/').child(key);
+    }
+getUserDocument(uid){
+      return 0;//this.afdatabase.list('/documents/'+key);
+    }
   getUser(uid){
         return this.onlineProv.getUser(uid);
+    }
+    like(key, userId){
+      this.dejaDisMerci(key, userId)
+    }
+    likeUnlike(key, userId:string, dejaLike){
+let doc = this.afdatabase.object('/documents/'+key);
+if(dejaLike){
+  doc.$ref.once('value').then(snapshot =>{
+    let obj = snapshot.val();
+    doc.update({merci: obj.merci -1});
+    let merciTD = this.afdatabase.object('/documents/'+key+'/merciArray/'+userId).remove();
+    let merciArray = obj.merciArray
+    console.log('merciAra unlike', merciArray)
+    
+  })
+}
+else{
+    doc.$ref.once('value').then(snapshot =>{
+    let obj = snapshot.val();
+    doc.update({merci: obj.merci +1});
+    doc.$ref.child('merciArray').update({[userId]:userId});
+    let merciArray = obj.merciArray
+    console.log('merciAra', merciArray)
+
+  })
+}
+    }
+    dejaDisMerci(key, userId){
+      let dejaLike = false
+      let DocRef = this.afdatabase.object('/documents/'+key+'/merciArray/'+userId).$ref.once('value').then((result)=>{
+        console.log(result)
+        if(result.node_.value_){
+          dejaLike = true;
+        }
+        else{
+          dejaLike = false
+        }
+        this.likeUnlike(key, userId, dejaLike);
+
+        
+      })
     }
 
 
