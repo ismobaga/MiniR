@@ -18,6 +18,7 @@ import { LogProvider } from '../../providers/logProvider';
 
 import { GlobalStatictVar, User } from "../../shared/interfaces";
 import { DocumentProvider } from '../../providers/document/document';
+import { QRResult } from '../popover/qr-result/qr-result';
 
 
 @Component({
@@ -207,22 +208,30 @@ export class HomePage {
       duration: 200
     });
 	let result;
-    loader.present(); 
+    loader.present()
 	  this.barcodeScanner.scan().then((barcodeData) => {
-		  console.log(barcodeData);
-		  result = JSON.stringify(barcodeData);
-		  	  const alertFailure = this.alertCtrl.create({
-        title: 'Resultat!',
-        subTitle: result ,buttons: ['Ok']
-      });
-	  alertFailure.present();
+		  // console.log(barcodeData.text);
+      let qrResult = barcodeData.text;
+		  // let qrResult = JSON.stringify(barcodeData.text);
+      let popover = this.popoverCtrl.create(QRResult, {qrResult});
+      popover.present();
+    // .catch((err)=>{
+    //    const alertFailure = this.alertCtrl.create({
+    //     title: 'Resultat!',
+    //     subTitle: err, buttons: ['Ok']
+    //   });
+    // alertFailure.present();
+    // }); ;
+		//  const alertFailure = this.alertCtrl.create({
+    //   title: 'Resultat!',
+    //   subTitle: result ,buttons: ['Ok']
+    // });
+	  // alertFailure.present();
 	  }, (err)=>{
 		  console.log("Error:", err);
-		  	  const alertFailure = this.alertCtrl.create({
-        title: 'Resultat!',
-        subTitle: result ,buttons: ['Ok']
-      });
-	  alertFailure.present();
+		   result = JSON.stringify(err);
+      let popover = this.popoverCtrl.create(QRResult, {'err':err});
+      popover.present();
 	  });
 
   }
