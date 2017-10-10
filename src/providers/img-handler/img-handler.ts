@@ -75,8 +75,12 @@ image;
     }).then(imageData => {
       this.image = 'data:image/jpeg;base64,' + imageData;
       let imageStore = this.fireStore.ref('profileImages').child(firebase.auth().currentUser.uid);
-  		
+  		    let loader = this.loadingCtrl.create({
+      content:'Chargement...'
+    });
+    loader.present();
   			imageStore.putString(this.image, 'data_url').then((res)=> {
+            loader.dismiss();
   								this.fireStore.ref('/profileImages').child(firebase.auth().currentUser.uid).getDownloadURL().then((url)=>{
   									this.imageURL=url;
   									resolve(url);
@@ -105,8 +109,12 @@ image;
     }).then(imageData => {
       this.image = 'data:image/jpeg;base64,' + imageData;
       let imageStore = this.fireStore.ref('profileImages').child(firebase.auth().currentUser.uid);
-  		
+  		          let loader = this.loadingCtrl.create({
+      content:'Chargement...'
+    });
+    loader.present();
   			imageStore.putString(this.image, 'data_url').then((res)=> {
+          loader.dismiss();
   								this.fireStore.ref('/profileImages').child(firebase.auth().currentUser.uid).getDownloadURL().then((url)=>{
   									this.imageURL=url;
   									resolve(url);

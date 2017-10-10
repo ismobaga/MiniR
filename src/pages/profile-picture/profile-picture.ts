@@ -41,9 +41,9 @@ export class ProfilePicturePage {
   	let loader = this.loadingCtrl.create({
   		content: 'Chargement...'
   	})
-  	loader.present();
+  	//loader.present();
   	this.authService.updateImage(this.imgUrl).then((res:any)=>{
-      loader.dismiss();
+      //loader.dismiss();
   		if(res.success){
   			this.navCtrl.setRoot(TabsPage);
   		}

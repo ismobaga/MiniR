@@ -1,9 +1,8 @@
-import { Component, ViewChild, Input, ChangeDetectorRef, NgZone,  } from '@angular/core';
+import { Component, ViewChild, Input, ChangeDetectorRef, NgZone, ElementRef  } from '@angular/core';
 import { NavController, Events, LoadingController, App, Content, PopoverController, AlertController, ModalController, Tabs } from 'ionic-angular';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 import { PostPopover } from './post-popover';
 import { MessagePage } from  '../message/message';
-// import { WelcomePage } from  '../welcome/welcome';
 import { NewEventPage } from '../modal/new-event/new-event';
 import { NewDocumentPage } from '../modal/new-document/new-document';
 import { EventProvider } from '../../providers/eventProvider';
@@ -19,7 +18,10 @@ import { LogProvider } from '../../providers/logProvider';
 import { GlobalStatictVar, User } from "../../shared/interfaces";
 import { DocumentProvider } from '../../providers/document/document';
 import { QRResult } from '../popover/qr-result/qr-result';
-
+import { ImageViewer } from '../modal/image-viewer/image-viewer';
+import { ImageViewerController } from 'ionic-img-viewer';
+import { ImageLoaderConfig } from 'ionic-image-loader';
+import { ImageLoader } from 'ionic-image-loader';
 
 @Component({
   selector: 'page-home',
@@ -29,6 +31,7 @@ export class HomePage {
     @Input()
   newMsgCount: number = 0;
     @ViewChild(Content) content: Content;
+    @ViewChild('myImage') myImage: ElementRef;
 
   public like_btn = {
     color: 'black',
@@ -49,6 +52,8 @@ export class HomePage {
   	public popoverCtrl: PopoverController,
   	private document: DocumentViewer,
   	private app: App,
+    private imageLoader: ImageLoader,
+    private imageLoaderConfig: ImageLoaderConfig,
     public zone:NgZone,
     public authService:AuthService,
     private file: File,
@@ -62,20 +67,12 @@ export class HomePage {
     public logProvid: LogProvider, 
     public eventProvider:EventProvider,
     public changeDetectionRef: ChangeDetectorRef,
+    public imageViewerCtrl: ImageViewerController,
     public medProvid: MediatorProvider) 
   {
-    // if (JSON.parse(localStorage.getItem('userData'))){
-    // const data = JSON.parse(localStorage.getItem('userData'));
-    // this.userDetails = data.userData;
-    // this.userPostData.user_id = this.userDetails.id;
-    // this.userPostData.token = this.userDetails.token;
-    //        let user = {
-    //         uid: '',
-    //         password:'',
-    //         email: '',
-    //         photo:'',
-    //         username:''
-    //     };
+this.imageLoaderConfig.enableDebugMode();
+this.imageLoaderConfig.useImageTag(true);
+this.imageLoaderConfig.setCacheDirectoryName('im-net');
     this.tabs = this.navCtrl.parent;
     let self =this;
         events.subscribe(GlobalStatictVar.NOTIFICATION_EVENT, (notify) => {
@@ -99,17 +96,7 @@ export class HomePage {
 
         })
     this.getDocuments();
-          //let userDet = this.userDetails;
-                // user.uid = userDet.id;
-                // user.email = userDet.email;
-                // user.username = userDet.username;
-                // user.photo = userDet.profile_image;
-               // this.medProvid.saveLoggedinUser(user);
-                
-  // }
-  // else{
-  //   this.navCtrl.push(WelcomePage);
-  // }
+
   }
   goToMyProfile(){
     this.tabs.select(3);
@@ -142,21 +129,24 @@ export class HomePage {
   likeDocument(key, number){
 
   }
+  myImageSrc;
+  opendDocument(document:any){
+    let img = this.myImage.nativeElement.querySelector('img','.thumb-img')
+    let modal;
+
+    this.myImageSrc = document.downloadURL;
+    if(document.hasFile)
+    {
+      this.imageLoader.preload(this.myImageSrc);
+      // modal = this.modalCtrl.create(ImageViewer, {'images': img}); 
+      modal = this.imageViewerCtrl.create(img)  
+    modal.present();
+     modal.onDidDismiss(() => this.myImageSrc = "");
+    }
+  }
         documents = [];
   getDocuments(){
-     // let loader = this.loadingCtrl.create({
-    //   duration: 200
-    // });
-    // loader.present(); 
-      // this.authService.postData(this.userPostData, 'documents')
-      // .then((result) => {
-      //   this.responseData = result;
-      //   if (this.responseData.documentsData) {
-      //     this.dataSet = this.responseData.documentsData;
-      //   } else {}
-      // }, (err) => {
 
-      // });
       this.documentProvider.getDocuments().subscribe(data=>{
         let self =this;
         self.documents = [];
@@ -165,11 +155,7 @@ export class HomePage {
            let document =doc;
           let userRef= this.documentProvider.getUser(doc.authorUid);
            userRef.once('value').then( (snapshot) => {
-           //let user = result['userData'];
-          // user.uid = user.id;
-           //user.photo= user.profile_image;
-           // let user = snapshot.val();
-           // user.displayName = user.firstName+" "+user.lastName;
+
            document.liked = false
            let merciTab : Array<string> = <Array<string>> doc.merciArray;
            if (merciTab) {
@@ -200,7 +186,8 @@ export class HomePage {
     return str.toUpperCase();
   }
   goMessages(){
-  	this.app.getRootNav().push(MessagePage);
+  	///this.app.getRootNav().push(MessagePage);
+    this.navCtrl.push(MessagePage);
   }
   goCodeScanner(){
 	      console.log("Scanner Camera");
@@ -211,22 +198,12 @@ export class HomePage {
     loader.present()
 	  this.barcodeScanner.scan().then((barcodeData) => {
 		  // console.log(barcodeData.text);
-      let qrResult = barcodeData.text;
+      let qrResult:any = barcodeData.text;
+      qrResult.uid =this.userDetails.uid
 		  // let qrResult = JSON.stringify(barcodeData.text);
       let popover = this.popoverCtrl.create(QRResult, {qrResult});
       popover.present();
-    // .catch((err)=>{
-    //    const alertFailure = this.alertCtrl.create({
-    //     title: 'Resultat!',
-    //     subTitle: err, buttons: ['Ok']
-    //   });
-    // alertFailure.present();
-    // }); ;
-		//  const alertFailure = this.alertCtrl.create({
-    //   title: 'Resultat!',
-    //   subTitle: result ,buttons: ['Ok']
-    // });
-	  // alertFailure.present();
+
 	  }, (err)=>{
 		  console.log("Error:", err);
 		   result = JSON.stringify(err);
@@ -261,7 +238,6 @@ export class HomePage {
 };
 
   let pathto = this.downloadFile(url);
-  console.log(/*this.file.dataDirectory+'file.pdf'*/pathto);
   console.log('Viewer');
 	this.document.viewDocument(this.file.dataDirectory+'file.pdf', 'application/pdf', options)
 }

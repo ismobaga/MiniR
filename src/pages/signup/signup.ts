@@ -44,6 +44,9 @@ export class SignupPage {
           this.navCtrl.push(ProfilePicturePage);
         else
           alert('Errr '+ res);
+      }).catch(err=>{
+        loader.dismiss();
+        //gerer l'err dinscription @todo
       });
     }
   }

@@ -13,31 +13,32 @@ import { DocumentProvider } from '../../../providers/document/document';
     <ion-list class="dcard">
         <ion-item id="fileDiv" no-lines>
           <div id="name">
-            <h3>Document</h3>
+            <h3>{{title}}</h3>
           </div>
         </ion-item>
     <p class="tagText">
-      {{display}}
+      {{text}}
     </p>
   
    
    <ion-row no-padding no-margin>
     <ion-col no-padding no-margin col-2></ion-col>
       <ion-col no-padding no-margin text-center col-8>
-        <button ion-button id="viewBtn"  clear  (click)="viewDocument()">Ouvrir</button>
+        <button ion-button id="viewBtn"  clear  (click)="openIt()">Ouvrir</button>
     </ion-col>
     <ion-col col-1></ion-col>
   </ion-row>
 </ion-list>
-
-  `
+  `,
+  selector: 'page-qr-result',
 })
 export class QRResult {
   data:any;
   event:any;
   document:any;
-  text:any;
-  display:string
+  title:any;
+  text:string;
+  docOrEv:boolean;
   
   constructor(public eventProvider: EventProvider,
               public documentProvider: DocumentProvider,
@@ -46,43 +47,76 @@ export class QRResult {
               public toastCtrl: ToastController, 
               public navParms: NavParams) {
     this.data = this.navParms.data;
-    this.display = this.data.qrResult;
+    this.data = JSON.parse(this.data.qrResult|| JSON.stringify(null));
     this.getData();
 
   }
   getData(){
+    if(this.data){
     if (this.data.type==GlobalStatictVar.DATA_TYPE_EVENT) {
-      this.text = "Evenement"
+      this.title = "Evenement"
       this.eventProvider.getEvent(this.data.key).once('value').then((data) => {
       this.event = data.val();
+      this.document = false;
+      this.docOrEv = true;
+
+      if(this.event.title){
+        this.text = this.event.title;
+      }
       this.eventProvider.getUser(this.event.uid).once('value').then(user => {
         this.event.user = user.val();
         });
       });
     }
     else if (this.data.type == GlobalStatictVar.DATA_TYPE_POST) {
+
       this.documentProvider.getDocument(this.data.key).once('value').then((data)=>{
-        this.text = "Post"
+        this.title = "Post";
+        this.docOrEv = true;
         this.document = data.val();
+        this.text = this.document.text;
         this.documentProvider.getUser(this.document.uid).once('value').then((author)=>{
           this.document.author = author.val();
         })
       })
     }
+    else{
+      this.title = "Not found";
+      this.text = "Code Non Valide";
+    }
+
+  }
+
+  }
+  openIt(){
+    if (this.data.type==GlobalStatictVar.DATA_TYPE_POST) {
+      this.viewDocument();
+    }
+    else if(this.data.type==GlobalStatictVar.DATA_TYPE_EVENT){
+      this.viewEvent();
+    }
+    else{
+      this.close();
+    }
+  }
+  viewEvent(){
+
+    this.event.startTime = new Date(this.event.startTime);
+     this.event.endTime = new Date(this.event.endTime);
+    console.log("Dans eve", event);
+    
+     let modal = this.modalCtrl.create(EventDetailPage, this.event);
+    modal.present();
+    modal.onDidDismiss(data =>{
+      
+    });
 
   }
   close() {
     this.presentToast();
     this.viewCtrl.dismiss();
   }
-  showDocumentDetail(){
-	  	  	      // Open it as a modal page
-	
-    let modal = this.modalCtrl.create(DocumentDetailPage, this.navParms.data);
 
-	modal.present();
-	this.viewCtrl.dismiss()
-  }
 
   presentToast() {
     let toast = this.toastCtrl.create({
@@ -93,6 +127,8 @@ export class QRResult {
   }
 
   viewDocument(){
-
+      let modal = this.modalCtrl.create(DocumentDetailPage, {'key':this.data.key, 'uid': this.data.uid});
+      modal.present();
+   this.viewCtrl.dismiss()
   }
 }

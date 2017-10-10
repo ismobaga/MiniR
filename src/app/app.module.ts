@@ -29,6 +29,7 @@ import { EditAnneePage } from '../pages/modal/edit-annee/edit-annee';
 import { DocumentDetailPage } from '../pages/modal/document-detail/document-detail';
 import { EventDetailPage } from '../pages/modal/event-detail/event-detail';
 import { NewEventPage } from '../pages/modal/new-event/new-event';
+import { ImageViewer } from '../pages/modal/image-viewer/image-viewer';
 import { NewDocumentPage } from '../pages/modal/new-document/new-document';
 import { QRCodePage } from '../pages/modal/qr-code/qr-code';
 import { EditTagsPage } from '../pages/modal/edit-tags/edit-tags'
@@ -74,6 +75,8 @@ import { DocumentProvider } from '../providers/document/document';
 import { TagInputModule } from 'ng2-tag-input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed! 
  
+import { IonicImageViewerModule } from 'ionic-img-viewer';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 
 export const firebaseConfig = {
@@ -96,6 +99,7 @@ export const firebaseConfig = {
     LoginPage,
     MessageDetailPage,
     NewMessagePage,
+    ImageViewer,
     NewEventPage,
     AboutPage,
     PostPopover,
@@ -122,11 +126,13 @@ export const firebaseConfig = {
     BrowserAnimationsModule,
     HttpModule, 
     MomentModule,
+    IonicImageViewerModule,
     TagInputModule, BrowserAnimationsModule,
     QRCodeModule,
     NgCalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
+    IonicImageLoader.forRoot(),
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -143,6 +149,7 @@ export const firebaseConfig = {
     MessageDetailPage,
     NewMessagePage,
     DocumentPage,
+    ImageViewer,
     EditTagsPage,
     NewEventPage,
     EvenementPage,
@@ -173,6 +180,7 @@ export const firebaseConfig = {
     DocumentViewer,
     AuthService,
     InAppBrowser,
+    IonicImageLoader,
     ThemeableBrowser,
 	BarcodeScanner,
     SqlStorage, UtilsProvider, SqlStorage, //Storage,

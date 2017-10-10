@@ -41,7 +41,8 @@ export class AuthService {
           resolve(true);
         })
       }).catch((err) =>{
-        reject(err);
+        console.log('Auth err', err)
+       // reject(err);
       })
     });
 
@@ -86,13 +87,13 @@ export class AuthService {
             
             resolve({success:true});
           }).catch((err) =>{
-            reject(err);
+          
           })
         }).catch((err) =>{
-          reject(err);
-        })
+                })
       }).catch((err) =>{
-        reject(err);
+        console.log('Sign  err', err)
+       reject(err);
       })
     });
     return promise;

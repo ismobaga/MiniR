@@ -23,8 +23,7 @@ export class PostPopover {
   showDocumentDetail(){
 	  	  	      // Open it as a modal page
 	
-    let modal = this.modalCtrl.create(DocumentDetailPage, this.navParms.data);
-
+  let modal = this.modalCtrl.create(DocumentDetailPage, this.navParms.data);
 	modal.present();
 	this.viewCtrl.dismiss()
   }

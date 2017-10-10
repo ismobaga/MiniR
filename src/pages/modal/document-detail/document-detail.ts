@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ModalController, ViewController, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { DocumentProvider } from '../../../providers/document/document';
 import { QRCodePage } from '../qr-code/qr-code';
+import { ImageViewerController } from 'ionic-img-viewer';
 
 /**
  * Generated class for the EditNamePage page.
@@ -23,6 +24,7 @@ export class DocumentDetailPage {
   };
   liked:boolean;
   noLike:number;
+    @ViewChild('myImage') myImage: ElementRef;
 
   constructor(
   	public navCtrl: NavController,
@@ -30,6 +32,8 @@ export class DocumentDetailPage {
   	public viewCtrl: ViewController,
     public loadingCtrl: LoadingController,
     public documentProvider:  DocumentProvider,
+        public imageViewerCtrl: ImageViewerController,
+
     public modalCtrl: ModalController
     ) {
     this.document = {color:'red',
@@ -53,6 +57,20 @@ export class DocumentDetailPage {
                      }
                    }
 
+  }
+    myImageSrc;
+  opendDocument(document:any){
+    let img = this.myImage.nativeElement.querySelector('img','.thumb-img')
+    let modal;
+    // let img =Array()
+    // img[0]=document.downloadURL;
+    this.myImageSrc = document.downloadURL;
+    if(document.hasFile)
+    {
+      // modal = this.modalCtrl.create(ImageViewer, {'images': img}); 
+      modal = this.imageViewerCtrl.create(img)  
+    }
+    modal.present();
   }
   toUpper(str:string){
     return str.toUpperCase();
@@ -90,7 +108,7 @@ export class DocumentDetailPage {
 
    qrCode(){
      console.log(this.navParams.get('key'))
-    let modal = this.modalCtrl.create(QRCodePage, {type: 'document', ref:'documents', key:this.navParams.get('key'), title:''});
+     let modal = this.modalCtrl.create(QRCodePage, {type: 'document', ref:'documents', key:this.navParams.get('key'), title:''});
     modal.present();
 
  }

@@ -23,7 +23,7 @@
       <ion-row>
         <ion-col col-2>
           <ion-thumbnail item-left (click)="goToMyProfile()">
-            <img [src]="userDetails.photoURL">
+            <img-loader [src]="userDetails.photoURL"> </img-loader>
           </ion-thumbnail>
         </ion-col>
 
@@ -67,7 +67,7 @@
         <ion-col col-10>
           <ion-item>
             <ion-avatar item-left>
-              <img [src]="item.user.photoURL">
+              <img-loader [src]="item.user.photoURL"></img-loader>
             </ion-avatar>
             <h2 style="font-weight: bold">{{item.user.displayName}}</h2>
             <p>{{item.date | amTimeAgo}}</p>
@@ -81,7 +81,7 @@
       </ion-row>
       <ion-card-content>
         <p *ngIf="item.text">{{item.text}}</p>
-        <ion-item id="fileDiv" *ngIf="item.hasFile">
+        <ion-item id="fileDiv" *ngIf="item.hasFile" (click)=opendDocument(item)>
           <div id="preview">
             .{{item.extension}}
           </div>
@@ -114,6 +114,10 @@
         
       </ion-card-content>
     </ion-card>
+    <div #myImage [hidden]="true">
+      
+    <img src="{{myImageSrc}}" class="thumb-img"  >
+    </div>
     <!-- 
     <ion-card *ngFor="let item of dataSet" no-padding padding-bottom class="card">
 

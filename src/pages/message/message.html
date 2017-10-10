@@ -61,14 +61,14 @@
   </ion-list>
 
  <ion-fab bottom right #fab>
-   <button ion-fab><ion-icon name="add"></ion-icon></button>
-   <ion-fab-list side="top">
+   <button ion-fab (click)="goNewMessage()"><ion-icon name="add"></ion-icon></button>
+<!--    <ion-fab-list side="top">
      <button ion-fab (click)="goNewMessage()">
      	<ion-label (click)="goNewMessage()">Nouveau message</ion-label>
      	<ion-icon ios="ios-create-outline" md="ios-create-outline"></ion-icon>
      </button>
   
-   </ion-fab-list>
+   </ion-fab-list> -->
  </ion-fab>
 
 </ion-content>
