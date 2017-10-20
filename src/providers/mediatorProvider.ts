@@ -347,9 +347,9 @@ export class MediatorProvider {
                         self.logProvid.log('queued message sent');
                         //remove msg from queue after it has been sent online 
                         self.backProvid.removeMessageQueue(currMsg.id);
-                    }).catch(err => {
-
-                    });
+                    }, (err => {
+                        
+                                            }))
                 }
             }
         }, (error) => {
